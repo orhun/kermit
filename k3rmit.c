@@ -16,12 +16,15 @@ static GtkWidget *window, *terminal; /* Window and terminal widgets */
 void connectSignals(){
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
+
 }
+
+
 
 /*!
  * Async callback for terminal state
  */
-void termCallback(VteTerminal *terminal, GPid pid,
+void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
         g_print("k3rmit started. PID: %d", pid);
@@ -54,7 +57,7 @@ void startTerm(){
         NULL,              /* child setup data destroy */
         -1,                /* timeout */
         NULL,              /* cancellable */
-        termCallback,      /* async callback */
+        termStateCallback,      /* async callback */
         NULL);             /* callback data */
     /* Connect signals */
     connectSignals(terminal, window);
