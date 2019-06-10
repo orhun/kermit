@@ -1,10 +1,28 @@
 // gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config --libs vte-2.91)
 
 #include <stdio.h>
+#include <gtk/gtk.h>
 #include <vte/vte.h>
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#include <X11/Xlib.h>
+#endif
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 
+
+/*!
+ * Async callback for terminal state
+ */
+void termCallback(VteTerminal *terminal, GPid pid,
+            GError *error, gpointer user_data){
+    if (error == NULL){
+        g_print("k3rmit started. PID: %d", pid);
+    }else{
+        g_print(error->message);
+        g_clear_error(&error);
+    }
+}
 
 /*!
  * Initialize and start the terminal
@@ -29,7 +47,7 @@ void startTerm(){
         NULL,              /* child setup data destroy */
         -1,                /* timeout */
         NULL,              /* cancellable */
-        NULL,              /* async callback */
+        termCallback,      /* async callback */
         NULL);             /* callback data */
     /* Connect signals */
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
