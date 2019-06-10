@@ -19,7 +19,7 @@ void startTerm(){
         NULL,
         command, 
         NULL, 
-        G_SPAWN_DO_NOT_REAP_CHILD,
+        G_SPAWN_DEFAULT,
         NULL,
         NULL,
         NULL,
