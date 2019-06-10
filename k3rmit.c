@@ -10,6 +10,13 @@
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 
+/*!
+ * Set signals for terminal and window
+ */
+void connectSignals(){
+    g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
+    g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
+}
 
 /*!
  * Async callback for terminal state
@@ -50,8 +57,7 @@ void startTerm(){
         termCallback,      /* async callback */
         NULL);             /* callback data */
     /* Connect signals */
-    g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
-    g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
+    connectSignals(terminal, window);
     /* Put widgets together and run the main loop */
     gtk_container_add(GTK_CONTAINER(window), terminal);
     gtk_widget_show_all(window);
