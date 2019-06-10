@@ -9,6 +9,8 @@
 #endif
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
+/* Function prototype for termOnKeyPress */
+gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
 
 /*!
  * Set signals for terminal and window
@@ -16,10 +18,19 @@ static GtkWidget *window, *terminal; /* Window and terminal widgets */
 void connectSignals(){
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
-
+    g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
+                        GTK_WINDOW(window));
 }
 
+/*!
+ * Handle terminal key press events
+ *  
+ */
+gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
+                gpointer user_data){
 
+	return FALSE;
+}
 
 /*!
  * Async callback for terminal state
