@@ -3,10 +3,9 @@
 #include <stdio.h>
 #include <vte/vte.h>
 
-int main(int argc, char *argv[]) {
-    GtkWidget *window, *terminal;
-    /* Initialize GTK, the window and the terminal */
-    gtk_init(&argc, &argv);
+static GtkWidget *window, *terminal;
+
+void startTerm(){
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "k3rmit");
@@ -35,4 +34,11 @@ int main(int argc, char *argv[]) {
     gtk_container_add(GTK_CONTAINER(window), terminal);
     gtk_widget_show_all(window);
     gtk_main();
+}
+
+int main(int argc, char *argv[]) {
+    /* Initialize GTK, the window and the terminal */
+    gtk_init(&argc, &argv);
+    startTerm();
+    
 }
