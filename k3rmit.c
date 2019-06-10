@@ -3,8 +3,12 @@
 #include <stdio.h>
 #include <vte/vte.h>
 
-static GtkWidget *window, *terminal;
+static GtkWidget *window, *terminal; /* Window and terminal widgets */
 
+
+/*!
+ * Initialize and start the terminal
+ */
 void startTerm(){
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -15,18 +19,18 @@ void startTerm(){
     g_strfreev(envp);
     /* Spawn asynchronous terminal */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal), 
-        VTE_PTY_DEFAULT, 
-        NULL,
-        command, 
-        NULL, 
-        G_SPAWN_DEFAULT,
-        NULL,
-        NULL,
-        NULL,
-        -1,
-        NULL,
-        NULL,
-        NULL);
+        VTE_PTY_DEFAULT,   /* pty flag */
+        NULL,              /* working directory */
+        command,           /* argv */
+        NULL,              /* environment variables */
+        G_SPAWN_DEFAULT,   /* spawn flag */
+        NULL,              /* child setup function */
+        NULL,              /* child setup data */
+        NULL,              /* child setup data destroy */
+        -1,                /* timeout */
+        NULL,              /* cancellable */
+        NULL,              /* async callback */
+        NULL);             /* callback data */
     /* Connect signals */
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
@@ -36,9 +40,12 @@ void startTerm(){
     gtk_main();
 }
 
+/*!
+ * Entry-point
+ */
 int main(int argc, char *argv[]) {
     /* Initialize GTK, the window and the terminal */
     gtk_init(&argc, &argv);
+    /* Start the terminal */
     startTerm();
-    
 }
