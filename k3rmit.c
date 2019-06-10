@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "myterm");
+    gtk_window_set_title(GTK_WINDOW(window), "k3rmit");
     /* Start a new shell */
     gchar **envp = g_get_environ();
     gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
