@@ -1,3 +1,5 @@
+// gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config --libs vte-2.91)
+
 #include <stdio.h>
 #include <vte/vte.h>
 
