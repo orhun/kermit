@@ -2,6 +2,7 @@
 
 #include "k3rmit.h"
 #include <stdio.h>
+#include <locale.h>
 #include <vte/vte.h>
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
@@ -42,6 +43,13 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 }
 
 /*!
+ * Configure the terminal
+ */
+void configureTerm(){
+    
+}
+
+/*!
  * Async callback for terminal state
  */
 void termStateCallback(VteTerminal *terminal, GPid pid,
@@ -79,8 +87,9 @@ void startTerm(){
         NULL,              /* cancellable */
         termStateCallback,      /* async callback */
         NULL);             /* callback data */
-    /* Connect signals */
-    connectSignals(terminal, window);
+    /* Terminal configuration */
+    connectSignals();
+    configureTerm();
     /* Put widgets together and run the main loop */
     gtk_container_add(GTK_CONTAINER(window), terminal);
     gtk_widget_show_all(window);
