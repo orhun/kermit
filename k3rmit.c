@@ -1,12 +1,7 @@
 // gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config --libs vte-2.91)
 
 #include <stdio.h>
-#include <gtk/gtk.h>
 #include <vte/vte.h>
-#ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
-#include <X11/Xlib.h>
-#endif
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 /* Function prototype for termOnKeyPress */
