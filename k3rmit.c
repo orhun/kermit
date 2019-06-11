@@ -76,22 +76,25 @@ void configureTerm(){
         &(GdkRGBA){ .alpha = 0.85 }, /* Background */
         (const GdkRGBA[]){           /* Palette */
             CLR_GDK(0x3f3f3f),
-            CLR_GDK(0x75507B),
+            CLR_GDK(0xcf0000),
             CLR_GDK(0x33ff00),
             CLR_GDK(0xf3f828),
-            CLR_GDK(0x808080),
-            CLR_GDK(0xc65884),
-            CLR_GDK(0x0066ff),
+            CLR_GDK(0x0300ff),
+            CLR_GDK(0xcc00ff),
+            CLR_GDK(0x0300ff),
             CLR_GDK(0xdcdccc),
-            CLR_GDK(0x709080),
-            CLR_GDK(0xdca3a3),
-            CLR_GDK(0xc3bf9f),
-            CLR_GDK(0xf0dfaf),
-            CLR_GDK(0x06989a),
+            CLR_GDK(0x808080),
             CLR_GDK(0xcf0000),
+            CLR_GDK(0x33ff00),
+            CLR_GDK(0x6b6b6b),
+            CLR_GDK(0x0066ff),
+            CLR_GDK(0xcc00ff),
             CLR_GDK(0x34e2e2),
-            CLR_GDK(0xeeeeec)
+            CLR_GDK(0xdcdccc)
         }, 16);
+
+    
+
 
 }
 
