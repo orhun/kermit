@@ -24,11 +24,21 @@ void connectSignals(){
 
 /*!
  * Handle terminal key press events
- *  
+ * Return FALSE on normal press & TRUE on custom actions
  */
 gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
                 gpointer user_data){
-
+    /* Check for CTRL, ALT and SHIFT keys */
+    switch (event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK)) {
+        /* CTRL + ALT */
+        case GDK_MOD1_MASK | GDK_CONTROL_MASK:
+            switch (event->keyval) {
+            /* Paste */
+            case GDK_KEY_v:
+                vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
+                return TRUE;
+            }
+	}
 	return FALSE;
 }
 
