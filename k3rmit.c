@@ -60,7 +60,6 @@ void configureTerm(){
     /* Hide the mouse cursor when typing */
     vte_terminal_set_mouse_autohide(VTE_TERMINAL(terminal), TRUE);
     /* Scroll issues */
-    vte_terminal_set_scrollback_lines(VTE_TERMINAL(terminal), 0);
     vte_terminal_set_scroll_on_output(VTE_TERMINAL(terminal), FALSE);
     vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL(terminal), TRUE);
     /* Rewrap the content when terminal size changed */
