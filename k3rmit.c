@@ -15,6 +15,7 @@
                                     .alpha = 0 }
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
+static PangoFontDescription *fontDesc; /* Description for the terminal font */
 
 /*!
  * Set signals for terminal and window
@@ -52,6 +53,16 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 }
 
 /*!
+ * Set terminal font with (TODO: given) size
+ */
+void setTermFont(){
+    if ((fontDesc = pango_font_description_from_string("Monospace 9")) != NULL){
+	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
+	    pango_font_description_free(fontDesc);
+    }
+}
+
+/*!
  * Configure the terminal
  */
 void configureTerm(){
@@ -70,7 +81,7 @@ void configureTerm(){
     vte_terminal_set_allow_bold(VTE_TERMINAL(terminal), TRUE);
     /* Allow hyperlinks */
     vte_terminal_set_allow_hyperlink(VTE_TERMINAL(terminal), TRUE);
-    /* Set the terminal colors */
+    /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(0xffffff),          /* Foreground */
         &(GdkRGBA){ .alpha = 0.85 }, /* Background */
@@ -92,10 +103,7 @@ void configureTerm(){
             CLR_GDK(0x34e2e2),
             CLR_GDK(0xdcdccc)
         }, 16);
-
-    
-
-
+    setTermFont();
 }
 
 /*!
