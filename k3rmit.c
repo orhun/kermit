@@ -46,6 +46,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  * Configure the terminal
  */
 void configureTerm(){
+    setlocale(LC_NUMERIC, "en_US.UTF-8");
     
 }
 
