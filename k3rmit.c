@@ -70,6 +70,28 @@ void configureTerm(){
     vte_terminal_set_allow_bold(VTE_TERMINAL(terminal), TRUE);
     /* Allow hyperlinks */
     vte_terminal_set_allow_hyperlink(VTE_TERMINAL(terminal), TRUE);
+    /* Set the terminal colors */
+    vte_terminal_set_colors(VTE_TERMINAL(terminal),
+        &CLR_GDK(0xffffff),          /* Foreground */
+        &(GdkRGBA){ .alpha = 0.85 }, /* Background */
+        (const GdkRGBA[]){           /* Palette */
+            CLR_GDK(0x3f3f3f),
+            CLR_GDK(0x75507B),
+            CLR_GDK(0x89f623),
+            CLR_GDK(0xc4a000),
+            CLR_GDK(0x506070),
+            CLR_GDK(0xdc8cc3),
+            CLR_GDK(0x3465a4),
+            CLR_GDK(0xdcdccc),
+            CLR_GDK(0x709080),
+            CLR_GDK(0xdca3a3),
+            CLR_GDK(0xc3bf9f),
+            CLR_GDK(0xf0dfaf),
+            CLR_GDK(0x06989a),
+            CLR_GDK(0xad7Fa8),
+            CLR_GDK(0x34e2e2),
+            CLR_GDK(0xeeeeec)
+        }, 16);
 
 }
 
