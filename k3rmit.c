@@ -27,10 +27,15 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         /* CTRL + ALT */
         case GDK_MOD1_MASK | GDK_CONTROL_MASK:
             switch (event->keyval) {
-            /* Paste */
-            case GDK_KEY_v:
-                vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
-                return TRUE;
+                /* Copy */
+                case GDK_KEY_c:
+                    vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
+                        VTE_FORMAT_TEXT);
+                    return TRUE;
+                /* Paste */
+                case GDK_KEY_v:
+                    vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
+                    return TRUE;
             }
 	}
 	return FALSE;
