@@ -93,6 +93,8 @@ void setTermFont(int fontSize){
  * Configure the terminal
  */
 void configureTerm(){
+    /* Set window title */
+    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
     /* Set numeric locale */
     setlocale(LC_NUMERIC, TERM_LOCALE);
     /* Hide the mouse cursor when typing */
@@ -155,7 +157,9 @@ void termStateCallback(VteTerminal *terminal, GPid pid,
 void startTerm(){
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
+    /* Terminal configuration */
+    connectSignals();
+    configureTerm();
     /* Start a new shell */
     gchar **envp = g_get_environ();
     gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
@@ -174,9 +178,6 @@ void startTerm(){
         NULL,              /* cancellable */
         termStateCallback,      /* async callback */
         NULL);             /* callback data */
-    /* Terminal configuration */
-    connectSignals();
-    configureTerm();
     /* Put widgets together and run the main loop */
     gtk_container_add(GTK_CONTAINER(window), terminal);
     gtk_widget_show_all(window);
