@@ -72,7 +72,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
 	gtk_window_set_title(window,
-	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:"k3rmit");
+	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
 	return TRUE;
 }
 
@@ -93,8 +93,8 @@ void setTermFont(int fontSize){
  * Configure the terminal
  */
 void configureTerm(){
-    /* Set numeric locale to en_US.UTF-8 */
-    setlocale(LC_NUMERIC, "en_US.UTF-8");
+    /* Set numeric locale */
+    setlocale(LC_NUMERIC, TERM_LOCALE);
     /* Hide the mouse cursor when typing */
     vte_terminal_set_mouse_autohide(VTE_TERMINAL(terminal), TRUE);
     /* Scroll issues */
@@ -142,7 +142,7 @@ void configureTerm(){
 void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
-        g_print("k3rmit started. PID: %d", pid);
+        g_print("%s started. PID: %d", TERM_NAME, pid);
     }else{
         g_print(error->message);
         g_clear_error(&error);
@@ -155,7 +155,7 @@ void termStateCallback(VteTerminal *terminal, GPid pid,
 void startTerm(){
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "k3rmit");
+    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
     /* Start a new shell */
     gchar **envp = g_get_environ();
     gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
