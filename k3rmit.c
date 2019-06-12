@@ -56,9 +56,11 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  * Set terminal font with (TODO: given) size
  */
 void setTermFont(){
-    if ((fontDesc = pango_font_description_from_string("Monospace 9")) != NULL){
+    gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", TERM_FONT_DEFAULT_SIZE), NULL);
+    if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
 	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
 	    pango_font_description_free(fontDesc);
+        g_free(fontStr);
     }
 }
 
