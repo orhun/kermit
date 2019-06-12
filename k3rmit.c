@@ -55,8 +55,8 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 /*!
  * Set terminal font with (TODO: given) size
  */
-void setTermFont(){
-    gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", TERM_FONT_DEFAULT_SIZE), NULL);
+void setTermFont(int fontSize){
+    gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
 	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
 	    pango_font_description_free(fontDesc);
@@ -108,7 +108,7 @@ void configureTerm(){
             CLR_GDK(0x34e2e2),
             CLR_GDK(0xdcdccc)
         }, 16);
-    setTermFont();
+    setTermFont(TERM_FONT_DEFAULT_SIZE);
 }
 
 /*!
