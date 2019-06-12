@@ -83,6 +83,9 @@ void configureTerm(){
     vte_terminal_set_allow_bold(VTE_TERMINAL(terminal), TRUE);
     /* Allow hyperlinks */
     vte_terminal_set_allow_hyperlink(VTE_TERMINAL(terminal), TRUE);
+    /* Zuckerberg feature */
+    vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(terminal), 
+        VTE_CURSOR_BLINK_OFF);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(0xffffff),          /* Foreground */
