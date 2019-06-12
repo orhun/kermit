@@ -77,7 +77,7 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 }
 
 /*!
- * Set terminal font with (TODO: given) size
+ * Set terminal font with given size
  */
 void setTermFont(int fontSize){
     gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", fontSize), NULL);
