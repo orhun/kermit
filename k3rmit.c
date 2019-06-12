@@ -66,6 +66,9 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 	return FALSE;
 }
 
+/*!
+ * Set the terminal title on changes
+ */
 gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
 	gtk_window_set_title(window,
