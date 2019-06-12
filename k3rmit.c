@@ -115,9 +115,9 @@ void configureTerm(){
         VTE_CURSOR_BLINK_OFF);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
-        &CLR_GDK(0xffffff),          /* Foreground */
-        &(GdkRGBA){ .alpha = 0.85 }, /* Background */
-        (const GdkRGBA[]){           /* Palette */
+        &CLR_GDK(0xffffff),                   /* Foreground */
+        &(GdkRGBA){ .alpha = TERM_OPACITY },  /* Background */
+        (const GdkRGBA[]){                    /* Palette */
             CLR_GDK(0x3f3f3f),
             CLR_GDK(0xcf0000),
             CLR_GDK(0x33ff00),
@@ -139,7 +139,6 @@ void configureTerm(){
     /* Create a window with alpha channel for transparency */
     gtk_widget_set_visual(window, 
         gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
-
 }
 
 /*!
