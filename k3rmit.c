@@ -136,6 +136,10 @@ void configureTerm(){
             CLR_GDK(0xdcdccc)
         }, 16);
     setTermFont(TERM_FONT_DEFAULT_SIZE);
+    /* Create a window with alpha channel for transparency */
+    gtk_widget_set_visual(window, 
+        gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
+
 }
 
 /*!
