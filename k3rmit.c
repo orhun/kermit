@@ -16,6 +16,7 @@
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
+static int currentFontSize;
 
 /*!
  * Set signals for terminal and window
@@ -38,15 +39,26 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         /* CTRL + ALT */
         case GDK_MOD1_MASK | GDK_CONTROL_MASK:
             switch (event->keyval) {
-                /* Copy */
+                /* Copy & Paste */
                 case GDK_KEY_c:
                     vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
                         VTE_FORMAT_TEXT);
                     return TRUE;
-                /* Paste */
                 case GDK_KEY_v:
                     vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
                     return TRUE;
+                 /* Change font size */
+                case GDK_KEY_plus:
+                case GDK_KEY_1:
+                    setTermFont(currentFontSize + 1);
+                    return TRUE;
+                case GDK_KEY_minus:
+                case GDK_KEY_2:
+                    setTermFont(currentFontSize - 1);
+                    return TRUE;
+                case GDK_KEY_equal:
+			        setTermFont(TERM_FONT_DEFAULT_SIZE);
+			        return TRUE;
             }
 	}
 	return FALSE;
@@ -59,6 +71,7 @@ void setTermFont(int fontSize){
     gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
 	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
+        currentFontSize = fontSize;
 	    pango_font_description_free(fontDesc);
         g_free(fontStr);
     }
@@ -162,8 +175,7 @@ void startTerm(){
  * Entry-point
  */
 int main(int argc, char *argv[]) {
-    /* Initialize GTK, the window and the terminal */
+    /* Initialize GTK and start the terminal */
     gtk_init(&argc, &argv);
-    /* Start the terminal */
     startTerm();
 }
