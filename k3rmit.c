@@ -182,7 +182,7 @@ void startTerm(){
         NULL,              /* child setup data destroy */
         -1,                /* timeout */
         NULL,              /* cancellable */
-        termStateCallback,      /* async callback */
+        termStateCallback, /* async callback */
         NULL);             /* callback data */
     /* Put widgets together and run the main loop */
     gtk_container_add(GTK_CONTAINER(window), terminal);
