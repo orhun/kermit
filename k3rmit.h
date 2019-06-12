@@ -5,6 +5,7 @@
 #define TERM_FONT_DEFAULT_SIZE 9
 #define TERM_LOCALE "en_US.UTF-8"
 #define TERM_OPACITY 0.95
+#define TERM_WORD_CHARS "-./?%&#_=+@~"
 
 void setTermFont(int fontSize);
 gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);

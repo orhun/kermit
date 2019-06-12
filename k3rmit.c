@@ -113,6 +113,9 @@ void configureTerm(){
     /* Zuckerberg feature */
     vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(terminal), 
         VTE_CURSOR_BLINK_OFF);
+    /* Set char exceptions */
+    vte_terminal_set_word_char_exceptions(VTE_TERMINAL(terminal),
+	    TERM_WORD_CHARS);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(0xffffff),                   /* Foreground */
@@ -167,7 +170,7 @@ void startTerm(){
     gchar **envp = g_get_environ();
     gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
     g_strfreev(envp);
-    /* Spawn asynchronous terminal */
+    /* Spawn terminal asynchronously */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal), 
         VTE_PTY_DEFAULT,   /* pty flag */
         NULL,              /* working directory */
