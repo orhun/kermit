@@ -26,6 +26,8 @@ void connectSignals(){
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
     g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
                         GTK_WINDOW(window));
+    g_signal_connect(terminal, "window-title-changed", G_CALLBACK(termOnTitleChanged), 
+                        GTK_WINDOW(window));
 }
 
 /*!
@@ -62,6 +64,13 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             }
 	}
 	return FALSE;
+}
+
+gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
+	GtkWindow *window = user_data;
+	gtk_window_set_title(window,
+	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:"k3rmit");
+	return TRUE;
 }
 
 /*!

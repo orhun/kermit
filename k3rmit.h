@@ -5,3 +5,4 @@
 
 void setTermFont(int fontSize);
 gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
+gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data);
