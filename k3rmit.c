@@ -16,7 +16,7 @@
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
-static gint currentFontSize;
+static int currentFontSize;
 
 /*!
  * Set signals for terminal and window
