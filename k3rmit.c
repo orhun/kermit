@@ -16,7 +16,14 @@
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
-static int currentFontSize;
+/* Variables for the terminal configuration */
+static float termOpacity = TERM_OPACITY;
+static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
+         currentFontSize;
+static char *termName = TERM_NAME, 
+        *termFont = TERM_FONT,
+        *termLocale = TERM_LOCALE,
+        *termWordChars = TERM_WORD_CHARS;
 
 /*!
  * Set signals for terminal and window
@@ -59,7 +66,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                     setTermFont(currentFontSize - 1);
                     return TRUE;
                 case GDK_KEY_equal:
-			        setTermFont(TERM_FONT_DEFAULT_SIZE);
+			        setTermFont(defaultFontSize);
 			        return TRUE;
             }
 	}
@@ -72,7 +79,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
 	gtk_window_set_title(window,
-	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
+	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:termName);
 	return TRUE;
 }
 
@@ -80,7 +87,7 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
  * Set terminal font with given size
  */
 void setTermFont(int fontSize){
-    gchar *fontStr = g_strconcat(TERM_FONT, " ", g_strdup_printf("%d", fontSize), NULL);
+    gchar *fontStr = g_strconcat(termFont, " ", g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
 	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
         currentFontSize = fontSize;
@@ -94,9 +101,9 @@ void setTermFont(int fontSize){
  */
 void configureTerm(){
     /* Set window title */
-    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
+    gtk_window_set_title(GTK_WINDOW(window), termName);
     /* Set numeric locale */
-    setlocale(LC_NUMERIC, TERM_LOCALE);
+    setlocale(LC_NUMERIC, termLocale);
     /* Hide the mouse cursor when typing */
     vte_terminal_set_mouse_autohide(VTE_TERMINAL(terminal), TRUE);
     /* Scroll issues */
@@ -115,11 +122,11 @@ void configureTerm(){
         VTE_CURSOR_BLINK_OFF);
     /* Set char exceptions */
     vte_terminal_set_word_char_exceptions(VTE_TERMINAL(terminal),
-	    TERM_WORD_CHARS);
+	    termWordChars);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(0xffffff),                   /* Foreground */
-        &(GdkRGBA){ .alpha = TERM_OPACITY },  /* Background */
+        &(GdkRGBA){ .alpha = termOpacity },  /* Background */
         (const GdkRGBA[]){                    /* Palette */
             CLR_GDK(0x3f3f3f),
             CLR_GDK(0xcf0000),
@@ -138,7 +145,7 @@ void configureTerm(){
             CLR_GDK(0x34e2e2),
             CLR_GDK(0xdcdccc)
         }, 16);
-    setTermFont(TERM_FONT_DEFAULT_SIZE);
+    setTermFont(defaultFontSize);
     /* Create a window with alpha channel for transparency */
     gtk_widget_set_visual(window, 
         gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
@@ -150,7 +157,7 @@ void configureTerm(){
 void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
-        g_print("%s started. PID: %d", TERM_NAME, pid);
+        g_print("%s started. PID: %d", termName, pid);
     }else{
         g_print(error->message);
         g_clear_error(&error);
@@ -196,7 +203,7 @@ void startTerm(){
 void getSettings(){
     int len = 64;
     char buf[len];
-    char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
+    char *filename = g_strconcat(termName, ".conf", NULL);
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         while(!feof(file)){
@@ -207,6 +214,7 @@ void getSettings(){
             char val2[len];
             sscanf(buf, "%s %s\n", val1, val2);
             printf("%s = %s\n", val1, val2);
+            
         }
         fclose(file);
     } else {
