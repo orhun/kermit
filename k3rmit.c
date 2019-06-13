@@ -190,11 +190,29 @@ void startTerm(){
     gtk_main();
 }
 
+void getSettings(){
+    int len = 64;
+    char buf[len];
+    char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
+    FILE * file = fopen(filename, "r"); 
+    if(file != NULL){
+        while(! feof(file)){
+            fgets(buf, len, file);
+            printf("%s", buf);
+        }
+    } else {
+        printf("config file not found.");
+    }
+    fclose(file);
+    g_free(filename);
+}
+
 /*!
  * Entry-point
  */
 int main(int argc, char *argv[]) {
     /* Initialize GTK and start the terminal */
-    gtk_init(&argc, &argv);
-    startTerm();
+    //gtk_init(&argc, &argv);
+    //startTerm();
+    getSettings();
 }
