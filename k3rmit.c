@@ -195,14 +195,14 @@ void startTerm(){
  */
 void getSettings(){
     int len = 64;
-    char firstLine;
+    char firstchar;
     char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         char line[len];
         while (fgets(line, sizeof(line), file) != NULL){
-            firstLine = line[0];
-            if(strcmp(&firstLine, "#")){
+            firstchar = line[0];
+            if(strcmp(&firstchar, "#")){
                 printf("%s", line);
             }
         }
