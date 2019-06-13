@@ -218,7 +218,7 @@ void getSettings(){
  */
 int main(int argc, char *argv[]) {
     /* Initialize GTK and start the terminal */
-    //gtk_init(&argc, &argv);
-    //startTerm();
-    getSettings();
+    gtk_init(&argc, &argv);
+    startTerm();
+    getSettings(); //TODO
 }
