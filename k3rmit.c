@@ -197,7 +197,7 @@ void startTerm(){
 void getSettings(){
     int len = 64;
     char buf[len], option[len], value[len];
-    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars, *fontValue;
+    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars;
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         while(!feof(file)){
@@ -216,11 +216,20 @@ void getSettings(){
                 wordChars = value;
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars+1;
-                printf("%s", termWordChars);
             /* Terminal font */
-            }else if(!strncmp(option, "font", strlen(option))){ 
-                
-
+            }else if(!strncmp(option, "font", strlen(option))){
+                /* Parse the line again for font size */ 
+                sscanf(buf, "%s %[^,]\n", option, value);
+                /* Split the line and get last element */
+                char *fontSize = strrchr(value, ' ');
+                if (fontSize != NULL) {
+                    /* Remove unnecessary chars from font size */
+                    fontSize[strlen(fontSize)-1] = 0;
+                    defaultFontSize = atoi(fontSize+1);
+                    /* Get the font information excluding font size */
+                    *fontSize = 0;
+                    termFont = value;
+                }
             /* Opacity value */
             }else if(!strncmp(option, "opacity", strlen(option))){
                 termOpacity = atof(value);
@@ -239,6 +248,6 @@ void getSettings(){
 int main(int argc, char *argv[]) {
     getSettings(); //TODO
     /* Initialize GTK and start the terminal */
-    //gtk_init(&argc, &argv);
-    //startTerm();
+    gtk_init(&argc, &argv);
+    startTerm();
 }
