@@ -19,7 +19,7 @@ static PangoFontDescription *fontDesc; /* Description for the terminal font */
 /* Variables for the terminal configuration */
 static float termOpacity = TERM_OPACITY;
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
-         currentFontSize;
+         currentFontSize, termForeground = 0xffffff;
 static char *termName = TERM_NAME, 
         *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
@@ -135,7 +135,7 @@ void configureTerm(){
 	    termWordChars);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
-        &CLR_GDK(0xffffff),                   /* Foreground */
+        &CLR_GDK(termForeground),             /* Foreground */
         &(GdkRGBA){ .alpha = termOpacity },   /* Background */ 
         termPalette ,                         /* Palette */
         sizeof(termPalette)/sizeof(GdkRGBA)); 
@@ -233,6 +233,9 @@ void getSettings(){
             /* Opacity value */
             }else if(!strncmp(option, "opacity", strlen(option))){
                 termOpacity = atof(value);
+            /* Foreground color */
+            }else if(!strncmp(option, "foreground", strlen(option))){
+                termForeground = (int)strtol(value, NULL, 16);
             }
         }
         fclose(file);
