@@ -195,16 +195,18 @@ void startTerm(){
  */
 void getSettings(){
     int len = 64;
-    char firstchar;
+    char buf[len];
     char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
-        char line[len];
-        while (fgets(line, sizeof(line), file) != NULL){
-            firstchar = line[0];
-            if(strcmp(&firstchar, "#")){
-                printf("%s", line);
-            }
+        while(!feof(file)){
+            fgets(buf, len, file);
+            if (buf[0] == '#' || strlen(buf) < 4)
+                continue;
+            char val1[len];
+            char val2[len];
+            sscanf(buf, "%s %s\n", val1, val2);
+            printf("%s = %s\n", val1, val2);
         }
         fclose(file);
     } else {
@@ -218,7 +220,7 @@ void getSettings(){
  */
 int main(int argc, char *argv[]) {
     /* Initialize GTK and start the terminal */
-    gtk_init(&argc, &argv);
-    startTerm();
+    //gtk_init(&argc, &argv);
+    //startTerm();
     getSettings(); //TODO
 }
