@@ -199,7 +199,7 @@ void getSettings(){
     char buf[len];
     char option[len];
     char value[len];
-    char *filename = g_strconcat(termName, ".conf", NULL);
+    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars;
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         while(!feof(file)){
@@ -207,7 +207,16 @@ void getSettings(){
             if (buf[0] == '#' || strlen(buf) < 4)
                 continue;
             sscanf(buf, "%s %s\n", option, value);
-            if(!strncmp(option, "opacity", strlen(option))){
+            if(!strncmp(option, "locale", strlen(option))){
+                 termLocale = value;
+            }else if(!strncmp(option, "char", strlen(option))){
+                wordChars = value;
+                wordChars++;
+                wordChars[strlen(wordChars)-1] = 0;
+                termWordChars = wordChars;
+            }else if(!strncmp(option, "font", strlen(option))){
+                printf("%s", value);
+            }else if(!strncmp(option, "opacity", strlen(option))){
                 termOpacity = atof(value);
             }
         }
@@ -224,6 +233,6 @@ void getSettings(){
 int main(int argc, char *argv[]) {
     getSettings(); //TODO
     /* Initialize GTK and start the terminal */
-    gtk_init(&argc, &argv);
-    startTerm();
+    //gtk_init(&argc, &argv);
+    //startTerm();
 }
