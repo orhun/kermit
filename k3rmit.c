@@ -207,8 +207,9 @@ void getSettings(){
             if (buf[0] == '#' || strlen(buf) < 4)
                 continue;
             sscanf(buf, "%s %s\n", option, value);
-            printf("%s = %s\n", option, value);
-            
+            if(!strncmp(option, "opacity", strlen(option))){
+                termOpacity = atof(value);
+            }
         }
         fclose(file);
     } else {
@@ -223,6 +224,6 @@ void getSettings(){
 int main(int argc, char *argv[]) {
     getSettings(); //TODO
     /* Initialize GTK and start the terminal */
-    //gtk_init(&argc, &argv);
-    //startTerm();
+    gtk_init(&argc, &argv);
+    startTerm();
 }
