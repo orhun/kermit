@@ -192,18 +192,17 @@ void startTerm(){
 
 void getSettings(){
     int len = 64;
-    char buf[len];
     char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
-        while(! feof(file)){
-            fgets(buf, len, file);
-            printf("%s", buf);
+        char line[len];
+        while (fgets(line, sizeof(line), file) != NULL){
+            fputs(line, stdout);
         }
+        fclose(file);
     } else {
         printf("config file not found.");
     }
-    fclose(file);
     g_free(filename);
 }
 
