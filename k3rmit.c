@@ -214,12 +214,12 @@ void getSettings(){
             }else if(!strncmp(option, "char", strlen(option))){
                 /* Remove '"' from chars */
                 wordChars = value;
-                wordChars++;
                 wordChars[strlen(wordChars)-1] = 0;
-                termWordChars = wordChars;
+                termWordChars = wordChars+1;
+                printf("%s", termWordChars);
             /* Terminal font */
             }else if(!strncmp(option, "font", strlen(option))){ 
-
+                
 
             /* Opacity value */
             }else if(!strncmp(option, "opacity", strlen(option))){
