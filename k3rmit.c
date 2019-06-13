@@ -195,10 +195,8 @@ void startTerm(){
  * Get settings from configuration file
  */
 void getSettings(){
-    int len = 64;
-    char buf[len];
-    char option[len];
-    char value[len];
+    int len = 64, fontSize;
+    char buf[len], option[len], value[len];
     char *filename = g_strconcat(termName, ".conf", NULL), *wordChars;
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
@@ -215,7 +213,9 @@ void getSettings(){
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars;
             }else if(!strncmp(option, "font", strlen(option))){
-                printf("%s", value);
+                sscanf(buf, "%s %s %d\n", option, value, &fontSize);
+                termFont = value;
+                defaultFontSize = fontSize;
             }else if(!strncmp(option, "opacity", strlen(option))){
                 termOpacity = atof(value);
             }
@@ -233,6 +233,6 @@ void getSettings(){
 int main(int argc, char *argv[]) {
     getSettings(); //TODO
     /* Initialize GTK and start the terminal */
-    //gtk_init(&argc, &argv);
-    //startTerm();
+    gtk_init(&argc, &argv);
+    startTerm();
 }
