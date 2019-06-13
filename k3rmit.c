@@ -25,23 +25,15 @@ static char *termName = TERM_NAME,
         *termLocale = TERM_LOCALE,
         *termWordChars = TERM_WORD_CHARS;
 static const GdkRGBA termPalette[] = {                    
-            CLR_GDK(0x3f3f3f),
-            CLR_GDK(0xcf0000),
-            CLR_GDK(0x33ff00),
-            CLR_GDK(0xf3f828),
-            CLR_GDK(0x0300ff),
-            CLR_GDK(0xcc00ff),
-            CLR_GDK(0x0300ff),
-            CLR_GDK(0xdcdccc),
-            CLR_GDK(0x808080),
-            CLR_GDK(0xcf0000),
-            CLR_GDK(0x33ff00),
-            CLR_GDK(0x6b6b6b),
-            CLR_GDK(0x0066ff),
-            CLR_GDK(0xcc00ff),
-            CLR_GDK(0x34e2e2),
-            CLR_GDK(0xdcdccc)
-        };
+        CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
+        CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
+        CLR_GDK(0x0300ff), CLR_GDK(0xcc00ff),
+        CLR_GDK(0x0300ff), CLR_GDK(0xdcdccc),
+        CLR_GDK(0x808080), CLR_GDK(0xcf0000),
+        CLR_GDK(0x33ff00), CLR_GDK(0x6b6b6b),
+        CLR_GDK(0x0066ff), CLR_GDK(0xcc00ff),
+        CLR_GDK(0x34e2e2), CLR_GDK(0xdcdccc)
+    };
 
 /*!
  * Set signals for terminal and window
@@ -144,8 +136,9 @@ void configureTerm(){
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(0xffffff),                   /* Foreground */
-        &(GdkRGBA){ .alpha = termOpacity },  /* Background */ /* Palette */
-        termPalette , 16);
+        &(GdkRGBA){ .alpha = termOpacity },   /* Background */ 
+        termPalette ,                         /* Palette */
+        sizeof(termPalette)/sizeof(GdkRGBA)); 
     setTermFont(defaultFontSize);
     /* Create a window with alpha channel for transparency */
     gtk_widget_set_visual(window, 
