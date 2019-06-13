@@ -190,14 +190,21 @@ void startTerm(){
     gtk_main();
 }
 
+/*!
+ * Get settings from configuration file
+ */
 void getSettings(){
     int len = 64;
+    char firstLine;
     char *filename = g_strconcat(TERM_NAME, ".conf", NULL);
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         char line[len];
         while (fgets(line, sizeof(line), file) != NULL){
-            fputs(line, stdout);
+            firstLine = line[0];
+            if(strcmp(&firstLine, "#")){
+                printf("%s", line);
+            }
         }
         fclose(file);
     } else {
