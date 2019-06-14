@@ -297,8 +297,11 @@ static int parseSettings(){
  */
 static int parseArgs(int argc, char **argv){
 	int opt;
-	while ((opt = getopt(argc, argv, "vd")) != -1) {
+	while ((opt = getopt(argc, argv, "c:vd")) != -1) {
         switch (opt) {
+            case 'c':
+                fprintf(stderr, "%s\n", optarg);
+                break;
             case 'v':
                 fprintf(stderr, "version\n");
                 return 1;
@@ -315,7 +318,8 @@ static int parseArgs(int argc, char **argv){
  */
 int main(int argc, char *argv[]) {
     /* Parse command line arguments */
-    parseArgs(argc, argv);
+    if(parseArgs(argc, argv))
+        return 0;
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
