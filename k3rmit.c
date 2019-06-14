@@ -297,10 +297,13 @@ static int parseSettings(){
  */
 static int parseArgs(int argc, char **argv){
 	int opt;
-	while ((opt = getopt(argc, argv, "c:vd")) != -1) {
+	while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
         switch (opt) {
             case 'c':
-                fprintf(stderr, "%s\n", optarg);
+                fprintf(stderr, "config=%s\n", optarg);
+                break;
+            case 'e':
+                fprintf(stderr, "exec=%s\n", optarg);
                 break;
             case 'v':
                 fprintf(stderr, "version\n");
@@ -308,6 +311,12 @@ static int parseArgs(int argc, char **argv){
             case 'd':
                 fprintf(stderr, "debug mode\n");
                 break;
+            case 'h':
+                fprintf(stderr, "help\n");
+                return 1;
+            case ':':
+                fprintf(stderr, "Option requires an argument.\n");
+                return 1;
         }
     }
     return 0;
