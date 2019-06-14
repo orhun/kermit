@@ -24,7 +24,7 @@ static char *termName = TERM_NAME,
         *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
         *termWordChars = TERM_WORD_CHARS;
-static const GdkRGBA termPalette[] = {                    
+static GdkRGBA termPalette[] = {                    
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
         CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
         CLR_GDK(0x0300ff), CLR_GDK(0xcc00ff),
@@ -97,7 +97,8 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
  * Set terminal font with given size
  */
 void setTermFont(int fontSize){
-    gchar *fontStr = g_strconcat(termFont, " ", g_strdup_printf("%d", fontSize), NULL);
+    gchar *fontStr = g_strconcat(termFont, " ", 
+        g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
 	    vte_terminal_set_font(VTE_TERMINAL(terminal), fontDesc);
         currentFontSize = fontSize;
@@ -236,6 +237,14 @@ void getSettings(){
             /* Foreground color */
             }else if(!strncmp(option, "foreground", strlen(option))){
                 termForeground = (int)strtol(value, NULL, 16);
+            }else if(!strncmp(option, "color", strlen(option)-2)){
+                /* Get the color index */
+                char *colorIndex = strrchr(option, 'r');
+                if (colorIndex != NULL) {
+                    /* Set the color in palette */
+                    termPalette[atoi(colorIndex+1)] = 
+                        CLR_GDK((int)strtol(value, NULL, 16));
+                }
             }
         }
         fclose(file);
