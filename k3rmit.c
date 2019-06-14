@@ -39,7 +39,7 @@ static GdkRGBA termPalette[] = {
     };
 
 /*!
- * Set signals for terminal and window
+ * Set signals for terminal and window.
  */
 void connectSignals(){
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
@@ -51,7 +51,7 @@ void connectSignals(){
 }
 
 /*!
- * Handle terminal key press events
+ * Handle terminal key press events.
  * 
  * \param terminal
  * \param event (key press or release)
@@ -91,7 +91,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 }
 
 /*!
- * Set the terminal title on changes
+ * Set the terminal title on changes.
  *
  * \param terminal
  * \param user_data
@@ -105,7 +105,7 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 }
 
 /*!
- * Set terminal font with given size
+ * Set terminal font with given size.
  *
  * \param fontSize
  */
@@ -121,7 +121,7 @@ void setTermFont(int fontSize){
 }
 
 /*!
- * Configure the terminal
+ * Configure the terminal.
  */
 void configureTerm(){
     /* Set window title */
@@ -160,7 +160,7 @@ void configureTerm(){
 }
 
 /*!
- * Async callback for terminal state
+ * Async callback for terminal state.
  *
  * \param terminal
  * \param pid (Process ID)
@@ -178,7 +178,7 @@ void termStateCallback(VteTerminal *terminal, GPid pid,
 }
 
 /*!
- * Initialize and start the terminal
+ * Initialize and start the terminal.
  */
 void startTerm(){
     terminal = vte_terminal_new();
@@ -211,7 +211,7 @@ void startTerm(){
 }
 
 /*!
- * Read settings from configuration file and apply
+ * Read settings from configuration file and apply.
  */
 void parseSettings(){
     char buf[TERM_CONFIG_LENGTH], 
@@ -274,10 +274,13 @@ void parseSettings(){
     g_free(configFileName);
 }
 
+
 /*!
  * Entry-point
  */
 int main(int argc, char *argv[]) {
+    /* Parse command line arguments */
+    //parseArgs(argc, argv);
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
