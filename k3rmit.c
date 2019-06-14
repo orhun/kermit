@@ -170,9 +170,9 @@ void configureTerm(){
 void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
-        g_print("%s started. PID: %d", TERM_NAME, pid);
+        fprintf(stderr, "%s started. (PID: %d)\n", TERM_NAME, pid);
     }else{
-        g_print(error->message);
+        fprintf(stderr, "An error occurred: %s\n", error->message);
         g_clear_error(&error);
     }
 }
