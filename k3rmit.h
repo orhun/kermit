@@ -10,6 +10,6 @@
 #define TERM_CONFIG_LENGTH 64
 #define TERM_CONFIG_DIR "/.config/"
 
-void setTermFont(int fontSize);
-gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
-gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data);
+static int setTermFont(int fontSize);
+static gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
+static gboolean termOnTitleChanged(GtkWidget *term, gpointer gptr);

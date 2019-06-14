@@ -40,14 +40,17 @@ static GdkRGBA termPalette[] = {
 
 /*!
  * Set signals for terminal and window.
+ *
+ * \return 0 on success
  */
-void connectSignals(){
+static int connectSignals(){
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
     g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
     g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
                         GTK_WINDOW(window));
     g_signal_connect(terminal, "window-title-changed", G_CALLBACK(termOnTitleChanged), 
                         GTK_WINDOW(window));
+    return 0;
 }
 
 /*!
@@ -58,7 +61,7 @@ void connectSignals(){
  * \param user_data
  * \return FALSE on normal press & TRUE on custom actions
  */
-gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
+static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
                 gpointer user_data){
     /* Check for CTRL, ALT and SHIFT keys */
     switch (event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK)) {
@@ -97,7 +100,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  * \param user_data
  * \return TRUE on title change
  */
-gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
+static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
 	gtk_window_set_title(window,
 	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
@@ -108,8 +111,9 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
  * Set terminal font with given size.
  *
  * \param fontSize
+ * \return 0 on success
  */
-void setTermFont(int fontSize){
+static int setTermFont(int fontSize){
     gchar *fontStr = g_strconcat(termFont, " ", 
         g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
@@ -118,12 +122,15 @@ void setTermFont(int fontSize){
 	    pango_font_description_free(fontDesc);
         g_free(fontStr);
     }
+    return 0;
 }
 
 /*!
  * Configure the terminal.
+ *
+ * \return 0 on success
  */
-void configureTerm(){
+static int configureTerm(){
     /* Set window title */
     gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
     /* Set numeric locale */
@@ -157,6 +164,7 @@ void configureTerm(){
     /* Create a window with alpha channel for transparency */
     gtk_widget_set_visual(window, 
         gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
+    return 0;
 }
 
 /*!
@@ -167,7 +175,7 @@ void configureTerm(){
  * \param error
  * \param user_data
  */
-void termStateCallback(VteTerminal *terminal, GPid pid,
+static void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
         fprintf(stderr, "%s started. (PID: %d)\n", TERM_NAME, pid);
@@ -179,8 +187,10 @@ void termStateCallback(VteTerminal *terminal, GPid pid,
 
 /*!
  * Initialize and start the terminal.
+ *
+ * \return 0 on success
  */
-void startTerm(){
+static int startTerm(){
     terminal = vte_terminal_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     /* Terminal configuration */
@@ -208,12 +218,15 @@ void startTerm(){
     gtk_container_add(GTK_CONTAINER(window), terminal);
     gtk_widget_show_all(window);
     gtk_main();
+    return 0;
 }
 
 /*!
  * Read settings from configuration file and apply.
+ *
+ * \return 0 on success
  */
-void parseSettings(){
+static int parseSettings(){
     char buf[TERM_CONFIG_LENGTH], 
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
@@ -272,6 +285,7 @@ void parseSettings(){
         fprintf(stderr, "%s config file not found.\n", TERM_NAME);
     }
     g_free(configFileName);
+    return 0;
 }
 
 /*!
@@ -281,7 +295,7 @@ void parseSettings(){
  * \param argv (argument vector)
  * \return 1 on exit
  */
-int parseArgs(int argc, char **argv){
+static int parseArgs(int argc, char **argv){
 	int opt;
 	while ((opt = getopt(argc, argv, "vd")) != -1) {
         switch (opt) {
@@ -301,8 +315,7 @@ int parseArgs(int argc, char **argv){
  */
 int main(int argc, char *argv[]) {
     /* Parse command line arguments */
-    if(parseArgs(argc, argv))
-        return 0;
+    parseArgs(argc, argv);
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
