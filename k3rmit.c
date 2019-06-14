@@ -21,7 +21,7 @@ static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY;
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
          termForeground = TERM_FOREGROUND,
-         currentFontSize;
+         currentFontSize, opt;
 static char *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
         *termWordChars = TERM_WORD_CHARS,
@@ -296,7 +296,6 @@ static int parseSettings(){
  * \return 1 on exit
  */
 static int parseArgs(int argc, char **argv){
-	int opt;
 	while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
         switch (opt) {
             case 'c':
