@@ -198,7 +198,7 @@ void startTerm(){
 void getSettings(){
     int len = 64;
     char buf[len], option[len], value[len];
-    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars;
+    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars, *fontSize, *colorIndex;
     FILE * file = fopen(filename, "r"); 
     if(file != NULL){
         while(!feof(file)){
@@ -222,7 +222,7 @@ void getSettings(){
                 /* Parse the line again for font size */ 
                 sscanf(buf, "%s %[^,]\n", option, value);
                 /* Split the line and get last element */
-                char *fontSize = strrchr(value, ' ');
+                fontSize = strrchr(value, ' ');
                 if (fontSize != NULL) {
                     /* Remove unnecessary chars from font size */
                     fontSize[strlen(fontSize)-1] = 0;
@@ -239,7 +239,7 @@ void getSettings(){
                 termForeground = (int)strtol(value, NULL, 16);
             }else if(!strncmp(option, "color", strlen(option)-2)){
                 /* Get the color index */
-                char *colorIndex = strrchr(option, 'r');
+                colorIndex = strrchr(option, 'r');
                 if (colorIndex != NULL) {
                     /* Set the color in palette */
                     termPalette[atoi(colorIndex+1)] = 
