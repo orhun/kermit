@@ -17,17 +17,19 @@
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
-/* Variables for the terminal configuration */
-static float termOpacity = TERM_OPACITY;
-static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
-         termForeground = TERM_FOREGROUND,
-         currentFontSize, opt;
-static char *termFont = TERM_FONT,
-        *termLocale = TERM_LOCALE,
-        *termWordChars = TERM_WORD_CHARS,
-        *wordChars, *fontSize, *colorIndex, 
-        *configFileName;
-static GdkRGBA termPalette[] = {                    
+static float termOpacity = TERM_OPACITY; /* Default opacity value */
+static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
+         termForeground = TERM_FOREGROUND, /* Foreground color */
+         currentFontSize, /* Necessary for changing font size */
+         opt; /* Argument parsing option */
+static char *termFont = TERM_FONT, /* Default terminal font */
+        *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
+        *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
+        *wordChars, *fontSize, *colorIndex, /* Variables for parsing the config */
+        *configFileName, /* Configuration file name */
+        *termCommand; /* Command to execute in terminal (-e) */
+static gchar **envp, **command; /* Variables for starting the terminal */
+static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
         CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
         CLR_GDK(0x0300ff), CLR_GDK(0xcc00ff),
@@ -197,8 +199,11 @@ static int startTerm(){
     connectSignals();
     configureTerm();
     /* Start a new shell */
-    gchar **envp = g_get_environ();
-    gchar **command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
+    envp = g_get_environ();
+    command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
+    if(termCommand != NULL)
+        command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), 
+            "-c", termCommand , NULL };
     g_strfreev(envp);
     /* Spawn terminal asynchronously */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal), 
@@ -302,7 +307,7 @@ static int parseArgs(int argc, char **argv){
                 fprintf(stderr, "config=%s\n", optarg);
                 break;
             case 'e':
-                fprintf(stderr, "exec=%s\n", optarg);
+                termCommand = optarg;
                 break;
             case 'v':
                 fprintf(stderr, "version\n");
