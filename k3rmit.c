@@ -274,13 +274,35 @@ void parseSettings(){
     g_free(configFileName);
 }
 
+/*!
+ * Parse command line arguments.
+ *
+ * \param argc (argument count)
+ * \param argv (argument vector)
+ * \return 1 on exit
+ */
+int parseArgs(int argc, char **argv){
+	int opt;
+	while ((opt = getopt(argc, argv, "vd")) != -1) {
+        switch (opt) {
+            case 'v':
+                fprintf(stderr, "version\n");
+                return 1;
+            case 'd':
+                fprintf(stderr, "debug mode\n");
+                break;
+        }
+    }
+    return 0;
+}
 
 /*!
  * Entry-point
  */
 int main(int argc, char *argv[]) {
     /* Parse command line arguments */
-    //parseArgs(argc, argv);
+    if(parseArgs(argc, argv))
+        return 0;
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
