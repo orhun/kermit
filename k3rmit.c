@@ -202,8 +202,10 @@ void parseSettings(){
     char buf[TERM_CONFIG_LENGTH], 
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
-    configFileName = g_strconcat(termName, ".conf", NULL);
-    configFile = fopen(configFileName, "r"); 
+    configFileName = g_strconcat(getenv("HOME"), 
+                TERM_CONFIG_DIR, 
+                termName, ".conf", NULL);
+    configFile = fopen(configFileName, "r");
     if(configFile != NULL){
         while(!feof(configFile)){
             fgets(buf, TERM_CONFIG_LENGTH, configFile);
