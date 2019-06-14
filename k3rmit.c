@@ -307,6 +307,7 @@ static int parseArgs(int argc, char **argv){
                 fprintf(stderr, "config=%s\n", optarg);
                 break;
             case 'e':
+                /* Command to execute in terminal */
                 termCommand = optarg;
                 break;
             case 'v':
