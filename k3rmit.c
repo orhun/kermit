@@ -269,7 +269,7 @@ void parseSettings(){
         }
         fclose(configFile);
     } else {
-        printf("config file not found.");
+        fprintf(stderr, "%s config file not found.\n", TERM_NAME);
     }
     g_free(configFileName);
 }
