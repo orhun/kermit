@@ -52,7 +52,11 @@ void connectSignals(){
 
 /*!
  * Handle terminal key press events
- * Return FALSE on normal press & TRUE on custom actions
+ * 
+ * \param terminal
+ * \param event (key press or release)
+ * \param user_data
+ * \return FALSE on normal press & TRUE on custom actions
  */
 gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
                 gpointer user_data){
@@ -88,6 +92,10 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 
 /*!
  * Set the terminal title on changes
+ *
+ * \param terminal
+ * \param user_data
+ * \return TRUE on title change
  */
 gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
@@ -98,6 +106,8 @@ gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 
 /*!
  * Set terminal font with given size
+ *
+ * \param fontSize
  */
 void setTermFont(int fontSize){
     gchar *fontStr = g_strconcat(termFont, " ", 
@@ -151,6 +161,11 @@ void configureTerm(){
 
 /*!
  * Async callback for terminal state
+ *
+ * \param terminal
+ * \param pid (Process ID)
+ * \param error
+ * \param user_data
  */
 void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
