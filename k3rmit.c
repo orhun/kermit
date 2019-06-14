@@ -21,8 +21,7 @@ static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY;
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
          currentFontSize, termForeground = 0xffffff;
-static char *termName = TERM_NAME, 
-        *termFont = TERM_FONT,
+static char *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
         *termWordChars = TERM_WORD_CHARS,
         *wordChars, *fontSize, *colorIndex, 
@@ -92,7 +91,7 @@ gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
 	GtkWindow *window = user_data;
 	gtk_window_set_title(window,
-	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:termName);
+	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
 	return TRUE;
 }
 
@@ -115,7 +114,7 @@ void setTermFont(int fontSize){
  */
 void configureTerm(){
     /* Set window title */
-    gtk_window_set_title(GTK_WINDOW(window), termName);
+    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
     /* Set numeric locale */
     setlocale(LC_NUMERIC, termLocale);
     /* Hide the mouse cursor when typing */
@@ -155,7 +154,7 @@ void configureTerm(){
 void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
-        g_print("%s started. PID: %d", termName, pid);
+        g_print("%s started. PID: %d", TERM_NAME, pid);
     }else{
         g_print(error->message);
         g_clear_error(&error);
@@ -203,8 +202,7 @@ void parseSettings(){
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
     configFileName = g_strconcat(getenv("HOME"), 
-                TERM_CONFIG_DIR, 
-                termName, ".conf", NULL);
+                TERM_CONFIG_DIR, TERM_NAME, ".conf", NULL);
     configFile = fopen(configFileName, "r");
     if(configFile != NULL){
         while(!feof(configFile)){
