@@ -193,9 +193,9 @@ void startTerm(){
 }
 
 /*!
- * Get settings from configuration file
+ * Read settings from configuration file and apply
  */
-void getSettings(){
+void parseSettings(){
     int len = 64;
     char buf[len], option[len], value[len];
     char *filename = g_strconcat(termName, ".conf", NULL), *wordChars, *fontSize, *colorIndex;
@@ -213,7 +213,7 @@ void getSettings(){
                  termLocale = value;
             /* Word chars */
             }else if(!strncmp(option, "char", strlen(option))){
-                /* Remove '"' from chars */
+                /* Remove '"' from word chars */
                 wordChars = value;
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars+1;
@@ -258,7 +258,8 @@ void getSettings(){
  * Entry-point
  */
 int main(int argc, char *argv[]) {
-    getSettings(); //TODO
+    /* Parse settings if config file found */
+    parseSettings();
     /* Initialize GTK and start the terminal */
     gtk_init(&argc, &argv);
     startTerm();
