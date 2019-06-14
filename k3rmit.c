@@ -16,6 +16,7 @@
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
+static FILE *configFile; /* Terminal configuration file */
 /* Variables for the terminal configuration */
 static float termOpacity = TERM_OPACITY;
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
@@ -23,7 +24,9 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
 static char *termName = TERM_NAME, 
         *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
-        *termWordChars = TERM_WORD_CHARS;
+        *termWordChars = TERM_WORD_CHARS,
+        *wordChars, *fontSize, *colorIndex, 
+        *configFileName;
 static GdkRGBA termPalette[] = {                    
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
         CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
@@ -196,13 +199,14 @@ void startTerm(){
  * Read settings from configuration file and apply
  */
 void parseSettings(){
-    int len = 64;
-    char buf[len], option[len], value[len];
-    char *filename = g_strconcat(termName, ".conf", NULL), *wordChars, *fontSize, *colorIndex;
-    FILE * file = fopen(filename, "r"); 
-    if(file != NULL){
-        while(!feof(file)){
-            fgets(buf, len, file);
+    char buf[TERM_CONFIG_LENGTH], 
+        option[TERM_CONFIG_LENGTH], 
+        value[TERM_CONFIG_LENGTH];
+    configFileName = g_strconcat(termName, ".conf", NULL);
+    configFile = fopen(configFileName, "r"); 
+    if(configFile != NULL){
+        while(!feof(configFile)){
+            fgets(buf, TERM_CONFIG_LENGTH, configFile);
             /* Skip lines starting with '#' and invalid lines */
             if (buf[0] == '#' || strlen(buf) < 4)
                 continue;
@@ -247,11 +251,11 @@ void parseSettings(){
                 }
             }
         }
-        fclose(file);
+        fclose(configFile);
     } else {
         printf("config file not found.");
     }
-    g_free(filename);
+    g_free(configFileName);
 }
 
 /*!
