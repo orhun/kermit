@@ -20,7 +20,8 @@ static FILE *configFile; /* Terminal configuration file */
 /* Variables for the terminal configuration */
 static float termOpacity = TERM_OPACITY;
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE,
-         currentFontSize, termForeground = 0xffffff;
+         termForeground = TERM_FOREGROUND,
+         currentFontSize;
 static char *termFont = TERM_FONT,
         *termLocale = TERM_LOCALE,
         *termWordChars = TERM_WORD_CHARS,
@@ -262,7 +263,7 @@ void parseSettings(){
  * Entry-point
  */
 int main(int argc, char *argv[]) {
-    /* Parse settings if config file found */
+    /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
     gtk_init(&argc, &argv);

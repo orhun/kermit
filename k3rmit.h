@@ -6,6 +6,7 @@
 #define TERM_LOCALE "en_US.UTF-8"
 #define TERM_OPACITY 0.95
 #define TERM_WORD_CHARS "-./?%&#_=+@~"
+#define TERM_FOREGROUND 0xffffff
 #define TERM_CONFIG_LENGTH 64
 #define TERM_CONFIG_DIR "/.config/"
 
