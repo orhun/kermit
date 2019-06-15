@@ -231,6 +231,7 @@ static int startTerm(){
     if(termCommand != NULL)
         command = (gchar *[]){g_strdup(g_environ_getenv(envp, "SHELL")), 
             "-c", termCommand , NULL };
+    printLog("shell: %s\n", *command);
     g_strfreev(envp);
     /* Spawn terminal asynchronously */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal), 
