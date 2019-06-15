@@ -346,7 +346,8 @@ static int parseArgs(int argc, char **argv){
                 fprintf(stderr, "version\n");
                 return 1;
             case 'd':
-                fprintf(stderr, "debug mode\n");
+                /* Activate debug messages */
+                debugMessages = TRUE;
                 break;
             case 'h':
                 fprintf(stderr, "help\n");
