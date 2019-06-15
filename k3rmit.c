@@ -333,7 +333,7 @@ static int parseSettings(){
  * \return 1 on exit
  */
 static int parseArgs(int argc, char **argv){
-	while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
+    while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
         switch (opt) {
             case 'c':
                 /* Configuration file name to read */

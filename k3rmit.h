@@ -17,4 +17,3 @@
 static int setTermFont(int fontSize);
 static gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
 static gboolean termOnTitleChanged(GtkWidget *term, gpointer gptr);
-
