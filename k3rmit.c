@@ -29,6 +29,7 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *configFileName, /* Configuration file name */
         *termCommand; /* Command to execute in terminal (-e) */
 static gchar **envp, **command; /* Variables for starting the terminal */
+static gboolean defaultConfigFile = TRUE; /* Boolean value for -c argument */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
         CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
@@ -235,8 +236,11 @@ static int parseSettings(){
     char buf[TERM_CONFIG_LENGTH], 
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
-    configFileName = g_strconcat(getenv("HOME"), 
+    if(configFileName == NULL)
+        configFileName = g_strconcat(getenv("HOME"), 
                 TERM_CONFIG_DIR, TERM_NAME, ".conf", NULL);
+    else
+        defaultConfigFile = FALSE;
     configFile = fopen(configFileName, "r");
     if(configFile != NULL){
         while(!feof(configFile)){
@@ -289,7 +293,8 @@ static int parseSettings(){
     } else {
         fprintf(stderr, "%s config file not found.\n", TERM_NAME);
     }
-    g_free(configFileName);
+    if(defaultConfigFile)
+        g_free(configFileName);
     return 0;
 }
 
@@ -304,7 +309,8 @@ static int parseArgs(int argc, char **argv){
 	while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
         switch (opt) {
             case 'c':
-                fprintf(stderr, "config=%s\n", optarg);
+                /* Configuration file name to read */
+                configFileName = optarg;
                 break;
             case 'e':
                 /* Command to execute in terminal */
