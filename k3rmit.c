@@ -343,13 +343,14 @@ static int parseArgs(int argc, char **argv){
                 /* Command to execute in terminal */
                 termCommand = optarg;
                 break;
-            case 'v':
-                fprintf(stderr, "version\n");
-                return 1;
             case 'd':
                 /* Activate debug messages */
                 debugMessages = TRUE;
                 break;
+            case 'v':
+                //TODO
+                fprintf(stderr, "version\n");
+                return 1;
             case 'h':
                 /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
