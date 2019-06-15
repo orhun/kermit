@@ -351,6 +351,7 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'h':
+                /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
                 "[-v] [-d] [-c config] [-e command]%s\n", 
                     TERM_ATTR_BOLD,
