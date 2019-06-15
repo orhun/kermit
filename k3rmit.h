@@ -9,6 +9,10 @@
 #define TERM_FOREGROUND 0xffffff
 #define TERM_CONFIG_LENGTH 64
 #define TERM_CONFIG_DIR "/.config/"
+#define TERM_ATTR_OFF "\x1b[0m"
+#define TERM_ATTR_BOLD "\x1b[1m"
+#define TERM_ATTR_COLOR "\x1b[94m"
+#define TERM_ATTR_DEFAULT "\x1b[39m"
 
 static int setTermFont(int fontSize);
 static gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
