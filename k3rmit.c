@@ -351,6 +351,7 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'h':
+                //TODO
                 fprintf(stderr, "help\n");
                 return 1;
             case ':':
