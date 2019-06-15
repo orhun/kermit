@@ -43,6 +43,27 @@ static GdkRGBA termPalette[] = {
     };
 
 /*!
+ * Print log (debug) message with format specifiers.
+ *
+ * \param format string and format specifiers for vfprintf function  
+ * \return 0 on success
+ */
+static int printLog(char *format, ...){
+    static va_list vargs;
+	fprintf(stderr, "%s[ %sdebug%s ] ", 
+        TERM_ATTR_BOLD,     /* Bold on */
+        TERM_ATTR_COLOR,    /* Light blue */
+        TERM_ATTR_DEFAULT); /* Default color */
+    /* Format the string & print */
+  	va_start(vargs, format);
+  	vfprintf(stderr, format, vargs);
+  	va_end(vargs);
+    /* All attributes off */
+    fprintf(stderr, "%s", TERM_ATTR_OFF);
+    return 0;
+}
+
+/*!
  * Set signals for terminal and window.
  *
  * \return 0 on success
@@ -335,27 +356,6 @@ static int parseArgs(int argc, char **argv){
 }
 
 /*!
- * Print log (debug) message with format specifiers.
- *
- * \param format string and format specifiers for vfprintf function  
- * \return 0 on success
- */
-static int printLog(char *format, ...){
-    static va_list vargs;
-	fprintf(stderr, "%s[ %sdebug%s ] ", 
-        TERM_ATTR_BOLD,     /* Bold on */
-        TERM_ATTR_COLOR,    /* Light blue */
-        TERM_ATTR_DEFAULT); /* Default color */
-    /* Format the string & print */
-  	va_start(vargs, format);
-  	vfprintf(stderr, format, vargs);
-  	va_end(vargs);
-    /* All attributes off */
-    fprintf(stderr, "%s", TERM_ATTR_OFF);
-    return 0;
-}
-
-/*!
  * Entry-point
  */
 int main(int argc, char *argv[]) {
@@ -365,10 +365,6 @@ int main(int argc, char *argv[]) {
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
-    //gtk_init(&argc, &argv);
-    //startTerm();
-
-    printLog("%s started. (PID: %d)\n", TERM_NAME, 34512);
-
-    
+    gtk_init(&argc, &argv);
+    startTerm();
 }
