@@ -317,7 +317,7 @@ static int parseSettings(){
         }
         fclose(configFile);
     } else {
-        fprintf(stderr, "%s config file not found.\n", TERM_NAME);
+        printLog("config file not found. (%s)\n", configFileName);
     }
     if(defaultConfigFile)
         g_free(configFileName);
