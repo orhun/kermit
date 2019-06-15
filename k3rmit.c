@@ -20,9 +20,9 @@ static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
-         termForeground = TERM_FOREGROUND, /* Foreground color */
-         currentFontSize, /* Necessary for changing font size */
-         opt; /* Argument parsing option */
+        termForeground = TERM_FOREGROUND, /* Foreground color */
+        currentFontSize, /* Necessary for changing font size */
+        opt; /* Argument parsing option */
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
         *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
@@ -30,7 +30,8 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *configFileName, /* Configuration file name */
         *termCommand; /* Command to execute in terminal (-e) */
 static gchar **envp, **command; /* Variables for starting the terminal */
-static gboolean defaultConfigFile = TRUE; /* Boolean value for -c argument */
+static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
+        debugMessages = FALSE; /* Boolean value for -d argument */
 static va_list vargs; /*! Hold information about variable arguments */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
@@ -50,6 +51,9 @@ static GdkRGBA termPalette[] = {
  * \return 0 on success
  */
 static int printLog(char *format, ...){
+    if (!debugMessages){
+        return 0;
+    }
 	fprintf(stderr, "%s[ %sdebug%s ] ", 
         TERM_ATTR_BOLD,     /* Bold on */
         TERM_ATTR_COLOR,    /* Light blue */
@@ -203,9 +207,9 @@ static int configureTerm(){
 static void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer user_data){
     if (error == NULL){
-        fprintf(stderr, "%s started. (PID: %d)\n", TERM_NAME, pid);
+        printLog("%s started. (PID: %d)\n", TERM_NAME, pid);
     }else{
-        fprintf(stderr, "An error occurred: %s\n", error->message);
+        printLog("An error occurred: %s\n", error->message);
         g_clear_error(&error);
     }
 }
