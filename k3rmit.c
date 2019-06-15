@@ -31,6 +31,7 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *termCommand; /* Command to execute in terminal (-e) */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE; /* Boolean value for -c argument */
+static va_list vargs; /*! Hold information about variable arguments */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
         CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
@@ -49,7 +50,6 @@ static GdkRGBA termPalette[] = {
  * \return 0 on success
  */
 static int printLog(char *format, ...){
-    static va_list vargs;
 	fprintf(stderr, "%s[ %sdebug%s ] ", 
         TERM_ATTR_BOLD,     /* Bold on */
         TERM_ATTR_COLOR,    /* Light blue */
