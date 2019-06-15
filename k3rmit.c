@@ -351,8 +351,13 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'h':
-                //TODO
-                fprintf(stderr, "help\n");
+                fprintf(stderr, "%s[ %susage%s ] %s [-h] "
+                "[-v] [-d] [-c config] [-e command]%s\n", 
+                    TERM_ATTR_BOLD,
+                    TERM_ATTR_COLOR,  
+                    TERM_ATTR_DEFAULT,
+                    TERM_NAME,
+                    TERM_ATTR_OFF);
                 return 1;
             case ':':
                 fprintf(stderr, "Option requires an argument.\n");
