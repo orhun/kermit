@@ -348,8 +348,12 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'v':
-                //TODO
-                fprintf(stderr, "version\n");
+                fprintf(stderr, "   (+)(+)\r\n"
+                                "  /      \\ \r\n"
+                                "  \\ -==- / \r\n"
+                                "   \\    /\r\n"
+                                "  <\\/\\/\\/>\r\n"
+                                "  /      \\\n");
                 return 1;
             case 'h':
                 /* Show help message */
