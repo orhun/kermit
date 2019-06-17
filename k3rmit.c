@@ -348,18 +348,17 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'v':
-                fprintf(stderr, "\n%s [ %sk3rmit%s ] ~ v%s \n"
-                                "   (+)(+)   ~ VTE-based\r\n"
-                                "  /      \\  ~ simple\r\n"
-                                "  \\ -==- /  ~ fast\r\n"
-                                "   \\    /   ~ effective\r\n"
-                                "  <\\/\\/\\/>  ~ github.com/keylo99/k3rmit\r\n"
-                                "  /      \\  ~ gplv3%s\n\n",
-                                TERM_ATTR_BOLD,
-                                TERM_ATTR_COLOR,
-                                TERM_ATTR_DEFAULT,
-                                TERM_VERSION,
-                                TERM_ATTR_OFF);
+                fprintf(stderr, 
+                    "\n%s [ %sk3rmit%s ] ~ v%s \n"
+                    "   (+)(+)   ~ VTE-based\r\n"
+                    "  /      \\  ~ simple\r\n"
+                    "  \\ -==- /  ~ fast\r\n"
+                    "   \\    /   ~ effective\r\n"
+                    "  <\\/\\/\\/>  ~ github.com/keylo99/k3rmit\r\n"
+                    "  /      \\  ~ gplv3%s\n\n",
+                    TERM_ATTR_BOLD, TERM_ATTR_COLOR,
+                    TERM_ATTR_DEFAULT, TERM_VERSION,
+                    TERM_ATTR_OFF);
                 return 1;
             case 'h':
                 /* Show help message */
