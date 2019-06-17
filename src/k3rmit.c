@@ -22,6 +22,7 @@
 #include <locale.h>
 #include <vte/vte.h>
 
+#define UNUSED(x) (void)(x)
 #define CLR_R(x)   (((x) & 0xff0000) >> 16)
 #define CLR_G(x)   (((x) & 0x00ff00) >>  8)
 #define CLR_B(x)   (((x) & 0x0000ff) >>  0)
@@ -108,6 +109,8 @@ static int connectSignals(){
  */
 static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
                 gpointer user_data){
+    /* Unused user data */
+    UNUSED(user_data);
     /* Check for CTRL, ALT and SHIFT keys */
     switch (event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK)) {
         /* CTRL + ALT */
@@ -236,6 +239,8 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
         printLog("An error occurred: %s\n", error->message);
         g_clear_error(&error);
     }
+    UNUSED(user_data);
+    UNUSED(terminal);
 }
 
 /*!
