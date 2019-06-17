@@ -1,5 +1,5 @@
 /*
- * k3rmit, a terminal emulator that aims to be simple, fast and effective.
+ * k3rmit, a VTE-based terminal emulator that aims to be simple, fast and effective.
  * Copyright (C) 2019 by KeyLo99 <https://www.github.com/KeyLo99>
  *
  * This program is free software: you can redistribute it and/or modify
