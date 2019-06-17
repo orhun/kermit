@@ -348,6 +348,7 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'v':
+                /* Show version information */
                 fprintf(stderr, 
                     "\n%s [ %sk3rmit%s ] ~ v%s \n"
                     "   (+)(+)   ~ VTE-based\r\n"
