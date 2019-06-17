@@ -117,6 +117,14 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 case GDK_KEY_equal:
 			        setTermFont(defaultFontSize);
 			        return TRUE;
+                /* Reload configuration file */
+                case GDK_KEY_r:
+                    printLog("Loading configuration file.\n");
+                    if(defaultConfigFile)
+                        configFileName = NULL;
+                    parseSettings();
+                    configureTerm();
+                    return TRUE;
             }
 	}
 	return FALSE;
