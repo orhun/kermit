@@ -119,7 +119,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 			        return TRUE;
                 /* Reload configuration file */
                 case GDK_KEY_r:
-                    printLog("Loading configuration file.\n");
+                    printLog("Reloading configuration file...\n");
                     if(defaultConfigFile)
                         configFileName = NULL;
                     parseSettings();
