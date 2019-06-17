@@ -372,7 +372,9 @@ static int parseArgs(int argc, char **argv){
                     TERM_ATTR_OFF);
                 return 1;
             case ':':
-                fprintf(stderr, "Option requires an argument.\n");
+                /* Show debug message on missing argument */
+                debugMessages = TRUE;
+                printLog("Option requires an argument.\n");
                 return 1;
         }
     }
