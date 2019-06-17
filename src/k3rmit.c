@@ -327,7 +327,7 @@ static int parseSettings(){
                     defaultFontSize = atoi(fontSize+1);
                     /* Get the font information excluding font size */
                     *fontSize = 0;
-                    termFont = value;
+                    termFont = g_strdup(value);
                 }
             /* Opacity value */
             }else if(!strncmp(option, "opacity", strlen(option))){
