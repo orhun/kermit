@@ -308,11 +308,11 @@ static int parseSettings(){
             sscanf(buf, "%s %s\n", option, value);
             /* Locale */
             if(!strncmp(option, "locale", strlen(option))){
-                 termLocale = value;
+                 termLocale = g_strdup(value);
             /* Word chars */
             }else if(!strncmp(option, "char", strlen(option))){
                 /* Remove '"' from word chars */
-                wordChars = value;
+                wordChars = g_strdup(value);
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars+1;
             /* Terminal font */
