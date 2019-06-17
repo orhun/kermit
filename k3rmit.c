@@ -348,8 +348,8 @@ static int parseArgs(int argc, char **argv){
                 debugMessages = TRUE;
                 break;
             case 'v':
-                fprintf(stderr, "\n%s [ %sk3rmit%s ]\n"
-                                "   (+)(+)\r\n"
+                fprintf(stderr, "\n%s [ %sk3rmit%s ] ~ v%s \n"
+                                "   (+)(+)   ~\r\n"
                                 "  /      \\ \r\n"
                                 "  \\ -==- / \r\n"
                                 "   \\    /\r\n"
@@ -358,6 +358,7 @@ static int parseArgs(int argc, char **argv){
                                 TERM_ATTR_BOLD,
                                 TERM_ATTR_COLOR,
                                 TERM_ATTR_DEFAULT,
+                                TERM_VERSION,
                                 TERM_ATTR_OFF);
                 return 1;
             case 'h':
