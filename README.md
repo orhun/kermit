@@ -33,7 +33,7 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 * Use default shell (with `$SHELL` environment variable)
 * Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
-* No tab support
+* No tab support for now
 * Customizable
 
 ## Arguments
@@ -59,8 +59,26 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 | `ctrl-alt-[r]`    | reload configuration file  |
 
 ## Customization
-1
-https://askubuntu.com/questions/115762/increase-padding-in-gnome-terminal
+
+
+### Config
+
+`k3rmit` looks for configuration file in `~/.config/k3rmit.conf`  
+The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).
+
+Most of the settings can be changed via the config file including font, opacity and colors.
+ 
+### Padding
+
+In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if does not exist and specify the values there.
+
+```
+VteTerminal,
+TerminalScreen,
+vte-terminal {
+    padding: 3px 2px 2px 1px;
+}
+```
 
 ## Screenshots
 
