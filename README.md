@@ -36,28 +36,18 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 * No tab support
 * Customizable
 
+## Key Bindings
 
-Key Bindings
------------
-
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[c]``     | copy to clipboard                           |
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[v]``     | paste from clipboard                        |
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[+][1]``  | increase font size                          |
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[-][2]``  | decrease font size                          |
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[=]``     | reset font size to default                  |
-+----------------------+---------------------------------------------+
-| ``ctrl-alt-[r]``     | reload configuration file                   |
-+----------------------+---------------------------------------------+
-
---------------
+| Key                 | Description                |
+|---------------------|----------------------------|
+| ``ctrl-alt-[c]``    | copy to clipboard          |
+| ``ctrl-alt-[v]``    | paste from clipboard       |
+| ``ctrl-alt-[+][1]`` | increase font size         |
+| ``ctrl-alt-[-][2]`` | decrease font size         |
+| ``ctrl-alt-[=]``    | reset font size to default |
+| ``ctrl-alt-[r]``    | reload configuration file  |
 
 ## Customization
-
 
 https://askubuntu.com/questions/115762/increase-padding-in-gnome-terminal
 
