@@ -39,6 +39,9 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 ## Todo(s)
 
+* Improve scrolling & fix scroll issues
+* Add new key combinations for simpler usage
+
 ## License
 
 GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
