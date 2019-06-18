@@ -3,3 +3,22 @@
 
 ### A VTE-based terminal emulator that aims to be simple, fast and effective.
 
+## Installation
+
+### AUR
+
+### Manual Installation
+
+## Features
+
+## Customization
+
+## Todo(s)
+
+## License
+
+GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
+
+## Credit
+
+Copyright (C) 2019 by KeyLo99 https://www.github.com/KeyLo99
