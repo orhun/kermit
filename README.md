@@ -7,9 +7,24 @@
 
 ## Installation
 
-### AUR
+### 🞄 AUR ([k3rmit-git](https://aur.archlinux.org/packages/k3rmit-git/))
 
-### Manual Installation
+### 🞄 CMake
+
+```
+mkdir -p build && cd build
+cmake ../ -DCMAKE_INSTALL_PREFIX=/usr
+make
+sudo make install
+sudo ldconfig
+```
+
+### 🞄 GCC
+
+```
+cd src/
+gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config --libs vte-2.91)
+```
 
 ## Features
 
