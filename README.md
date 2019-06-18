@@ -32,7 +32,7 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 ## Screenshots
 
-![Screenshot I](https://user-images.githubusercontent.com/24392180/59641263-98a42a80-9169-11e9-87f3-d61ec4c05126.jpg)
+![Screenshot I](https://user-images.githubusercontent.com/24392180/59642133-88417f00-916c-11e9-956b-0fc41ac752c7.jpg)
 
 ![Screenshot II](https://user-images.githubusercontent.com/24392180/59641515-88407f80-916a-11e9-9834-fda387299419.jpg)
 
