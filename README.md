@@ -79,7 +79,8 @@ vte-terminal {
 The command below can be used to create both configuration files.
 
 ```
-curl https://raw.githubusercontent.com/KeyLo99/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
+curl https://raw.githubusercontent.com/KeyLo99/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && \
+printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
 ```
 
 ## Screenshots
