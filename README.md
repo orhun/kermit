@@ -38,14 +38,14 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 ## Key Bindings
 
-| Key             | Action                     |
-|-----------------|----------------------------|
-| ctrl-alt-[c]    | copy to clipboard          |
-| ctrl-alt-[v]    | paste from clipboard       |
-| ctrl-alt-[+][1] | increase font size         |
-| ctrl-alt-[-][2] | decrease font size         |
-| ctrl-alt-[=]    | reset font size to default |
-| ctrl-alt-[r]    | reload configuration file  |
+| Key               |  Action                    |
+|-------------------|----------------------------|
+| `ctrl-alt-[c]`    | copy to clipboard          |
+| `ctrl-alt-[v]`    | paste from clipboard       |
+| `ctrl-alt-[+][1]` | increase font size         |
+| `ctrl-alt-[-][2]` | decrease font size         |
+| `ctrl-alt-[=]`    | reset font size to default |
+| `ctrl-alt-[r]`    | reload configuration file  |
 
 ## Customization
 1
