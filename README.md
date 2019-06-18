@@ -36,6 +36,17 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 * No tab support
 * Customizable
 
+## Arguments
+
+```
+k3rmit [-h] [-v] [-d] [-c config] [-e command]
+-h, show help message and exit
+-v, show version
+-d, enable debug messages
+-c, configuration file to read
+-e, command to execute in terminal
+```
+
 ## Key Bindings
 
 | Key               |  Action                    |
