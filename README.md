@@ -60,17 +60,13 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 ## Customization
 
-
 ### Config
 
 `k3rmit` looks for configuration file in `~/.config/k3rmit.conf`  
-The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).
-
+The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).  
 Most of the settings can be changed via the config file including font, opacity and colors.
- 
-### Padding
 
-In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if does not exist and specify the values there.
+In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if does not exist and specify the values there and restart the terminal.
 
 ```
 VteTerminal,
@@ -78,6 +74,12 @@ TerminalScreen,
 vte-terminal {
     padding: 3px 2px 2px 1px;
 }
+```
+
+The command below can be used to create both configuration files.
+
+```
+curl https://raw.githubusercontent.com/KeyLo99/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
 ```
 
 ## Screenshots
