@@ -30,6 +30,8 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 ## Customization
 
+## Screenshots
+
 ## Todo(s)
 
 ## License
