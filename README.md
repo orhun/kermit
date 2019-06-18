@@ -3,6 +3,8 @@
 
 ### A VTE-based terminal emulator that aims to be simple, fast and effective.
 
+![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
+
 ## Installation
 
 ### AUR
