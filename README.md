@@ -5,6 +5,10 @@
 
 ![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
 
+[VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that allows creating a virtual terminal emulator which is used in many emulators such as [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/). Although there's a lot of (VTE-based or other) terminal emulator options for GNU/Linux users, `k3rmit` tries to differ from them with its simplicity. 
+
+The project inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [article](https://vincent.bernat.ch/en/blog/2017-write-own-terminal) and also his [implementation](https://github.com/vincentbernat/vbeterm) of a custom VTE-based terminal. Also, [rxvt](https://wiki.archlinux.org/index.php/Rxvt-unicode) and [termite](https://github.com/thestinger/termite)'s appearance are taken as an example.
+
 ## Installation
 
 ### 🞄 AUR ([k3rmit-git](https://aur.archlinux.org/packages/k3rmit-git/))
@@ -28,7 +32,12 @@ gcc -O2 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config 
 
 ## Features
 
+
+
 ## Customization
+
+
+https://askubuntu.com/questions/115762/increase-padding-in-gnome-terminal
 
 ## Screenshots
 
