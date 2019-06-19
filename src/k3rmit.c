@@ -27,16 +27,17 @@
 #define CLR_G(x)   (((x) & 0x00ff00) >>  8)
 #define CLR_B(x)   (((x) & 0x0000ff) >>  0)
 #define CLR_16(x)  ((double)(x) / 0xff)
-#define CLR_GDK(x) (const GdkRGBA){ .red = CLR_16(CLR_R(x)), \
+#define CLR_GDK(x, a) (const GdkRGBA){ .red = CLR_16(CLR_R(x)), \
                                     .green = CLR_16(CLR_G(x)), \
                                     .blue = CLR_16(CLR_B(x)), \
-                                    .alpha = 0 }
+                                    .alpha = a }
 
 static GtkWidget *window, *terminal; /* Window and terminal widgets */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
+        termBackground = TERM_BACKGROUND, /* Background color */
         termForeground = TERM_FOREGROUND, /* Foreground color */
         currentFontSize, /* Necessary for changing font size */
         opt; /* Argument parsing option */
@@ -51,14 +52,14 @@ static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
         debugMessages = FALSE; /* Boolean value for -d argument */
 static va_list vargs; /*! Hold information about variable arguments */
 static GdkRGBA termPalette[] = {             
-        CLR_GDK(0x3f3f3f), CLR_GDK(0xcf0000),
-        CLR_GDK(0x33ff00), CLR_GDK(0xf3f828),
-        CLR_GDK(0x0300ff), CLR_GDK(0xcc00ff),
-        CLR_GDK(0x0300ff), CLR_GDK(0xdcdccc),
-        CLR_GDK(0x808080), CLR_GDK(0xcf0000),
-        CLR_GDK(0x33ff00), CLR_GDK(0x6b6b6b),
-        CLR_GDK(0x0066ff), CLR_GDK(0xcc00ff),
-        CLR_GDK(0x34e2e2), CLR_GDK(0xdcdccc)
+        CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
+        CLR_GDK(0x33ff00, 0), CLR_GDK(0xf3f828, 0),
+        CLR_GDK(0x0300ff, 0), CLR_GDK(0xcc00ff, 0),
+        CLR_GDK(0x0300ff, 0), CLR_GDK(0xdcdccc, 0),
+        CLR_GDK(0x808080, 0), CLR_GDK(0xcf0000, 0),
+        CLR_GDK(0x33ff00, 0), CLR_GDK(0x6b6b6b, 0),
+        CLR_GDK(0x0066ff, 0), CLR_GDK(0xcc00ff, 0),
+        CLR_GDK(0x34e2e2, 0), CLR_GDK(0xdcdccc, 0)
     };
 
 /*!
@@ -212,9 +213,9 @@ static int configureTerm(){
 	    termWordChars);
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
-        &CLR_GDK(termForeground),             /* Foreground */
-        &(GdkRGBA){ .alpha = termOpacity },   /* Background */ 
-        termPalette ,                         /* Palette */
+        &CLR_GDK(termForeground, 0),            /* Foreground */
+        &CLR_GDK(termBackground, termOpacity),  /* Background */
+        termPalette ,                           /* Palette */
         sizeof(termPalette)/sizeof(GdkRGBA)); 
     setTermFont(defaultFontSize);
     /* Create a window with alpha channel for transparency */
@@ -335,13 +336,16 @@ static int parseSettings(){
             /* Foreground color */
             }else if(!strncmp(option, "foreground", strlen(option))){
                 termForeground = (int)strtol(value, NULL, 16);
+            /* Background color */
+            }else if(!strncmp(option, "background", strlen(option))){
+                termBackground = (int)strtol(value, NULL, 16);
             }else if(!strncmp(option, "color", strlen(option)-2)){
                 /* Get the color index */
                 colorIndex = strrchr(option, 'r');
                 if (colorIndex != NULL) {
                     /* Set the color in palette */
                     termPalette[atoi(colorIndex+1)] = 
-                        CLR_GDK((int)strtol(value, NULL, 16));
+                        CLR_GDK((int)strtol(value, NULL, 16), 0);
                 }
             }
         }

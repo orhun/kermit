@@ -25,6 +25,7 @@
 #define TERM_OPACITY 0.95
 #define TERM_WORD_CHARS "-./?%&#_=+@~"
 #define TERM_FOREGROUND 0xffffff
+#define TERM_BACKGROUND 0x000000
 #define TERM_CONFIG_LENGTH 64
 #define TERM_CONFIG_DIR "/.config/"
 #define TERM_ATTR_OFF "\x1b[0m"
