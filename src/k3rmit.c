@@ -41,6 +41,7 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         termForeground = TERM_FOREGROUND, /* Foreground color */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
+        actionKey = GDK_MOD1_MASK, /* Key to check on press */
         opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
@@ -115,18 +116,32 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     UNUSED(user_data);
     /* Check for CTRL, ALT and SHIFT keys */
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
-    if(keyState == (GDK_MOD1_MASK | GDK_CONTROL_MASK)){
+    if(keyState == (actionKey | GDK_CONTROL_MASK)){
         switch (event->keyval) {
             /* Copy & Paste */
+            case GDK_KEY_C:
             case GDK_KEY_c:
                 vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
                     VTE_FORMAT_TEXT);
                 return TRUE;
+            case GDK_KEY_V:
             case GDK_KEY_v:
                 vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
                 return TRUE;
-             /* Change font size */
-            case GDK_KEY_plus:
+            /* Reload configuration file */
+            case GDK_KEY_R:
+            case GDK_KEY_r:
+                printLog("Reloading configuration file...\n");
+                if(defaultConfigFile)
+                    configFileName = NULL;
+                parseSettings();
+                configureTerm();
+                return TRUE;
+        }
+	}else if (keyState == GDK_CONTROL_MASK){
+        switch (event->keyval) {
+            /* Change font size */
+            case GDK_KEY_0:
             case GDK_KEY_1:
                 setTermFont(currentFontSize + 1);
                 return TRUE;
@@ -137,16 +152,8 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_equal:
 			    setTermFont(defaultFontSize);
 			    return TRUE;
-            /* Reload configuration file */
-            case GDK_KEY_r:
-                printLog("Reloading configuration file...\n");
-                if(defaultConfigFile)
-                    configFileName = NULL;
-                parseSettings();
-                configureTerm();
-                return TRUE;
         }
-	}
+    }
 	return FALSE;
 }
 
@@ -316,6 +323,11 @@ static int parseSettings(){
                 wordChars = g_strdup(value);
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars+1;
+            /* Key bindings */
+            }else if(!strncmp(option, "key", strlen(option))){
+                if(strncmp(value, "alt", strlen(value))){
+                    actionKey = GDK_SHIFT_MASK;
+                }
             /* Terminal font */
             }else if(!strncmp(option, "font", strlen(option))){
                 /* Parse the line again for font size */ 
