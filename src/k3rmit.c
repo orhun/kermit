@@ -40,7 +40,8 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         termBackground = TERM_BACKGROUND, /* Background color */
         termForeground = TERM_FOREGROUND, /* Foreground color */
         currentFontSize, /* Necessary for changing font size */
-        opt; /* Argument parsing option */
+        keyState, /* State of key press events */
+        opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
         *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
@@ -113,39 +114,38 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     /* Unused user data */
     UNUSED(user_data);
     /* Check for CTRL, ALT and SHIFT keys */
-    switch (event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK)) {
-        /* CTRL + ALT */
-        case GDK_MOD1_MASK | GDK_CONTROL_MASK:
-            switch (event->keyval) {
-                /* Copy & Paste */
-                case GDK_KEY_c:
-                    vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
-                        VTE_FORMAT_TEXT);
-                    return TRUE;
-                case GDK_KEY_v:
-                    vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
-                    return TRUE;
-                 /* Change font size */
-                case GDK_KEY_plus:
-                case GDK_KEY_1:
-                    setTermFont(currentFontSize + 1);
-                    return TRUE;
-                case GDK_KEY_minus:
-                case GDK_KEY_2:
-                    setTermFont(currentFontSize - 1);
-                    return TRUE;
-                case GDK_KEY_equal:
-			        setTermFont(defaultFontSize);
-			        return TRUE;
-                /* Reload configuration file */
-                case GDK_KEY_r:
-                    printLog("Reloading configuration file...\n");
-                    if(defaultConfigFile)
-                        configFileName = NULL;
-                    parseSettings();
-                    configureTerm();
-                    return TRUE;
-            }
+    keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
+    if(keyState == (GDK_MOD1_MASK | GDK_CONTROL_MASK)){
+        switch (event->keyval) {
+            /* Copy & Paste */
+            case GDK_KEY_c:
+                vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
+                    VTE_FORMAT_TEXT);
+                return TRUE;
+            case GDK_KEY_v:
+                vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
+                return TRUE;
+             /* Change font size */
+            case GDK_KEY_plus:
+            case GDK_KEY_1:
+                setTermFont(currentFontSize + 1);
+                return TRUE;
+            case GDK_KEY_minus:
+            case GDK_KEY_2:
+                setTermFont(currentFontSize - 1);
+                return TRUE;
+            case GDK_KEY_equal:
+			    setTermFont(defaultFontSize);
+			    return TRUE;
+            /* Reload configuration file */
+            case GDK_KEY_r:
+                printLog("Reloading configuration file...\n");
+                if(defaultConfigFile)
+                    configFileName = NULL;
+                parseSettings();
+                configureTerm();
+                return TRUE;
+        }
 	}
 	return FALSE;
 }
