@@ -339,6 +339,7 @@ static int parseSettings(){
             /* Background color */
             }else if(!strncmp(option, "background", strlen(option))){
                 termBackground = (int)strtol(value, NULL, 16);
+            /* Color palette */
             }else if(!strncmp(option, "color", strlen(option)-2)){
                 /* Get the color index */
                 colorIndex = strrchr(option, 'r');
