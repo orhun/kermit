@@ -325,9 +325,10 @@ static int parseSettings(){
                 termWordChars = wordChars+1;
             /* Key bindings */
             }else if(!strncmp(option, "key", strlen(option))){
-                if(strncmp(value, "alt", strlen(value))){
+                if(!strncmp(value, "alt", strlen(value)))
+                    actionKey = GDK_MOD1_MASK;
+                else
                     actionKey = GDK_SHIFT_MASK;
-                }
             /* Terminal font */
             }else if(!strncmp(option, "font", strlen(option))){
                 /* Parse the line again for font size */ 
