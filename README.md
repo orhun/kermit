@@ -24,6 +24,13 @@ sudo make install
 sudo ldconfig
 ```
 
+### 🞄 Make
+
+```
+make
+sudo make install
+```
+
 ### 🞄 GCC
 
 ```
