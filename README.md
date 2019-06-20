@@ -10,6 +10,8 @@ The project inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [articl
 
 ## Installation
 
+`k3rmit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) package.
+
 ### 🞄 AUR ([k3rmit-git](https://aur.archlinux.org/packages/k3rmit-git/))
 
 ### 🞄 CMake
