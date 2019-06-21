@@ -107,13 +107,13 @@ static int connectSignals(){
  * 
  * \param terminal
  * \param event (key press or release)
- * \param user_data
+ * \param userData
  * \return FALSE on normal press & TRUE on custom actions
  */
 static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event, 
-                gpointer user_data){
+                gpointer userData){
     /* Unused user data */
-    UNUSED(user_data);
+    UNUSED(userData);
     /* Check for CTRL, ALT and SHIFT keys */
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
     /* CTRL + binding + key */
@@ -163,11 +163,11 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  * Set the terminal title on changes.
  *
  * \param terminal
- * \param user_data
+ * \param userData
  * \return TRUE on title change
  */
-static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer user_data){
-	GtkWindow *window = user_data;
+static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
+	GtkWindow *window = userData;
 	gtk_window_set_title(window,
 	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
 	return TRUE;
@@ -239,17 +239,17 @@ static int configureTerm(){
  * \param terminal
  * \param pid (Process ID)
  * \param error
- * \param user_data
+ * \param userData
  */
 static void termStateCallback(VteTerminal *terminal, GPid pid,
-            GError *error, gpointer user_data){
+            GError *error, gpointer userData){
     if (error == NULL){
         printLog("%s started. (PID: %d)\n", TERM_NAME, pid);
     }else{
         printLog("An error occurred: %s\n", error->message);
         g_clear_error(&error);
     }
-    UNUSED(user_data);
+    UNUSED(userData);
     UNUSED(terminal);
 }
 
