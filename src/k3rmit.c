@@ -52,7 +52,8 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *termCommand; /* Command to execute in terminal (-e) */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
-        debugMessages = FALSE; /* Boolean value for -d argument */
+        debugMessages = FALSE, /* Boolean value for -d argument */
+        removeTab = FALSE; /* Remove tab on child-exited signal */
 static va_list vargs; /*! Hold information about variable arguments */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
@@ -95,12 +96,21 @@ static int printLog(char *format, ...){
  * \return 0 on success
  */
 static int connectSignals(GtkWidget* terminal){
-    //g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
+    g_signal_connect(terminal, "child-exited", G_CALLBACK(termOnChildExit), NULL);
     g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
                         GTK_WINDOW(window));
     g_signal_connect(terminal, "window-title-changed", G_CALLBACK(termOnTitleChanged), 
                         GTK_WINDOW(window));
     return 0;
+}
+
+static gboolean termOnChildExit(VteTerminal *vteterminal, gint status, 
+        gpointer userData){
+    if(!removeTab)
+        gtk_main_quit();
+    else
+        removeTab = FALSE;
+    return TRUE;
 }
 
 /*!
@@ -180,6 +190,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 return TRUE;
             case GDK_KEY_W:
             case GDK_KEY_w:
+                removeTab = TRUE;
                 gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
                 gtk_widget_queue_draw(GTK_WIDGET(notebook));
                 return TRUE;
@@ -338,13 +349,13 @@ static int addTerm(){
     return 0;
 }
 
-void termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
+static gboolean termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
         guint pageNum, gpointer userData){
-            
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
+    return TRUE;
 }
 
-gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
+static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
         guint pageNum, gpointer userData){
     
     if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook))==1){
@@ -407,6 +418,7 @@ static int startTerm(){
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
     g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
     g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
+    g_signal_connect(notebook, "page-removed", G_CALLBACK(termTabOnAdd), GTK_WINDOW(window));
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
 
