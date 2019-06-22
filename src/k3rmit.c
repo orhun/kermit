@@ -303,18 +303,17 @@ static GtkWidget* getTerm(){
         NULL,              /* cancellable */
         termStateCallback, /* async callback */
         NULL);             /* callback data */
+    gtk_widget_show(terminal);
     return terminal;
 }
 
 static int addTerm(){
-
-    GtkWidget *term = getTerm();
-    gtk_widget_show(term);
     
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), term, 
-        gtk_label_new(g_strdup_printf("%d", gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))+1)));
+    gtk_notebook_append_page(
+        GTK_NOTEBOOK(notebook), 
+        getTerm(), 
+        NULL);
     
-
     return 0;
 }
 
