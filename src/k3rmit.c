@@ -118,7 +118,6 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     /* Check for CTRL, ALT and SHIFT keys */
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
     /* CTRL + binding + key */
-    //fprintf(stderr, "%s\n", gdk_keyval_name(event->keyval));
     if(keyState == (actionKey | GDK_CONTROL_MASK)){
         switch (event->keyval) {
             /* Copy & Paste */
@@ -149,6 +148,11 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         }
     /* CTRL + key */
 	}else if (keyState == GDK_CONTROL_MASK){
+        if(atoi(gdk_keyval_name(event->keyval)) != 0){
+           gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 
+                atoi(gdk_keyval_name(event->keyval))-1);
+           return TRUE;
+        }
         switch (event->keyval) {
             /* Change font size */
             case GDK_KEY_Up:
@@ -160,6 +164,21 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_equal:
 			    setTermFont(defaultFontSize);
 			    return TRUE;
+            /* Tab operations */
+            case GDK_KEY_Return:
+                addTerm();
+                gtk_widget_show_all(window);
+                return TRUE;
+            case GDK_KEY_KP_Page_Up:
+            case GDK_KEY_Right:
+                gtk_notebook_next_page(GTK_NOTEBOOK(notebook));
+                return TRUE;
+            case GDK_KEY_KP_Page_Down:
+            case GDK_KEY_Left:
+                gtk_notebook_prev_page(GTK_NOTEBOOK(notebook));
+                return TRUE;
+            case GDK_KEY_1:
+                return TRUE;
         }
     }
 	return FALSE;
@@ -336,11 +355,10 @@ gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
 
     char *tabCount = "";
     for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
-        if (i == pageNum){
+        if (i == pageNum)
             tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i+1), NULL);
-        }else{
+        else
             tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i+1), NULL);
-        }
     }
 
     gchar *fontStr = g_strconcat(termFont, " ", 
