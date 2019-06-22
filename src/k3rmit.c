@@ -118,6 +118,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     /* Check for CTRL, ALT and SHIFT keys */
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
     /* CTRL + binding + key */
+    //fprintf(stderr, "%s\n", gdk_keyval_name(event->keyval));
     if(keyState == (actionKey | GDK_CONTROL_MASK)){
         switch (event->keyval) {
             /* Copy & Paste */
@@ -150,12 +151,10 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 	}else if (keyState == GDK_CONTROL_MASK){
         switch (event->keyval) {
             /* Change font size */
-            case GDK_KEY_0:
-            case GDK_KEY_1:
+            case GDK_KEY_Up:
                 setTermFont(currentFontSize + 1);
                 return TRUE;
-            case GDK_KEY_minus:
-            case GDK_KEY_2:
+            case GDK_KEY_Down:
                 setTermFont(currentFontSize - 1);
                 return TRUE;
             case GDK_KEY_equal:
