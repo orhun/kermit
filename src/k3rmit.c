@@ -43,6 +43,7 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
         actionKey = GDK_MOD1_MASK, /* Key to check on press */
+        termCount = 0, /* Terminal count */
         opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
@@ -138,6 +139,12 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                     configFileName = NULL;
                 parseSettings();
                 configureTerm();
+                return TRUE;
+            /* New tab */
+            case GDK_KEY_T:
+            case GDK_KEY_t:
+                addTerm();
+                gtk_widget_show_all(window);
                 return TRUE;
         }
     /* CTRL + key */
@@ -264,7 +271,7 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
 }
 
 /*!
- * Create a terminal widget.
+ * Create a new terminal widget.
  *
  * \return terminal
  */
@@ -299,6 +306,18 @@ static GtkWidget* getTerm(){
     return terminal;
 }
 
+static int addTerm(){
+    char *markup, *str = "1";
+    char *format = "<span font='monospace 8' foreground='#\%x'>\%s</span>";
+    markup = g_markup_printf_escaped(format, termForeground, str);
+    gtk_label_set_markup(GTK_LABEL(label), markup);
+    g_free (markup);
+    termCount++;
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), -1);
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), gtk_label_new("1"));
+    return 0;
+}
+
 /*!
  * Initialize and start the terminal.
  *
@@ -311,6 +330,9 @@ static int startTerm(){
     /* Create a window with alpha channel for transparency */
     gtk_widget_set_visual(window, 
         gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
+    /* Change background color of the main window */
+    gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, 
+        &CLR_GDK(termBackground, termOpacity));
     
     g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
 
@@ -318,32 +340,22 @@ static int startTerm(){
 
     pane = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
     g_signal_connect(window, "size-allocate", G_CALLBACK(termOnResize), pane);
-    
-    gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, &CLR_GDK(termBackground, termOpacity));
 
     gtk_container_add(GTK_CONTAINER(window), pane);
 
     notebook = gtk_notebook_new();
-    gtk_notebook_set_tab_pos(GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
+    gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
 
     //gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-    
 
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), gtk_label_new("1"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), gtk_label_new("2"));
+    label = gtk_label_new(NULL);
+    gtk_label_set_xalign(GTK_LABEL(label), 0.01);
 
-    /*
-    label = gtk_label_new (NULL);
-    char *markup, *str = "1";
-    char *format = "<span font='monospace 8' foreground='#\%x'>\%s</span>";
-    markup = g_markup_printf_escaped(format, termForeground, str);
-    gtk_label_set_markup (GTK_LABEL (label), markup);
-    g_free (markup);
-    gtk_label_set_xalign(GTK_LABEL(label), 0.01);*/
+    addTerm();
 
     gtk_paned_add1(GTK_PANED(pane), notebook);
-    //gtk_paned_add2(GTK_PANED(pane), label);
+    gtk_paned_add2(GTK_PANED(pane), label);
     gtk_paned_set_wide_handle(GTK_PANED(pane), FALSE);
     gtk_widget_show_all(window);
     
