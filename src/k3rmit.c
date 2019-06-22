@@ -317,17 +317,21 @@ static int addTerm(){
     return 0;
 }
 
-void termOnPageAdd(GtkNotebook *notebook, GtkWidget *child, 
+void termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
         guint pageNum, gpointer userData){
 
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
+}
 
+void termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
+        guint pageNum, gpointer userData){
+        
     char *tabCount = "";
-    for (int i = 0; i < pageNum+1; i++){
-        if (i == gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))){
-            tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i), NULL);
+    for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
+        if (i == pageNum){
+            tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i+1), NULL);
         }else{
-            tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i), NULL);
+            tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i+1), NULL);
         }
     }
 
@@ -339,7 +343,9 @@ void termOnPageAdd(GtkNotebook *notebook, GtkWidget *child,
     gtk_label_set_markup(GTK_LABEL(label), markup);
     g_free(markup);
     g_free(fontStr);
+
 }
+
 
 
 /*!
@@ -369,7 +375,9 @@ static int startTerm(){
 
     notebook = gtk_notebook_new();
     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
-    g_signal_connect(notebook, "page-added", G_CALLBACK(termOnPageAdd), NULL);
+    gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
+    g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
+    g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
 
     //gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
