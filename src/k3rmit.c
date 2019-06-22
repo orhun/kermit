@@ -313,12 +313,20 @@ static int addTerm(){
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), -1);
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), 
         gtk_label_new(g_strdup_printf("%d", termCount)));
+    
+    char *tabCount = "";
+    for (int i = 0; i < termCount; i++){
+        if (i-1 == gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))){
+            tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i), NULL);
+        }else{
+            tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i), NULL);
+        }
+    }
 
-    char *markup;
     gchar *fontStr = g_strconcat(termFont, " ", 
         g_strdup_printf("%d", currentFontSize-1), NULL);
-    char *format = "<span font='\%s' foreground='#\%x'>\%d</span>";
-    markup = g_markup_printf_escaped(format, fontStr, termForeground, termCount);
+    char *format = "<span font='\%s' foreground='#\%x'>\%s</span>";
+    char *markup = g_markup_printf_escaped(format, fontStr, termForeground, tabCount);
     gtk_label_set_markup(GTK_LABEL(label), markup);
     g_free(markup);
     g_free(fontStr);
@@ -358,7 +366,7 @@ static int startTerm(){
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
 
     label = gtk_label_new(NULL);
-    gtk_label_set_xalign(GTK_LABEL(label), 0.01);
+    gtk_label_set_xalign(GTK_LABEL(label), 0);
 
     addTerm();
 
