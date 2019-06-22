@@ -33,7 +33,7 @@
                                     .alpha = a }
 
 static GtkWidget *window, *terminal, /* Window and terminal widgets */
-                *pane, *notebook, *label; /* Widgets for tab feature */
+                *pane, *notebook, *tabLabel; /* Widgets for tab feature */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
@@ -49,7 +49,8 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
         *wordChars, *fontSize, *colorIndex, /* Variables for parsing the config */
         *configFileName, /* Configuration file name */
-        *termCommand; /* Command to execute in terminal (-e) */
+        *termCommand, /* Command to execute in terminal (-e) */
+        *tabLabelText; /* The label text for showing the tabs situation */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
         debugMessages = FALSE, /* Boolean value for -d argument */
@@ -104,8 +105,20 @@ static int connectSignals(GtkWidget* terminal){
     return 0;
 }
 
-static gboolean termOnChildExit(VteTerminal *vteterminal, gint status, 
+/*!
+ * Handle terminal exit.
+ *
+ * \param terminal
+ * \param status
+ * \param userData
+ * \return TRUE on exit
+ */
+static gboolean termOnChildExit(VteTerminal *terminal, gint status, 
         gpointer userData){
+    /* 'child-exited' signal is emitted on both terminal exit
+     * and (notebook) page deletion. Use removeTab variable
+     * to solve this issue. 
+     */
     if(!removeTab)
         gtk_main_quit();
     else
@@ -140,19 +153,19 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_v:
                 vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
                 return TRUE;
-            /* Reload configuration file */
+            /* Reload configuration file */ 
             case GDK_KEY_R:
             case GDK_KEY_r:
                 printLog("Reloading configuration file...\n");
                 if(defaultConfigFile)
                     configFileName = NULL;
                 parseSettings();
-                configureTerm();
+                configureTerm(terminal);
                 return TRUE;
             /* New tab */
             case GDK_KEY_T:
             case GDK_KEY_t:
-                addTerm();
+                gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
                 gtk_widget_show_all(window);
                 return TRUE;
         }
@@ -177,7 +190,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
 			    return TRUE;
             /* Tab operations */
             case GDK_KEY_Return:
-                addTerm();
+                gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
                 gtk_widget_show_all(window);
                 return TRUE;
             case GDK_KEY_KP_Page_Up:
@@ -194,7 +207,8 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
                     return TRUE;    
                 removeTab = TRUE;
-                gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+                gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
+                    gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
                 gtk_widget_queue_draw(GTK_WIDGET(notebook));
                 return TRUE;
         }
@@ -224,10 +238,70 @@ static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
  * \param userData
  * \return TRUE on size change
  */
-static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpointer userData){
-    gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
+static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, 
+        gpointer userData){
+    if (GTK_PANED(userData) != NULL)
+        gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
     return TRUE;
 }
+
+/*!
+ * Switch to last page when new tab added.
+ *
+ * \param notebook
+ * \param child
+ * \param pageNum
+ * \param userData
+ * \return TRUE on tab addition
+ */
+static gboolean termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
+        guint pageNum, gpointer userData){
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
+    return TRUE;
+}
+
+/*!
+ * The switch event for terminal tabs.
+ *
+ * \param notebook
+ * \param page
+ * \param pageNum
+ * \param userData
+ * \return TRUE on switch
+ */
+static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
+        guint pageNum, gpointer userData){
+    /* Destroy tabs label if there's not more than one tabs */
+    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1){
+        if(tabLabel != NULL)
+            gtk_widget_destroy(tabLabel);
+        return TRUE;
+    /* Add tabs label to pane if it doesn't exist */
+    }else if(gtk_paned_get_child2(GTK_PANED(pane)) == NULL){
+        tabLabel = gtk_label_new(NULL);
+        gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
+        gtk_paned_add2(GTK_PANED(pane), tabLabel);
+    }
+    /* Prepare the label text (use brackets for current tab) */
+    tabLabelText = "";
+    for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
+        if (i == pageNum)
+            tabLabelText = g_strconcat(tabLabelText, 
+                g_strdup_printf("[%d]", i+1), NULL);
+        else
+            tabLabelText = g_strconcat(tabLabelText, 
+                g_strdup_printf(" %d ", i+1), NULL);
+    }
+    /* Set the text attributes with format */
+    gchar *fontStr = g_strconcat(termFont, " ", 
+        g_strdup_printf("%d", defaultFontSize-1), NULL);
+    char *format = "<span font='\%s' foreground='#\%x'>~\%s</span>";
+    gtk_label_set_markup(GTK_LABEL(tabLabel), 
+        g_markup_printf_escaped(format, fontStr, termForeground, tabLabelText));
+    g_free(fontStr);
+    return TRUE;
+}
+
 
 /*!
  * Set terminal font with given size.
@@ -306,7 +380,7 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
 }
 
 /*!
- * Create a new terminal widget.
+ * Create a new terminal widget with shell.
  *
  * \return terminal
  */
@@ -342,55 +416,6 @@ static GtkWidget* getTerm(){
     return terminal;
 }
 
-static int addTerm(){
-    
-    gtk_notebook_append_page(
-        GTK_NOTEBOOK(notebook), 
-        getTerm(), 
-        NULL);
-
-    return 0;
-}
-
-static gboolean termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
-        guint pageNum, gpointer userData){
-    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
-    return TRUE;
-}
-
-static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
-        guint pageNum, gpointer userData){
-    
-    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook))==1){
-        if(label!=NULL)
-            gtk_widget_destroy(label);
-        return TRUE;
-    }else if(gtk_paned_get_child2(GTK_PANED(pane))==NULL){
-        label = gtk_label_new(NULL);
-        gtk_label_set_xalign(GTK_LABEL(label), 0);
-        gtk_paned_add2(GTK_PANED(pane), label);
-    }
-
-    char *tabCount = "";
-    for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
-        if (i == pageNum)
-            tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i+1), NULL);
-        else
-            tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i+1), NULL);
-    }
-
-    gchar *fontStr = g_strconcat(termFont, " ", 
-        g_strdup_printf("%d", defaultFontSize-1), NULL);
-    char *format = "<span font='\%s' foreground='#\%x'>~\%s</span>";
-    char *markup = g_markup_printf_escaped(format, fontStr, termForeground, tabCount);
-    gtk_label_set_markup(GTK_LABEL(label), markup);
-    g_free(markup);
-    g_free(fontStr);
-    return TRUE;
-}
-
-
-
 /*!
  * Initialize and start the terminal.
  *
@@ -425,7 +450,7 @@ static int startTerm(){
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
 
-    addTerm();
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
 
     gtk_paned_add1(GTK_PANED(pane), notebook);
     
