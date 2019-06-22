@@ -23,10 +23,10 @@
 #include <vte/vte.h>
 
 #define UNUSED(x) (void)(x)
-#define CLR_R(x)   (((x) & 0xff0000) >> 16)
-#define CLR_G(x)   (((x) & 0x00ff00) >>  8)
-#define CLR_B(x)   (((x) & 0x0000ff) >>  0)
-#define CLR_16(x)  ((double)(x) / 0xff)
+#define CLR_R(x) (((x) & 0xff0000) >> 16)
+#define CLR_G(x) (((x) & 0x00ff00) >>  8)
+#define CLR_B(x) (((x) & 0x0000ff) >>  0)
+#define CLR_16(x) ((double)(x) / 0xff)
 #define CLR_GDK(x, a) (const GdkRGBA){ .red = CLR_16(CLR_R(x)), \
                                     .green = CLR_16(CLR_G(x)), \
                                     .blue = CLR_16(CLR_B(x)), \
@@ -190,6 +190,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 return TRUE;
             case GDK_KEY_W:
             case GDK_KEY_w:
+            case GDK_KEY_BackSpace:
                 if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
                     return TRUE;    
                 removeTab = TRUE;
