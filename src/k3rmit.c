@@ -379,7 +379,7 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
     }
 
     gchar *fontStr = g_strconcat(termFont, " ", 
-        g_strdup_printf("%d", currentFontSize-1), NULL);
+        g_strdup_printf("%d", defaultFontSize-1), NULL);
     char *format = "<span font='\%s' foreground='#\%x'>~\%s</span>";
     char *markup = g_markup_printf_escaped(format, fontStr, termForeground, tabCount);
     gtk_label_set_markup(GTK_LABEL(label), markup);
