@@ -95,7 +95,7 @@ static int printLog(char *format, ...){
  * \return 0 on success
  */
 static int connectSignals(GtkWidget* terminal){
-    g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
+    //g_signal_connect(terminal, "child-exited", gtk_main_quit, NULL);
     g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
                         GTK_WINDOW(window));
     g_signal_connect(terminal, "window-title-changed", G_CALLBACK(termOnTitleChanged), 
@@ -148,6 +148,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         }
     /* CTRL + key */
 	}else if (keyState == GDK_CONTROL_MASK){
+        /* Switch tab */
         if(atoi(gdk_keyval_name(event->keyval)) != 0){
            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 
                 atoi(gdk_keyval_name(event->keyval))-1);
@@ -177,7 +178,10 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_Left:
                 gtk_notebook_prev_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
-            case GDK_KEY_1:
+            case GDK_KEY_W:
+            case GDK_KEY_w:
+                gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+                gtk_widget_queue_draw(GTK_WIDGET(notebook));
                 return TRUE;
         }
     }
@@ -330,13 +334,13 @@ static int addTerm(){
         GTK_NOTEBOOK(notebook), 
         getTerm(), 
         NULL);
-    
+
     return 0;
 }
 
 void termTabOnAdd(GtkNotebook *notebook, GtkWidget *child, 
         guint pageNum, gpointer userData){
-
+            
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
 }
 
@@ -403,7 +407,6 @@ static int startTerm(){
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
     g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
     g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
-
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
 
