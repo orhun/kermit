@@ -308,20 +308,30 @@ static GtkWidget* getTerm(){
 
 static int addTerm(){
 
-    termCount++;
-
-    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), -1);
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), 
-        gtk_label_new(g_strdup_printf("%d", termCount)));
+    GtkWidget *term = getTerm();
+    gtk_widget_show(term);
     
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), term, 
+        gtk_label_new(g_strdup_printf("%d", gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))+1)));
+    
+
+    return 0;
+}
+
+void termOnPageAdd(GtkNotebook *notebook, GtkWidget *child, 
+        guint pageNum, gpointer userData){
+
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
+
     char *tabCount = "";
-    for (int i = 0; i < termCount; i++){
-        if (i-1 == gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))){
+    for (int i = 0; i < pageNum+1; i++){
+        if (i == gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook))){
             tabCount = g_strconcat(tabCount, g_strdup_printf("[%d]", i), NULL);
         }else{
             tabCount = g_strconcat(tabCount, g_strdup_printf(" %d ", i), NULL);
         }
     }
+
 
     gchar *fontStr = g_strconcat(termFont, " ", 
         g_strdup_printf("%d", currentFontSize-1), NULL);
@@ -330,9 +340,8 @@ static int addTerm(){
     gtk_label_set_markup(GTK_LABEL(label), markup);
     g_free(markup);
     g_free(fontStr);
-
-    return 0;
 }
+
 
 /*!
  * Initialize and start the terminal.
@@ -361,6 +370,7 @@ static int startTerm(){
 
     notebook = gtk_notebook_new();
     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
+    g_signal_connect(notebook, "page-added", G_CALLBACK(termOnPageAdd), NULL);
 
     //gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
