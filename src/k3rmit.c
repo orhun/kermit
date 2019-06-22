@@ -175,6 +175,19 @@ static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
 }
 
 /*!
+ * Set the divider position using current window size.
+ *
+ * \param widget
+ * \param allocation
+ * \param userData
+ * \return TRUE on size change
+ */
+static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpointer userData){
+    gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
+    return TRUE;
+}
+
+/*!
  * Set terminal font with given size.
  *
  * \param fontSize
@@ -252,10 +265,6 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
     }
     UNUSED(userData);
     UNUSED(terminal);
-}
-
-void termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpointer userData) {
-    gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
 }
 
 /*!
