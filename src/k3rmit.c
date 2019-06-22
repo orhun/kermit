@@ -167,13 +167,13 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         switch (event->keyval) {
             /* Change font size */
             case GDK_KEY_Up:
-                setTermFont(currentFontSize + 1);
+                setTermFont(terminal, currentFontSize + 1);
                 return TRUE;
             case GDK_KEY_Down:
-                setTermFont(currentFontSize - 1);
+                setTermFont(terminal, currentFontSize - 1);
                 return TRUE;
             case GDK_KEY_equal:
-			    setTermFont(defaultFontSize);
+			    setTermFont(terminal, defaultFontSize);
 			    return TRUE;
             /* Tab operations */
             case GDK_KEY_Return:
@@ -234,7 +234,7 @@ static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpoin
  * \param fontSize
  * \return 0 on success
  */
-static int setTermFont(int fontSize){
+static int setTermFont(GtkWidget* terminal, int fontSize){
     gchar *fontStr = g_strconcat(termFont, " ", 
         g_strdup_printf("%d", fontSize), NULL);
     if ((fontDesc = pango_font_description_from_string(fontStr)) != NULL){
@@ -280,7 +280,7 @@ static int configureTerm(GtkWidget* terminal){
         &CLR_GDK(termBackground, termOpacity),  /* Background */
         termPalette ,                           /* Palette */
         sizeof(termPalette)/sizeof(GdkRGBA)); 
-    setTermFont(defaultFontSize);
+    setTermFont(terminal, defaultFontSize);
     return 0;
 }
 
