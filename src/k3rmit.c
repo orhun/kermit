@@ -307,14 +307,22 @@ static GtkWidget* getTerm(){
 }
 
 static int addTerm(){
-    char *markup, *str = "1";
-    char *format = "<span font='monospace 8' foreground='#\%x'>\%s</span>";
-    markup = g_markup_printf_escaped(format, termForeground, str);
-    gtk_label_set_markup(GTK_LABEL(label), markup);
-    g_free (markup);
+
     termCount++;
+
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), -1);
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), gtk_label_new("1"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), 
+        gtk_label_new(g_strdup_printf("%d", termCount)));
+
+    char *markup;
+    gchar *fontStr = g_strconcat(termFont, " ", 
+        g_strdup_printf("%d", currentFontSize-1), NULL);
+    char *format = "<span font='\%s' foreground='#\%x'>\%d</span>";
+    markup = g_markup_printf_escaped(format, fontStr, termForeground, termCount);
+    gtk_label_set_markup(GTK_LABEL(label), markup);
+    g_free(markup);
+    g_free(fontStr);
+
     return 0;
 }
 
