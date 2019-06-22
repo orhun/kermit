@@ -32,7 +32,8 @@
                                     .blue = CLR_16(CLR_B(x)), \
                                     .alpha = a }
 
-static GtkWidget *window, *terminal; /* Window and terminal widgets */
+static GtkWidget *window, *terminal, /* Window and terminal widgets */
+                *pane, *notebook, *label; /* Widgets for tab feature */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
@@ -253,6 +254,10 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
     UNUSED(terminal);
 }
 
+void termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpointer userData) {
+    gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
+}
+
 /*!
  * Initialize and start the terminal.
  *
@@ -287,8 +292,41 @@ static int startTerm(){
         termStateCallback, /* async callback */
         NULL);             /* callback data */
     /* Put widgets together and run the main loop */
-    gtk_container_add(GTK_CONTAINER(window), terminal);
+    //gtk_container_add(GTK_CONTAINER(window), terminal);
+
+
+    pane = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
+    g_signal_connect(window, "size-allocate", G_CALLBACK(termOnResize), pane);
+    gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, &CLR_GDK(termBackground, termOpacity));
+    gtk_widget_override_color(pane, GTK_STATE_FLAG_NORMAL, &CLR_GDK(termBackground, termOpacity));
+
+    gtk_container_add(GTK_CONTAINER(window), pane);
+
+    notebook = gtk_notebook_new();
+    gtk_notebook_set_tab_pos(GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
+
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
+    gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
+    
+
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), terminal, gtk_label_new("X"));
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), gtk_label_new("Y"), gtk_label_new("Y"));
+
+    label = gtk_label_new (NULL);
+    char *markup, *str = "1";
+    char *format = "<span font='monospace 8' foreground='#\%x'>\%s</span>";
+    markup = g_markup_printf_escaped(format, termForeground, str);
+    gtk_label_set_markup (GTK_LABEL (label), markup);
+    g_free (markup);
+
+    gtk_label_set_xalign(GTK_LABEL(label), 0.01);
+
+    gtk_paned_add1(GTK_PANED(pane), notebook);
+    gtk_paned_add2(GTK_PANED(pane), label);
+    gtk_paned_set_wide_handle(GTK_PANED(pane), FALSE);
+    
     gtk_widget_show_all(window);
+    
     gtk_main();
     return 0;
 }
