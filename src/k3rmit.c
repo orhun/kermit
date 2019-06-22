@@ -190,6 +190,8 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 return TRUE;
             case GDK_KEY_W:
             case GDK_KEY_w:
+                if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
+                    return TRUE;    
                 removeTab = TRUE;
                 gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
                 gtk_widget_queue_draw(GTK_WIDGET(notebook));
