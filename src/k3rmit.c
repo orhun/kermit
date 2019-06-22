@@ -43,7 +43,6 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
         actionKey = GDK_MOD1_MASK, /* Key to check on press */
-        termCount = 0, /* Terminal count */
         opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
@@ -323,9 +322,19 @@ void termTabOnAdd(GtkNotebook *notebook, GtkWidget *child,
     gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), pageNum);
 }
 
-void termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
+gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
         guint pageNum, gpointer userData){
-        
+    
+    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook))==1){
+        if(label!=NULL)
+            gtk_widget_destroy(label);
+        return TRUE;
+    }else if(gtk_paned_get_child2(GTK_PANED(pane))==NULL){
+        label = gtk_label_new(NULL);
+        gtk_label_set_xalign(GTK_LABEL(label), 0);
+        gtk_paned_add2(GTK_PANED(pane), label);
+    }
+
     char *tabCount = "";
     for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
         if (i == pageNum){
@@ -335,15 +344,14 @@ void termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
         }
     }
 
-
     gchar *fontStr = g_strconcat(termFont, " ", 
         g_strdup_printf("%d", currentFontSize-1), NULL);
-    char *format = "<span font='\%s' foreground='#\%x'>\%s</span>";
+    char *format = "<span font='\%s' foreground='#\%x'>~\%s</span>";
     char *markup = g_markup_printf_escaped(format, fontStr, termForeground, tabCount);
     gtk_label_set_markup(GTK_LABEL(label), markup);
     g_free(markup);
     g_free(fontStr);
-
+    return TRUE;
 }
 
 
@@ -379,19 +387,16 @@ static int startTerm(){
     g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
     g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
 
-    //gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-
-    label = gtk_label_new(NULL);
-    gtk_label_set_xalign(GTK_LABEL(label), 0);
 
     addTerm();
 
     gtk_paned_add1(GTK_PANED(pane), notebook);
-    gtk_paned_add2(GTK_PANED(pane), label);
+    
     gtk_paned_set_wide_handle(GTK_PANED(pane), FALSE);
     gtk_widget_show_all(window);
-    
+
     gtk_main();
     return 0;
 }
