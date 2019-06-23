@@ -282,22 +282,28 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
         gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
         gtk_paned_add2(GTK_PANED(paned), tabLabel);
     }
-    /* Prepare the label text (use brackets for current tab) */
-    tabLabelText = "";
+    /* Same font as terminal but smaller */
+    gchar *fontStr = g_strconcat(termFont, " ",
+        g_strdup_printf("%d", defaultFontSize-1), NULL);
+    /* Prepare the label text (use different color for current tab) */
+    tabLabelText = g_markup_printf_escaped(
+        "<span font='\%s' foreground='#\%02X\%02X\%02X'>", 
+        fontStr, 
+        (int)(termPalette[4].red*255), 
+        (int)(termPalette[4].green*255), 
+        (int)(termPalette[4].blue*255));
     for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++){
         if (i == pageNum)
             tabLabelText = g_strconcat(tabLabelText, 
-                g_strdup_printf("[%d]", i+1), NULL);
+                g_strdup_printf("<span foreground='#%x'> %d </span>", 
+                termForeground, i+1), NULL);
         else
             tabLabelText = g_strconcat(tabLabelText, 
                 g_strdup_printf(" %d ", i+1), NULL);
     }
-    /* Set the text attributes with format */
-    gchar *fontStr = g_strconcat(termFont, " ", 
-        g_strdup_printf("%d", defaultFontSize-1), NULL);
-    char *format = "<span font='\%s' foreground='#\%x'>~\%s</span>";
-    gtk_label_set_markup(GTK_LABEL(tabLabel), 
-        g_markup_printf_escaped(format, fontStr, termForeground, tabLabelText));
+    tabLabelText = g_strconcat(tabLabelText, "</span>", NULL);    
+    /* Set the label text with markup */
+    gtk_label_set_markup(GTK_LABEL(tabLabel), tabLabelText);
     g_free(fontStr);
     return TRUE;
 }
