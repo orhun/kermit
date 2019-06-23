@@ -42,9 +42,9 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         termForeground = TERM_FOREGROUND, /* Foreground color */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
+        actionKey = GDK_SHIFT_MASK, /* Key to check on press */
         tabPosition = 0, /* Tab position (0/1 -> bottom/top)*/
         opt; /* Argument parsing option */ 
-#define actionKey GDK_SHIFT_MASK /* Key to check on press */
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
         *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
