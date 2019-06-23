@@ -58,16 +58,21 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 ## Key Bindings
 
-| Key               |  Action                    |
-|-------------------|----------------------------|
-| `ctrl-alt-[c]`    | copy to clipboard          |
-| `ctrl-alt-[v]`    | paste from clipboard       |
-| `ctrl-[0][1]`     | increase font size         |
-| `ctrl-[-][2]`     | decrease font size         |
-| `ctrl-[=]`        | reset font size to default |
-| `ctrl-alt-[r]`    | reload configuration file  |
+| Key                   | Action                     |
+|-----------------------|----------------------------|
+| `ctrl-alt-[v]`        | copy to clipboard          |
+| `ctrl-alt-[c]`        | paste from clipboard       |
+| `ctrl-alt-[t]`        | open a new tab             |
+| `ctrl-alt-[r]`        | reload configuration file  |
+| `ctrl-[up]`           | increase font size         |
+| `ctrl-[down]`         | decrease font size         |
+| `ctrl-[=]`            | reset font size to default |
+| `ctrl-[return]`       | open a new tab             |
+| `ctrl-[right][pgup]`  | switch to the next tab     |
+| `ctrl-[left][pgdn]`   | switch to the previous tab |
+| `ctrl-[w][backspace]` | close the selected tab     |
 
-Key bindings can be set to standard `ctrl+shift` with the config file.
+Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.
 
 ## Customization
 
