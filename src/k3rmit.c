@@ -353,6 +353,7 @@ static int configureTerm(GtkWidget* terminal){
     /* Scroll issues */
     vte_terminal_set_scroll_on_output(VTE_TERMINAL(terminal), FALSE);
     vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL(terminal), TRUE);
+    vte_terminal_set_scrollback_lines(VTE_TERMINAL(terminal), -1);
     /* Rewrap the content when terminal size changed */
     vte_terminal_set_rewrap_on_resize(VTE_TERMINAL(terminal), TRUE);
     /* Disable audible bell */
