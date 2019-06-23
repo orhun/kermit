@@ -22,7 +22,7 @@ if (PKG_CONFIG_FOUND)
     add_definitions(${VTE_CFLAGS} ${VTE_CFLAGS_OTHER})
   endif()
 endif()
-# Compile option: -Wall
-target_compile_options(${TARGET} PRIVATE -Wall)
+# Compile options
+target_compile_options(${TARGET} PRIVATE -Wall -Wno-deprecated-declarations)
 # Install target to bin directory
 install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
