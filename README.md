@@ -58,19 +58,21 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 ## Key Bindings
 
-| Key                   | Action                     |
-|-----------------------|----------------------------|
-| `ctrl-alt-[v]`        | copy to clipboard          |
-| `ctrl-alt-[c]`        | paste from clipboard       |
-| `ctrl-alt-[t]`        | open a new tab             |
-| `ctrl-alt-[r]`        | reload configuration file  |
-| `ctrl-[up]`           | increase font size         |
-| `ctrl-[down]`         | decrease font size         |
-| `ctrl-[=]`            | reset font size to default |
-| `ctrl-[return]`       | open a new tab             |
-| `ctrl-[right][pgup]`  | switch to the next tab     |
-| `ctrl-[left][pgdn]`   | switch to the previous tab |
-| `ctrl-[w][backspace]` | close the selected tab     |
+| Key                   | Action                         |
+|-----------------------|--------------------------------|
+| `ctrl-alt-[v]`        | copy to clipboard              |
+| `ctrl-alt-[c]`        | paste from clipboard           |
+| `ctrl-alt-[t]`        | open a new tab                 |
+| `ctrl-alt-[r]`        | reload configuration file      |
+| `ctrl-alt-[q]`        | exit the terminal              |
+| `ctrl-[up]`           | increase font size             |
+| `ctrl-[down]`         | decrease font size             |
+| `ctrl-[=]`            | reset font size to default     |
+| `ctrl-[return]`       | open a new tab                 |
+| `ctrl-[num]`          | switch to the tab number [num] |
+| `ctrl-[right][pgup]`  | switch to the next tab         |
+| `ctrl-[left][pgdn]`   | switch to the previous tab     |
+| `ctrl-[w][backspace]` | close the selected tab         |
 
 Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.
 

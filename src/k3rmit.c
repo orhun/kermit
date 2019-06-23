@@ -169,6 +169,11 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
                 gtk_widget_show_all(window);
                 return TRUE;
+            /* Exit */
+            case GDK_KEY_Q:
+            case GDK_KEY_q:
+                gtk_main_quit();
+                return TRUE;
         }
     /* CTRL + key */
 	}else if (keyState == GDK_CONTROL_MASK){
