@@ -33,7 +33,7 @@
                                     .alpha = a }
 
 static GtkWidget *window, *terminal, /* Window and terminal widgets */
-                *pane, *notebook, *tabLabel; /* Widgets for tab feature */
+                *paned, *notebook, *tabLabel; /* Widgets for tab feature */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
@@ -276,11 +276,11 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
         if(tabLabel != NULL)
             gtk_widget_destroy(tabLabel);
         return TRUE;
-    /* Add tabs label to pane if it doesn't exist */
-    }else if(gtk_paned_get_child2(GTK_PANED(pane)) == NULL){
+    /* Add tabs label to paned if it doesn't exist */
+    }else if(gtk_paned_get_child2(GTK_PANED(paned)) == NULL){
         tabLabel = gtk_label_new(NULL);
         gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
-        gtk_paned_add2(GTK_PANED(pane), tabLabel);
+        gtk_paned_add2(GTK_PANED(paned), tabLabel);
     }
     /* Prepare the label text (use brackets for current tab) */
     tabLabelText = "";
@@ -412,6 +412,7 @@ static GtkWidget* getTerm(){
         NULL,              /* cancellable */
         termStateCallback, /* async callback */
         NULL);             /* callback data */
+    /* Show the terminal widget */
     gtk_widget_show(terminal);
     return terminal;
 }
@@ -422,41 +423,35 @@ static GtkWidget* getTerm(){
  * \return 0 on success
  */
 static int startTerm(){
+    /* Create & configure the window widget */
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    /* Set window title */
     gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
-    /* Create a window with alpha channel for transparency */
-    gtk_widget_set_visual(window, 
+    gtk_widget_set_visual(window, /* Alpha channel for transparency */
         gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
-    /* Change background color of the main window */
     gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL, 
         &CLR_GDK(termBackground, termOpacity));
-    
-    g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
-
-    /* Put widgets together and run the main loop */
-
-    pane = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
-    g_signal_connect(window, "size-allocate", G_CALLBACK(termOnResize), pane);
-
-    gtk_container_add(GTK_CONTAINER(window), pane);
-
+    /* Create & configure the paned widget */
+    paned = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
+    gtk_paned_set_wide_handle(GTK_PANED(paned), FALSE);
+    /* Create & configure the notebook widget */
     notebook = gtk_notebook_new();
     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
     gtk_notebook_set_scrollable(GTK_NOTEBOOK(notebook), TRUE);
-    g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
-    g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
-    g_signal_connect(notebook, "page-removed", G_CALLBACK(termTabOnAdd), GTK_WINDOW(window));
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(notebook), FALSE);
-
+    /* Connect signals of window and notebook for tab feature */
+    g_signal_connect(window, "delete-event", gtk_main_quit, NULL);
+    g_signal_connect(window, "size-allocate", G_CALLBACK(termOnResize), paned);
+    g_signal_connect(notebook, "page-added", G_CALLBACK(termTabOnAdd), NULL);
+    g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
+    /* Add terminal to notebook as first tab */
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
-
-    gtk_paned_add1(GTK_PANED(pane), notebook);
-    
-    gtk_paned_set_wide_handle(GTK_PANED(pane), FALSE);
+    /* Add notebook to paned as first child */
+    gtk_paned_add1(GTK_PANED(paned), notebook);
+    /* Add paned to main window */
+    gtk_container_add(GTK_CONTAINER(window), paned);
+    /* Show all widgets with childs and run the main loop */
     gtk_widget_show_all(window);
-
     gtk_main();
     return 0;
 }
