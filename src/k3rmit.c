@@ -241,7 +241,7 @@ static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
 static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, 
         gpointer userData){
     if (GTK_PANED(userData) != NULL)
-        gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
+        gtk_paned_set_position(GTK_PANED(userData), 20);
     return TRUE;
 }
 
@@ -277,10 +277,10 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
             gtk_widget_destroy(tabLabel);
         return TRUE;
     /* Add tabs label to paned if it doesn't exist */
-    }else if(gtk_paned_get_child2(GTK_PANED(paned)) == NULL){
+    }else if(gtk_paned_get_child1(GTK_PANED(paned)) == NULL){
         tabLabel = gtk_label_new(NULL);
         gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
-        gtk_paned_add2(GTK_PANED(paned), tabLabel);
+        gtk_paned_add1(GTK_PANED(paned), tabLabel);
     }
     /* Same font as terminal but smaller */
     gchar *fontStr = g_strconcat(termFont, " ",
@@ -301,7 +301,7 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
             tabLabelText = g_strconcat(tabLabelText, 
                 g_strdup_printf(" %d ", i+1), NULL);
     }
-    tabLabelText = g_strconcat(tabLabelText, "</span>", NULL);    
+    tabLabelText = g_strconcat(tabLabelText, "~</span>", NULL);    
     /* Set the label text with markup */
     gtk_label_set_markup(GTK_LABEL(tabLabel), tabLabelText);
     g_free(fontStr);
@@ -454,7 +454,7 @@ static int startTerm(){
     /* Add terminal to notebook as first tab */
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
     /* Add notebook to paned as first child */
-    gtk_paned_add1(GTK_PANED(paned), notebook);
+    gtk_paned_add2(GTK_PANED(paned), notebook);
     /* Add paned to main window */
     gtk_container_add(GTK_CONTAINER(window), paned);
     /* Show all widgets with childs and run the main loop */
