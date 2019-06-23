@@ -42,7 +42,7 @@ gcc -s -O3 -Wall $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-conf
 
 * Use default shell (with `$SHELL` environment variable)
 * Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
-* Tabs
+* Tab support
 * Customizable
 
 ## Arguments
