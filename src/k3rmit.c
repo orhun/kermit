@@ -43,6 +43,7 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
         actionKey = GDK_MOD1_MASK, /* Key to check on press */
+        tabPosition = 0, /* Tab position (0/1 -> bottom/top)*/
         opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
@@ -240,8 +241,10 @@ static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
  */
 static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, 
         gpointer userData){
+    if (tabPosition == 1)
+        allocation->height = 0;
     if (GTK_PANED(userData) != NULL)
-        gtk_paned_set_position(GTK_PANED(userData), 20);
+        gtk_paned_set_position(GTK_PANED(userData), allocation->height-20);
     return TRUE;
 }
 
@@ -277,10 +280,14 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
             gtk_widget_destroy(tabLabel);
         return TRUE;
     /* Add tabs label to paned if it doesn't exist */
-    }else if(gtk_paned_get_child1(GTK_PANED(paned)) == NULL){
+    }else if(gtk_paned_get_child1(GTK_PANED(paned)) == NULL || 
+        gtk_paned_get_child2(GTK_PANED(paned)) == NULL){
         tabLabel = gtk_label_new(NULL);
         gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
-        gtk_paned_add1(GTK_PANED(paned), tabLabel);
+        if (tabPosition == 0)
+            gtk_paned_add2(GTK_PANED(paned), tabLabel);
+        else
+            gtk_paned_add1(GTK_PANED(paned), tabLabel);
     }
     /* Same font as terminal but smaller */
     gchar *fontStr = g_strconcat(termFont, " ",
@@ -453,8 +460,11 @@ static int startTerm(){
     g_signal_connect(notebook, "switch-page", G_CALLBACK(termTabOnSwitch), NULL);
     /* Add terminal to notebook as first tab */
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
-    /* Add notebook to paned as first child */
-    gtk_paned_add2(GTK_PANED(paned), notebook);
+    /* Add notebook to paned */
+    if (tabPosition == 0)
+        gtk_paned_add1(GTK_PANED(paned), notebook);
+    else
+        gtk_paned_add2(GTK_PANED(paned), notebook);
     /* Add paned to main window */
     gtk_container_add(GTK_CONTAINER(window), paned);
     /* Show all widgets with childs and run the main loop */
@@ -501,6 +511,12 @@ static int parseSettings(){
                     actionKey = GDK_MOD1_MASK;
                 else
                     actionKey = GDK_SHIFT_MASK;
+            /* Tab position */
+            }else if(!strncmp(option, "tab", strlen(option))){
+                if(!strncmp(value, "bottom", strlen(value)))
+                    tabPosition = 0;
+                else
+                    tabPosition = 1;
             /* Terminal font */
             }else if(!strncmp(option, "font", strlen(option))){
                 /* Parse the line again for font size */ 
