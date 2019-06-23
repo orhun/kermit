@@ -371,7 +371,7 @@ static int configureTerm(GtkWidget* terminal){
  * \param terminal
  * \param pid (Process ID)
  * \param error
- * \param userData /TODO return value
+ * \param userData
  */
 static void termStateCallback(VteTerminal *terminal, GPid pid,
             GError *error, gpointer userData){
