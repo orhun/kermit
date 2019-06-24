@@ -74,7 +74,9 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 | `ctrl-[left][pgdn]`   | switch to the previous tab     |
 | `ctrl-[w][backspace]` | close the selected tab         |
 
-Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.
+• Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.  
+
+• Default key bindings (`ctrl-alt`) can conflict with your desktop environments window shortcuts. (especially on Linux Mint) In order to solve this issue, key bindings can be changed to `ctrl-shift`.
 
 ## Customization
 
