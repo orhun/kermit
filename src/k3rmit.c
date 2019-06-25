@@ -118,10 +118,19 @@ static gboolean termOnChildExit(VteTerminal *terminal, gint status,
         gpointer userData){
     /* 'child-exited' signal is emitted on both terminal exit
      * and (notebook) page deletion. Use removeTab variable
-     * to solve this issue. 
+     * to solve this issue. Also closes the current tab on exit.
      */
-    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
-        gtk_main_quit();
+    if(!removeTab){
+        if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) != 1){
+            gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
+                gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
+            gtk_widget_queue_draw(GTK_WIDGET(notebook));
+        }else{
+            gtk_main_quit();
+        }
+    }else{
+        removeTab = FALSE;
+    }
     return TRUE;
 }
 
