@@ -120,10 +120,8 @@ static gboolean termOnChildExit(VteTerminal *terminal, gint status,
      * and (notebook) page deletion. Use removeTab variable
      * to solve this issue. 
      */
-    if(!removeTab)
+    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
         gtk_main_quit();
-    else
-        removeTab = FALSE;
     return TRUE;
 }
 
