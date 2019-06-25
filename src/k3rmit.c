@@ -121,13 +121,16 @@ static gboolean termOnChildExit(VteTerminal *terminal, gint status,
      * to solve this issue. Also closes the current tab on exit.
      */
     if(!removeTab){
+        /* Close the current tab */
         if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) != 1){
             gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
                 gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
             gtk_widget_queue_draw(GTK_WIDGET(notebook));
+        /* Exit the terminal */
         }else{
             gtk_main_quit();
         }
+    /* Close tab */
     }else{
         removeTab = FALSE;
     }
