@@ -55,7 +55,7 @@ static char *termFont = TERM_FONT, /* Default terminal font */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
         debugMessages = FALSE, /* Boolean value for -d argument */
-        removeTab = FALSE; /* Remove tab on child-exited signal */
+        closeTab = FALSE; /* Close the tab on child-exited signal */
 static va_list vargs; /*! Hold information about variable arguments */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
@@ -117,10 +117,10 @@ static int connectSignals(GtkWidget* terminal){
 static gboolean termOnChildExit(VteTerminal *terminal, gint status, 
         gpointer userData){
     /* 'child-exited' signal is emitted on both terminal exit
-     * and (notebook) page deletion. Use removeTab variable
+     * and (notebook) page deletion. Use closeTab variable
      * to solve this issue. Also closes the current tab on exit.
      */
-    if(!removeTab){
+    if(!closeTab){
         /* Close the current tab */
         if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) != 1){
             gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
@@ -132,7 +132,7 @@ static gboolean termOnChildExit(VteTerminal *terminal, gint status,
         }
     /* Close tab */
     }else{
-        removeTab = FALSE;
+        closeTab = FALSE;
     }
     return TRUE;
 }
@@ -222,7 +222,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_BackSpace:
                 if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
                     return TRUE;    
-                removeTab = TRUE;
+                closeTab = TRUE;
                 gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
                     gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
                 gtk_widget_queue_draw(GTK_WIDGET(notebook));
