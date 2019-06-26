@@ -172,7 +172,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 parseSettings();
                 configureTerm(terminal);
                 return TRUE;
-            /* New tab */
+            /* Open new tab */
             case GDK_KEY_T:
             case GDK_KEY_t:
                 gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
@@ -203,19 +203,22 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_equal:
 			    setTermFont(terminal, defaultFontSize);
 			    return TRUE;
-            /* Tab operations */
+            /* Open new tab */
             case GDK_KEY_Return:
                 gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
                 gtk_widget_show_all(window);
                 return TRUE;
+            /* Switch to the next tab */
             case GDK_KEY_KP_Page_Up:
             case GDK_KEY_Right:
                 gtk_notebook_next_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
+            /* Switch to the previous tab */
             case GDK_KEY_KP_Page_Down:
             case GDK_KEY_Left:
                 gtk_notebook_prev_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
+            /* Close the current tab */
             case GDK_KEY_W:
             case GDK_KEY_w:
             case GDK_KEY_BackSpace:
