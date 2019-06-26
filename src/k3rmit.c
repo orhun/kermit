@@ -536,12 +536,11 @@ static int parseSettings(){
             /* Terminal font */
             }else if(!strncmp(option, "font", strlen(option))){
                 /* Parse the line again for font size */ 
-                sscanf(buf, "%s %[^,]\n", option, value);
+                sscanf(buf, "%s %[^\n]\n", option, value);
                 /* Split the line and get last element */
                 fontSize = strrchr(value, ' ');
                 if (fontSize != NULL) {
-                    /* Remove unnecessary chars from font size */
-                    fontSize[strlen(fontSize)-1] = 0;
+                    /* Trim and set the font size */
                     defaultFontSize = atoi(fontSize+1);
                     /* Get the font information excluding font size */
                     *fontSize = 0;
