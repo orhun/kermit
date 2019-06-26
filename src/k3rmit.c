@@ -32,8 +32,8 @@
                                     .blue = CLR_16(CLR_B(x)), \
                                     .alpha = a }
 
-static GtkWidget *window, *terminal, /* Window and terminal widgets */
-                *paned, *notebook, *tabLabel; /* Widgets for tab feature */
+static GtkWidget *window, /* Main window widget */
+                 *paned, *notebook, *tabLabel; /* Widgets for tab feature */
 static PangoFontDescription *fontDesc; /* Description for the terminal font */
 static FILE *configFile; /* Terminal configuration file */
 static float termOpacity = TERM_OPACITY; /* Default opacity value */
@@ -99,8 +99,7 @@ static int printLog(char *format, ...){
  */
 static int connectSignals(GtkWidget* terminal){
     g_signal_connect(terminal, "child-exited", G_CALLBACK(termOnChildExit), NULL);
-    g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), 
-                        GTK_WINDOW(window));
+    g_signal_connect(terminal, "key-press-event", G_CALLBACK(termOnKeyPress), NULL);
     g_signal_connect(terminal, "window-title-changed", G_CALLBACK(termOnTitleChanged), 
                         GTK_WINDOW(window));
     return 0;
@@ -415,7 +414,7 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
  */
 static GtkWidget* getTerm(){
     /* Create a terminal widget */
-    terminal = vte_terminal_new();
+    GtkWidget *terminal = vte_terminal_new();
     /* Terminal configuration */
     connectSignals(terminal);
     configureTerm(terminal);
