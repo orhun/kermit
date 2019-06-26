@@ -35,7 +35,8 @@ sudo make install
 
 ```
 cd src/
-gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) k3rmit.c -o k3rmit.o $(pkg-config --libs vte-2.91)
+gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) k3rmit.c -o\
+ k3rmit.o $(pkg-config --libs vte-2.91)
 ```
 
 ## Features
