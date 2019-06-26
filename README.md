@@ -139,6 +139,10 @@ printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1p
 
 v1.0: [http://www.youtube.com/watch?v=mkr0RhUXf50](http://www.youtube.com/watch?v=mkr0RhUXf50)
 
+## TODO(s)
+
+• URL handling
+
 ## License
 
 GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
