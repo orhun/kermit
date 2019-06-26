@@ -40,4 +40,5 @@ static int setTermFont(GtkWidget *term, int fontSize);
 static gboolean termOnChildExit(VteTerminal *term, gint status, gpointer userData);
 static gboolean termOnKeyPress(GtkWidget *widget, GdkEventKey *key, gpointer gptr);
 static gboolean termOnTitleChanged(GtkWidget *term, gpointer gptr);
-static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, gpointer userData);
+static gboolean termOnResize(GtkWidget *widget, GtkAllocation *allocation, 
+    gpointer userData);
