@@ -86,6 +86,31 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).  
 Most of the settings can be changed via the config file including font, opacity and colors.
 
+### Font
+
+`k3rmit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `k3rmit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
+
+```
+[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
+```
+
+`FAMILY-LIST` is a comma separated list of families optionally terminated by a comma, `STYLE_OPTIONS` is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch, and `SIZE` is an decimal number (size in points).
+
+• Available font families: `Normal, Sans, Serif and Monospace`.  
+• Available styles: `Normal, Oblique, Italic`.  
+• Available weights: `Ultra-Light, Light, Normal, Bold,Ultra-Bold, Heavy`.  
+• Available variants: `Normal, Small-Caps`.  
+• Available stretch styles: `Ultra-Condensed, Extra-Condensed, Condensed, Semi-Condensed, Normal, Semi-Expanded, Expanded, Extra-Expanded, Ultra-Expanded`.
+
+Examples:
+```
+"sans bold 12"
+"normal 10"
+"monospace bold italic condensed 12"
+```
+
+### Padding
+
 In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if does not exist and specify the values there and restart the terminal.
 
 ```
