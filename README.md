@@ -80,7 +80,7 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 ## Customization
 
-### Config
+### Config File
 
 `k3rmit` looks for configuration file in `~/.config/k3rmit.conf`  
 The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).  
