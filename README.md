@@ -105,9 +105,31 @@ Most of the settings can be changed via the config file including font, opacity 
 
 Examples:
 ```
-"sans bold 12"
-"normal 10"
-"monospace bold italic condensed 12"
+sans bold 12
+normal 10
+monospace bold italic condensed 12
+```
+
+### Key Bindings
+
+Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
+
+```
+bind/bindx <key>~"<cmd>""
+```
+
+• bind: `Send command to the terminal.`  
+• bindx: `Send command to the terminal and execute.`   
+`*` Key bindings must be uppercase if action key is `ctrl-shift`.   
+`*` Commands that contain "`~`" might have cause error when parsing the configuration file.
+
+Examples:
+```
+bindx l~"ls -l"
+bindx f~"df -h"
+bind r~"rm -i "
+bind p~"ps aux | grep "
+bind k~"kill -9 "
 ```
 
 ### Padding
