@@ -120,8 +120,8 @@ bind/bindx [KEY]~"[COMMAND]"
 
 • bind: `Send command to the terminal.`  
 • bindx: `Send command to the terminal and execute.`   
-`*` Key bindings must be uppercase if action key is `ctrl-shift`.   
-`*` Commands that contain "`~`" might have cause error when parsing the configuration file.
+• Key bindings must be uppercase if action key is `ctrl-shift`.   
+• Commands that contain "`~`" might have cause error when parsing the configuration file.
 
 Examples:
 ```
