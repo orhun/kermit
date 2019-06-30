@@ -115,7 +115,7 @@ font monospace bold italic condensed 12
 Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
 
 ```
-bind/bindx [KEY]~"[COMMAND]""
+bind/bindx [KEY]~"[COMMAND]"
 ```
 
 • bind: `Send command to the terminal.`  
