@@ -542,12 +542,13 @@ static int parseSettings(){
                 /* Split the line and get last element */
                 char *cmd = strrchr(value, ' ');
                 if (cmd != NULL) {
-                    /* Trim and add to the command list */
+                    /* Trim and add to the commands */
                     cmd[strlen(cmd)-1] = 0;
                     keyBindings[keyCount].cmd = g_strdup(cmd+2);
-                    /* Get the key binding excluding command */
+                    /* Add key binding to the keys */
                     *cmd = 0;
                     keyBindings[keyCount].key = g_strdup(value);
+                    /* Increment the keys count */
                     keyCount++;
                 }
             /* Tab position */
