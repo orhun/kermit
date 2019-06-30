@@ -192,7 +192,8 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             default:
                 for(int i = 0; i < keyCount; i++){
                     if(!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)){
-                        
+                        vte_terminal_feed_child(VTE_TERMINAL(terminal), 
+                            keyBindings[i].cmd, -1);
                         return TRUE;
                     }
                 }
