@@ -189,6 +189,13 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_q:
                 gtk_main_quit();
                 return TRUE;
+            default:
+                for(int i = 0; i < keyCount; i++){
+                    if(!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)){
+                        
+                        return TRUE;
+                    }
+                }
         }
     /* CTRL + key */
 	}else if (keyState == GDK_CONTROL_MASK){
