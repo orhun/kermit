@@ -545,11 +545,9 @@ static int parseSettings(){
                     /* Trim and add to the command list */
                     cmd[strlen(cmd)-1] = 0;
                     keyBindings[keyCount].cmd = g_strdup(cmd+2);
-                    fprintf(stderr, "[%s]\n", keyBindings[keyCount].cmd);
                     /* Get the key binding excluding command */
                     *cmd = 0;
                     keyBindings[keyCount].key = g_strdup(value);
-                    fprintf(stderr, "[%s]\n", keyBindings[keyCount].key);
                     keyCount++;
                 }
             /* Tab position */
@@ -597,7 +595,6 @@ static int parseSettings(){
     }
     if(defaultConfigFile)
         g_free(configFileName);
-    fprintf(stderr, "%d\n", keyCount);
     return 0;
 }
 
