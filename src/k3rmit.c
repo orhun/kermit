@@ -43,7 +43,8 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
         currentFontSize, /* Necessary for changing font size */
         keyState, /* State of key press events */
         actionKey = GDK_MOD1_MASK, /* Key to check on press */
-        tabPosition = 0, /* Tab position (0/1 -> bottom/top)*/
+        tabPosition = 0, /* Tab position (0/1 -> bottom/top) */
+        keyCount = 0, /* Count of custom binding keys */
         opt; /* Argument parsing option */ 
 static char *termFont = TERM_FONT, /* Default terminal font */
         *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
@@ -52,6 +53,7 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *configFileName, /* Configuration file name */
         *termCommand, /* Command to execute in terminal (-e) */
         *tabLabelText; /* The label text for showing the tabs situation */
+static char keyBindings[TERM_CONFIG_LENGTH]; /* Array for custom key bindings */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
         debugMessages = FALSE, /* Boolean value for -d argument */
@@ -523,12 +525,16 @@ static int parseSettings(){
                 wordChars = g_strdup(value);
                 wordChars[strlen(wordChars)-1] = 0;
                 termWordChars = wordChars+1;
-            /* Key bindings */
+            /* Action key */
             }else if(!strncmp(option, "key", strlen(option))){
                 if(!strncmp(value, "alt", strlen(value)))
                     actionKey = GDK_MOD1_MASK;
                 else
                     actionKey = GDK_SHIFT_MASK;
+            /* Key bindings */
+            }else if(!strncmp(option, "bind", strlen(option))){
+                keyBindings[keyCount++] = *g_strdup(value);
+                //keyCount++;
             /* Tab position */
             }else if(!strncmp(option, "tab", strlen(option))){
                 if(!strncmp(value, "bottom", strlen(value)))
@@ -574,6 +580,7 @@ static int parseSettings(){
     }
     if(defaultConfigFile)
         g_free(configFileName);
+    fprintf(stderr, "%d", keyCount);
     return 0;
 }
 
