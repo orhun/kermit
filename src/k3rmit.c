@@ -548,7 +548,7 @@ static int parseSettings(){
                 /* Parse the line again for command */
                 sscanf(buf, "%s %[^\n]\n", option, value);
                 /* Split the line and get last element */
-                char *cmd = strrchr(value, ' ');
+                char *cmd = strrchr(value, '~');
                 if (cmd != NULL) {
                     /* Trim and add to the commands */
                     cmd[strlen(cmd)-1] = 0;
