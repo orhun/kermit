@@ -92,7 +92,7 @@ Most of the settings can be changed via the config file including font, opacity 
 `k3rmit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `k3rmit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
 
 ```
-[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
+font [FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
 ```
 
 `FAMILY-LIST` is a comma separated list of families optionally terminated by a comma, `STYLE_OPTIONS` is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch, and `SIZE` is an decimal number (size in points).
@@ -105,9 +105,9 @@ Most of the settings can be changed via the config file including font, opacity 
 
 Examples:
 ```
-sans bold 12
-normal 10
-monospace bold italic condensed 12
+font sans bold 12
+font normal 10
+font monospace bold italic condensed 12
 ```
 
 ### Key Bindings
@@ -115,7 +115,7 @@ monospace bold italic condensed 12
 Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
 
 ```
-bind/bindx <key>~"<cmd>""
+bind/bindx [KEY]~"[COMMAND]""
 ```
 
 • bind: `Send command to the terminal.`  
