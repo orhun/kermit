@@ -533,6 +533,18 @@ static int parseSettings(){
                     actionKey = GDK_SHIFT_MASK;
             /* Key bindings */
             }else if(!strncmp(option, "bind", strlen(option))){
+                /* Parse the line again for command */
+                sscanf(buf, "%s %[^\n]\n", option, value);
+                /* Split the line and get last element */
+                char *cmd = strrchr(value, ' ');
+                if (cmd != NULL) {
+                    /* Trim and add to the command list */
+                    cmd[strlen(cmd)-1] = 0;
+                    fprintf(stderr, "[%s]\n", g_strdup(cmd+2)); 
+                    /* Get the key binding excluding command */
+                    *cmd = 0;
+                    fprintf(stderr, "[%s]\n", g_strdup(value));
+                }
                 keyBindings[keyCount++] = *g_strdup(value);
                 //keyCount++;
             /* Tab position */
@@ -580,7 +592,7 @@ static int parseSettings(){
     }
     if(defaultConfigFile)
         g_free(configFileName);
-    fprintf(stderr, "%d", keyCount);
+    fprintf(stderr, "%d\n", keyCount);
     return 0;
 }
 
