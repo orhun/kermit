@@ -544,7 +544,7 @@ static int parseSettings(){
                 else
                     actionKey = GDK_SHIFT_MASK;
             /* Key bindings */
-            }else if(!strncmp(option, "bind", strlen(option))){
+            }else if(!strncmp(option, "bind", strlen(option)-1)){
                 /* Parse the line again for command */
                 sscanf(buf, "%s %[^\n]\n", option, value);
                 /* Split the line and get last element */
@@ -552,7 +552,13 @@ static int parseSettings(){
                 if (cmd != NULL) {
                     /* Trim and add to the commands */
                     cmd[strlen(cmd)-1] = 0;
-                    keyBindings[keyCount].cmd = g_strdup(cmd+2);
+                    /* Execute option is provided */
+                    if (!strcmp(option, "bindx"))
+                    /* Append carriage return to command */
+                        keyBindings[keyCount].cmd = 
+                            g_strconcat(g_strdup(cmd+2), "\r", NULL);
+                    else
+                        keyBindings[keyCount].cmd = g_strdup(cmd+2);
                     /* Add key binding to the keys */
                     *cmd = 0;
                     keyBindings[keyCount].key = g_strdup(value);
