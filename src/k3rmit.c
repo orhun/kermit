@@ -53,12 +53,16 @@ static char *termFont = TERM_FONT, /* Default terminal font */
         *configFileName, /* Configuration file name */
         *termCommand, /* Command to execute in terminal (-e) */
         *tabLabelText; /* The label text for showing the tabs situation */
-static char keyBindings[TERM_CONFIG_LENGTH]; /* Array for custom key bindings */
 static gchar **envp, **command; /* Variables for starting the terminal */
 static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
         debugMessages = FALSE, /* Boolean value for -d argument */
         closeTab = FALSE; /* Close the tab on child-exited signal */
 static va_list vargs; /*! Hold information about variable arguments */
+typedef struct KeyBindings { /* Key bindings struct */
+	char *key;
+    char *cmd;
+} Bindings;
+static Bindings keyBindings[TERM_CONFIG_LENGTH]; /* Array for custom key bindings */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
         CLR_GDK(0x33ff00, 0), CLR_GDK(0xf3f828, 0),
@@ -540,13 +544,14 @@ static int parseSettings(){
                 if (cmd != NULL) {
                     /* Trim and add to the command list */
                     cmd[strlen(cmd)-1] = 0;
-                    fprintf(stderr, "[%s]\n", g_strdup(cmd+2)); 
+                    fprintf(stderr, "[%s]\n", g_strdup(cmd+2));
+                    keyBindings[keyCount].cmd = g_strdup(cmd+2);
                     /* Get the key binding excluding command */
                     *cmd = 0;
                     fprintf(stderr, "[%s]\n", g_strdup(value));
+                    keyBindings[keyCount].key = g_strdup(value);
+                    keyCount++;
                 }
-                keyBindings[keyCount++] = *g_strdup(value);
-                //keyCount++;
             /* Tab position */
             }else if(!strncmp(option, "tab", strlen(option))){
                 if(!strncmp(value, "bottom", strlen(value)))
