@@ -544,12 +544,12 @@ static int parseSettings(){
                 if (cmd != NULL) {
                     /* Trim and add to the command list */
                     cmd[strlen(cmd)-1] = 0;
-                    fprintf(stderr, "[%s]\n", g_strdup(cmd+2));
                     keyBindings[keyCount].cmd = g_strdup(cmd+2);
+                    fprintf(stderr, "[%s]\n", keyBindings[keyCount].cmd);
                     /* Get the key binding excluding command */
                     *cmd = 0;
-                    fprintf(stderr, "[%s]\n", g_strdup(value));
                     keyBindings[keyCount].key = g_strdup(value);
+                    fprintf(stderr, "[%s]\n", keyBindings[keyCount].key);
                     keyCount++;
                 }
             /* Tab position */
