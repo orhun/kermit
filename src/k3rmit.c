@@ -638,7 +638,7 @@ static int parseArgs(int argc, char **argv){
             case 'v':
                 /* Show version information */
                 fprintf(stderr, 
-                    "%s [ %sk3rmit%s ] ~ v%s \n"
+                    "%s[ %sk3rmit%s ] ~ v%s \n"
                     "   (+)(+)   ~ VTE-based\r\n"
                     "  /      \\  ~ simple\r\n"
                     "  \\ -==- /  ~ fast\r\n"
