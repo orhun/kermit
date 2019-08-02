@@ -61,8 +61,8 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 | Key                   | Action                         |
 |-----------------------|--------------------------------|
-| `ctrl-alt-[v]`        | copy to clipboard              |
-| `ctrl-alt-[c]`        | paste from clipboard           |
+| `ctrl-alt-[c]`        | copy to clipboard              |
+| `ctrl-alt-[v]`        | paste from clipboard           |
 | `ctrl-alt-[t]`        | open a new tab                 |
 | `ctrl-alt-[r]`        | reload configuration file      |
 | `ctrl-alt-[q]`        | exit the terminal              |
