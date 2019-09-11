@@ -159,8 +159,6 @@ printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1p
 
 ![Screenshot III](https://user-images.githubusercontent.com/24392180/59703686-1a946200-9203-11e9-8043-e58dcc9edc64.png)
 
-v1.0: [http://www.youtube.com/watch?v=mkr0RhUXf50](http://www.youtube.com/watch?v=mkr0RhUXf50)
-
 ## TODO(s)
 
 • URL handling
