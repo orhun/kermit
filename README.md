@@ -1,4 +1,4 @@
-# k3rmit [![Release](https://img.shields.io/github/release/KeyLo99/k3rmit.svg?style=flat-square&color=green)](https://github.com/KeyLo99/k3rmit/releases)
+# k3rmit [![Release](https://img.shields.io/github/release/orhun/k3rmit.svg?style=flat-square&color=green)](https://github.com/orhun/k3rmit/releases)
 [![AUR](https://img.shields.io/aur/version/k3rmit-git.svg?style=flat-square)](https://aur.archlinux.org/packages/k3rmit-git/) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square&color=red)](./LICENSE)
 
 ### A VTE-based terminal emulator that aims to be simple, fast and effective.
@@ -84,7 +84,7 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 ### Config File
 
 `k3rmit` looks for configuration file in `~/.config/k3rmit.conf`  
-The default configuration file is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf).  
+The default configuration file is available [here](https://github.com/orhun/k3rmit/blob/master/.config/k3rmit.conf).  
 Most of the settings can be changed via the config file including font, opacity and colors.
 
 ### Font
@@ -112,7 +112,7 @@ font monospace bold italic condensed 12
 
 ### Key Bindings
 
-Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/KeyLo99/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
+Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/orhun/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
 
 ```
 bind/bindx [KEY]~"[COMMAND]"
@@ -147,7 +147,7 @@ vte-terminal {
 The command below can be used to create both configuration files.
 
 ```
-curl https://raw.githubusercontent.com/KeyLo99/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && \
+curl https://raw.githubusercontent.com/orhun/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && \
 printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
 ```
 
@@ -169,4 +169,4 @@ GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
 
 ## Credit
 
-Copyright (C) 2019 by [keylo99](https://www.github.com/keylo99)
+Copyright (C) 2019 by [orhun](https://www.github.com/orhun)

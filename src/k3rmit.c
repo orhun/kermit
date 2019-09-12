@@ -1,6 +1,6 @@
 /*
  * k3rmit, a VTE-based terminal emulator that aims to be simple, fast and effective.
- * Copyright (C) 2019 by KeyLo99 <https://www.github.com/KeyLo99>
+ * Copyright (C) 2019 by orhun <https://www.github.com/orhun>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -643,7 +643,7 @@ static int parseArgs(int argc, char **argv){
                     "  /      \\  ~ simple\r\n"
                     "  \\ -==- /  ~ fast\r\n"
                     "   \\    /   ~ effective\r\n"
-                    "  <\\/\\/\\/>  ~ github.com/keylo99/k3rmit\r\n"
+                    "  <\\/\\/\\/>  ~ github.com/orhun/k3rmit\r\n"
                     "  /      \\  ~ gplv3%s\n",
                     TERM_ATTR_BOLD, TERM_ATTR_COLOR,
                     TERM_ATTR_DEFAULT, TERM_VERSION,
