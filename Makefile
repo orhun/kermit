@@ -11,8 +11,10 @@ build:
 	cp -prf .config/$(NAME).desktop build/$(NAME).desktop
 # Make the installation
 install:
+	# Create directories if doesn't exist
 	mkdir $(TARGET)/usr/bin || true
 	mkdir $(TARGET)/usr/share/applications || true
+	# Install
 	install build/$(NAME) $(TARGET)/usr/bin/$(NAME)
 	install build/$(NAME).desktop $(TARGET)/usr/share/applications/$(NAME).desktop
 # Clean
