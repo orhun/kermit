@@ -158,6 +158,11 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
     /* CTRL + binding + key */
     if(keyState == (actionKey | GDK_CONTROL_MASK)){
+        if(atoi(gdk_keyval_name(event->keyval)) != 0){
+           gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook),
+                atoi(gdk_keyval_name(event->keyval))-1);
+           return TRUE;
+        }
         switch (event->keyval) {
             /* Copy & Paste */
             case GDK_KEY_C:
@@ -189,24 +194,6 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_q:
                 gtk_main_quit();
                 return TRUE;
-            default:
-                for(int i = 0; i < keyCount; i++){
-                    if(!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)){
-                        vte_terminal_feed_child(VTE_TERMINAL(terminal), 
-                            keyBindings[i].cmd, -1);
-                        return TRUE;
-                    }
-                }
-        }
-    /* CTRL + key */
-	}else if (keyState == GDK_CONTROL_MASK){
-        /* Switch tab */
-        if(atoi(gdk_keyval_name(event->keyval)) != 0){
-           gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 
-                atoi(gdk_keyval_name(event->keyval))-1);
-           return TRUE;
-        }
-        switch (event->keyval) {
             /* Change font size */
             case GDK_KEY_Up:
                 setTermFont(terminal, currentFontSize + 1);
@@ -243,8 +230,16 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                     gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
                 gtk_widget_queue_draw(GTK_WIDGET(notebook));
                 return TRUE;
+            default:
+                for(int i = 0; i < keyCount; i++){
+                    if(!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)){
+                        vte_terminal_feed_child(VTE_TERMINAL(terminal),
+                            keyBindings[i].cmd, -1);
+                        return TRUE;
+                    }
+                }
         }
-    }
+	}
 	return FALSE;
 }
 
