@@ -1,5 +1,5 @@
-# k3rmit [![Release](https://img.shields.io/github/release/orhun/k3rmit.svg?style=flat-square&color=green)](https://github.com/orhun/k3rmit/releases)
-[![AUR](https://img.shields.io/aur/version/k3rmit-git.svg?style=flat-square)](https://aur.archlinux.org/packages/k3rmit-git/) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat-square&color=red)](./LICENSE)
+# k3rmit [![Release](https://img.shields.io/github/release/orhun/k3rmit.svg?color=5B7C33&style=flat-square)](https://github.com/orhun/k3rmit/releases)
+[![AUR](https://img.shields.io/aur/version/k3rmit-git.svg?color=5B7C33&style=flat-square)](https://aur.archlinux.org/packages/k3rmit-git/) [![License](https://img.shields.io/badge/license-GPLv3-blue.svg?color=5B7C33&style=flat-square)](./LICENSE)
 
 ### A VTE-based terminal emulator that aims to be simple, fast and effective.
 
