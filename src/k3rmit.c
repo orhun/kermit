@@ -675,11 +675,11 @@ static int parseArgs(int argc, char **argv){
 int main(int argc, char *argv[]) {
     /* Parse command line arguments */
     if(parseArgs(argc, argv))
-        return EXIT_SUCCESS;
+        return 0;
     /* Parse settings if configuration file exists */
     parseSettings();
     /* Initialize GTK and start the terminal */
     gtk_init(&argc, &argv);
     startTerm();
-    return EXIT_SUCCESS;
+    return 0;
 }
