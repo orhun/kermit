@@ -32,37 +32,42 @@
                                     .blue = CLR_16(CLR_B(x)), \
                                     .alpha = a }
 
-static GtkWidget *window, /* Main window widget */
-                 *paned, *notebook, *tabLabel; /* Widgets for tab feature */
-static PangoFontDescription *fontDesc; /* Description for the terminal font */
-static FILE *configFile; /* Terminal configuration file */
-static float termOpacity = TERM_OPACITY; /* Default opacity value */
-static int defaultFontSize = TERM_FONT_DEFAULT_SIZE, /* Font size */
-        termBackground = TERM_BACKGROUND, /* Background color */
-        termForeground = TERM_FOREGROUND, /* Foreground color */
-        currentFontSize, /* Necessary for changing font size */
-        keyState, /* State of key press events */
-        actionKey = GDK_MOD1_MASK, /* Key to check on press */
-        tabPosition = 0, /* Tab position (0/1 -> bottom/top) */
-        keyCount = 0, /* Count of custom binding keys */
-        opt; /* Argument parsing option */ 
-static char *termFont = TERM_FONT, /* Default terminal font */
-        *termLocale = TERM_LOCALE, /* Terminal locale (numeric) */
-        *termWordChars = TERM_WORD_CHARS, /* Word characters exceptions */
-        *wordChars, *fontSize, *colorIndex, /* Variables for parsing the config */
-        *configFileName, /* Configuration file name */
-        *termCommand, /* Command to execute in terminal (-e) */
-        *tabLabelText; /* The label text for showing the tabs situation */
-static gchar **envp, **command; /* Variables for starting the terminal */
-static gboolean defaultConfigFile = TRUE, /* Boolean value for -c argument */
-        debugMessages = FALSE, /* Boolean value for -d argument */
-        closeTab = FALSE; /* Close the tab on child-exited signal */
-static va_list vargs; /*! Hold information about variable arguments */
-typedef struct KeyBindings { /* Key bindings struct */
+static GtkWidget *window                              /* Main window widget */
+static GtkWidget *paned;                              /* Paned widged for the tab feature */
+static GtkWidget *notebook;                           /* Notebook widget for the tab feature */
+static GtkWidget *tabLabel;                           /* Label widget for the tab feature */
+static PangoFontDescription *fontDesc;                /* Description for the terminal font */
+static FILE *configFile;                              /* Terminal configuration file */
+static float termOpacity   = TERM_OPACITY;            /* Default opacity value */
+static int defaultFontSize = TERM_FONT_DEFAULT_SIZE;  /* Terminal font size */
+static int termBackground  = TERM_BACKGROUND;         /* Background color */
+static int termForeground  = TERM_FOREGROUND;         /* Foreground color */
+static int currentFontSize;                           /* Necessary for changing font size */
+static int keyState;                                  /* State of key press events */
+static int actionKey   = GDK_MOD1_MASK;               /* Key to check on press */
+static int tabPosition = 0;                           /* Tab position (0/1 -> bottom/top) */
+static int keyCount    = 0;                           /* Count of custom binding keys */
+static int opt;                                       /* Argument parsing option */
+static char *termFont      = TERM_FONT;               /* Default terminal font */
+static char *termLocale    = TERM_LOCALE;             /* Terminal locale (numeric) */
+static char *termWordChars = TERM_WORD_CHARS;         /* Word characters exceptions */
+static char *wordChars;                               /* Variables for parsing the config */
+static char *fontSize;
+static char *colorIndex;
+static char *configFileName;                          /* Configuration file name */
+static char *termCommand;                             /* Command to execute in terminal (-e) */
+static char *tabLabelText;                            /* The label text for showing the tabs situation */
+static gchar **envp                                   /* Variables for starting the terminal */
+static gchar **command;
+static gboolean defaultConfigFile = TRUE;             /* Boolean value for -c argument */
+static gboolean debugMessages     = FALSE;            /* Boolean value for -d argument */
+static gboolean closeTab          = FALSE;            /* Close the tab on child-exited signal */
+static va_list vargs;                                 /* Hold information about variable arguments */
+typedef struct KeyBindings {                          /* Key bindings struct */
 	char *key;
     char *cmd;
 } Bindings;
-static Bindings keyBindings[TERM_CONFIG_LENGTH]; /* Array for custom key bindings */
+static Bindings keyBindings[TERM_CONFIG_LENGTH];      /* Array for custom key bindings */
 static GdkRGBA termPalette[] = {             
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
         CLR_GDK(0x33ff00, 0), CLR_GDK(0xf3f828, 0),
