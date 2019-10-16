@@ -32,7 +32,7 @@
                                     .blue = CLR_16(CLR_B(x)), \
                                     .alpha = a }
 
-static GtkWidget *window                              /* Main window widget */
+static GtkWidget *window;                             /* Main window widget */
 static GtkWidget *paned;                              /* Paned widged for the tab feature */
 static GtkWidget *notebook;                           /* Notebook widget for the tab feature */
 static GtkWidget *tabLabel;                           /* Label widget for the tab feature */
@@ -57,7 +57,7 @@ static char *colorIndex;
 static char *configFileName;                          /* Configuration file name */
 static char *termCommand;                             /* Command to execute in terminal (-e) */
 static char *tabLabelText;                            /* The label text for showing the tabs situation */
-static gchar **envp                                   /* Variables for starting the terminal */
+static gchar **envp;                                  /* Variables for starting the terminal */
 static gchar **command;
 static gboolean defaultConfigFile = TRUE;             /* Boolean value for -c argument */
 static gboolean debugMessages     = FALSE;            /* Boolean value for -d argument */
