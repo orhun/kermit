@@ -166,7 +166,7 @@ printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1p
 
 ## License
 
-GNU General Public License v3. (see [gpl](https://www.gnu.org/licenses/gpl.txt))
+GNU General Public License ([v3](https://www.gnu.org/licenses/gpl.txt))
 
 ## Copyright
 
