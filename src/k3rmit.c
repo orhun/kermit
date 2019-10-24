@@ -200,9 +200,13 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 gtk_main_quit();
                 return TRUE;
             /* Change font size */
+            case GDK_KEY_K:
+            case GDK_KEY_k:
             case GDK_KEY_Up:
                 setTermFont(terminal, currentFontSize + 1);
                 return TRUE;
+            case GDK_KEY_J:
+            case GDK_KEY_j:
             case GDK_KEY_Down:
                 setTermFont(terminal, currentFontSize - 1);
                 return TRUE;
@@ -215,11 +219,15 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 gtk_widget_show_all(window);
                 return TRUE;
             /* Switch to the next tab */
+            case GDK_KEY_L:
+            case GDK_KEY_l:
             case GDK_KEY_KP_Page_Up:
             case GDK_KEY_Right:
                 gtk_notebook_next_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
             /* Switch to the previous tab */
+            case GDK_KEY_H:
+            case GDK_KEY_h:
             case GDK_KEY_KP_Page_Down:
             case GDK_KEY_Left:
                 gtk_notebook_prev_page(GTK_NOTEBOOK(notebook));
