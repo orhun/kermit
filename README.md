@@ -60,21 +60,21 @@ k3rmit [-h] [-v] [-d] [-c config] [-e command]
 
 ## Key Bindings
 
-| Key                       | Action                         |
-|---------------------------|--------------------------------|
-| `ctrl-alt-[c]`            | copy to clipboard              |
-| `ctrl-alt-[v]`            | paste from clipboard           |
-| `ctrl-alt-[t]`            | open a new tab                 |
-| `ctrl-alt-[r]`            | reload configuration file      |
-| `ctrl-alt-[q]`            | exit the terminal              |
-| `ctrl-alt-[up]`           | increase font size             |
-| `ctrl-alt-[down]`         | decrease font size             |
-| `ctrl-alt-[=]`            | reset font size to default     |
-| `ctrl-alt-[return]`       | open a new tab                 |
-| `ctrl-alt-[num]`          | switch to the tab number [num] |
-| `ctrl-alt-[right][pgup]`  | switch to the next tab         |
-| `ctrl-alt-[left][pgdn]`   | switch to the previous tab     |
-| `ctrl-alt-[w][backspace]` | close the selected tab         |
+| Key                         | Action                         |
+|-----------------------------|--------------------------------|
+| `ctrl-alt-[c]`              | copy to clipboard              |
+| `ctrl-alt-[v]`              | paste from clipboard           |
+| `ctrl-alt-[t]`              | open a new tab                 |
+| `ctrl-alt-[r]`              | reload configuration file      |
+| `ctrl-alt-[q]`              | exit the terminal              |
+| `ctrl-alt-[k][up]`          | increase font size             |
+| `ctrl-alt-[j][down]`        | decrease font size             |
+| `ctrl-alt-[=]`              | reset font size to default     |
+| `ctrl-alt-[return]`         | open a new tab                 |
+| `ctrl-alt-[num]`            | switch to the tab number [num] |
+| `ctrl-alt-[l][right][pgup]` | switch to the next tab         |
+| `ctrl-alt-[h][left][pgdn]`  | switch to the previous tab     |
+| `ctrl-alt-[w][backspace]`   | close the selected tab         |
 
 • Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.  
 
