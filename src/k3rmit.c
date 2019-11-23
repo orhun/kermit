@@ -631,7 +631,7 @@ static int parseSettings(){
  * \return 1 on exit
  */
 static int parseArgs(int argc, char **argv){
-    while ((opt = getopt(argc, argv, ":c:e:vdh")) != -1) {
+    while ((opt = getopt(argc, argv, ":c:e:t:vdh")) != -1) {
         switch (opt) {
             case 'c':
                 /* Configuration file name to read */
@@ -665,7 +665,7 @@ static int parseArgs(int argc, char **argv){
             case 'h': case '?':
                 /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
-                "[-v] [-d] [-c config] [-e command]%s\n", 
+                "[-v] [-d] [-c config] [-t title][-e command]%s\n", 
                     TERM_ATTR_BOLD,
                     TERM_ATTR_COLOR,  
                     TERM_ATTR_DEFAULT,
