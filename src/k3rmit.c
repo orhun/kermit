@@ -56,6 +56,7 @@ static char *fontSize;
 static char *colorIndex;
 static char *configFileName;                          /* Configuration file name */
 static char *termCommand;                             /* Command to execute in terminal (-e) */
+static char *termTitle;				      /* Title to set in terminal (-t) */
 static char *tabLabelText;                            /* The label text for showing the tabs situation */
 static gchar **envp;                                  /* Variables for starting the terminal */
 static gchar **command;
@@ -265,8 +266,9 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  */
 static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
 	GtkWindow *window = userData;
-	gtk_window_set_title(window,
-	    vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
+	if (termTitle == NULL) gtk_window_set_title(window, 
+        	vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
+    	else gtk_window_set_title(window, termTitle);
 	return TRUE;
 }
 
@@ -639,6 +641,9 @@ static int parseArgs(int argc, char **argv){
                 /* Command to execute in terminal */
                 termCommand = optarg;
                 break;
+            case 't':
+                /* Title to set in terminal */
+                termTitle = optarg;
             case 'd':
                 /* Activate debug messages */
                 debugMessages = TRUE;
@@ -657,7 +662,7 @@ static int parseArgs(int argc, char **argv){
                     TERM_ATTR_DEFAULT, TERM_VERSION,
                     TERM_ATTR_OFF);
                 return 1;
-            case 'h':
+            case 'h': case '?':
                 /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
                 "[-v] [-d] [-c config] [-e command]%s\n", 
