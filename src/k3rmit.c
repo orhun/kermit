@@ -171,17 +171,17 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
         }
         switch (event->keyval) {
             /* Copy & Paste */
-            case GDK_KEY_C:
+            case GDK_KEY_C: /* Fallthrough */
             case GDK_KEY_c:
                 vte_terminal_copy_clipboard_format(VTE_TERMINAL(terminal), 
                     VTE_FORMAT_TEXT);
                 return TRUE;
-            case GDK_KEY_V:
+            case GDK_KEY_V: /* Fallthrough */
             case GDK_KEY_v:
                 vte_terminal_paste_clipboard(VTE_TERMINAL(terminal));
                 return TRUE;
             /* Reload configuration file */ 
-            case GDK_KEY_R:
+            case GDK_KEY_R: /* Fallthrough */
             case GDK_KEY_r:
                 printLog("Reloading configuration file...\n");
                 if(defaultConfigFile)
@@ -190,24 +190,24 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 configureTerm(terminal);
                 return TRUE;
             /* Open new tab */
-            case GDK_KEY_T:
+            case GDK_KEY_T: /* Fallthrough */
             case GDK_KEY_t:
                 gtk_notebook_append_page(GTK_NOTEBOOK(notebook), getTerm(), NULL);
                 gtk_widget_show_all(window);
                 return TRUE;
             /* Exit */
-            case GDK_KEY_Q:
+            case GDK_KEY_Q: /* Fallthrough */
             case GDK_KEY_q:
                 gtk_main_quit();
                 return TRUE;
             /* Change font size */
-            case GDK_KEY_K:
-            case GDK_KEY_k:
+            case GDK_KEY_K: /* Fallthrough */
+            case GDK_KEY_k: /* Fallthrough */
             case GDK_KEY_Up:
                 setTermFont(terminal, currentFontSize + 1);
                 return TRUE;
-            case GDK_KEY_J:
-            case GDK_KEY_j:
+            case GDK_KEY_J: /* Fallthrough */
+            case GDK_KEY_j: /* Fallthrough */
             case GDK_KEY_Down:
                 setTermFont(terminal, currentFontSize - 1);
                 return TRUE;
@@ -220,23 +220,23 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 gtk_widget_show_all(window);
                 return TRUE;
             /* Switch to the next tab */
-            case GDK_KEY_L:
-            case GDK_KEY_l:
-            case GDK_KEY_KP_Page_Up:
+            case GDK_KEY_L:          /* Fallthrough */
+            case GDK_KEY_l:          /* Fallthrough */
+            case GDK_KEY_KP_Page_Up: /* Fallthrough */
             case GDK_KEY_Right:
                 gtk_notebook_next_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
             /* Switch to the previous tab */
-            case GDK_KEY_H:
-            case GDK_KEY_h:
-            case GDK_KEY_KP_Page_Down:
+            case GDK_KEY_H:              /* Fallthrough */
+            case GDK_KEY_h:              /* Fallthrough */
+            case GDK_KEY_KP_Page_Down:   /* Fallthrough */
             case GDK_KEY_Left:
                 gtk_notebook_prev_page(GTK_NOTEBOOK(notebook));
                 return TRUE;
             /* Close the current tab */
-            case GDK_KEY_W:
-            case GDK_KEY_w:
-            case GDK_KEY_BackSpace:
+            case GDK_KEY_W:         /* Fallthrough */
+            case GDK_KEY_w:         /* Fallthrough */
+            case GDK_KEY_BackSpace: /* Fallthrough */
                 if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1)
                     return TRUE;    
                 closeTab = TRUE;
@@ -662,7 +662,8 @@ static int parseArgs(int argc, char **argv) {
                     TERM_ATTR_DEFAULT, TERM_VERSION,
                     TERM_ATTR_OFF);
                 return 1;
-            case 'h': case '?':
+            case 'h': /* Fallthrough */
+            case '?':
                 /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
                 "[-v] [-d] [-c config] [-t title] [-e command]%s\n",
