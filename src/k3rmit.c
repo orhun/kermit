@@ -665,7 +665,7 @@ static int parseArgs(int argc, char **argv){
             case 'h': case '?':
                 /* Show help message */
                 fprintf(stderr, "%s[ %susage%s ] %s [-h] "
-                "[-v] [-d] [-c config] [-t title][-e command]%s\n", 
+                "[-v] [-d] [-c config] [-t title] [-e command]%s\n",
                     TERM_ATTR_BOLD,
                     TERM_ATTR_COLOR,  
                     TERM_ATTR_DEFAULT,
