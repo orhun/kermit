@@ -268,7 +268,7 @@ static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData) {
 	GtkWindow *window = userData;
 	if (termTitle == NULL) gtk_window_set_title(window,
             vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
-       else gtk_window_set_title(window, termTitle);
+    else gtk_window_set_title(window, termTitle);
 	return TRUE;
 }
 
@@ -447,9 +447,9 @@ static GtkWidget* getTerm() {
     configureTerm(terminal);
     /* Start a new shell */
     envp = g_get_environ();
-    command = (gchar *[]) {g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
+    command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
     if(termCommand != NULL)
-        command = (gchar *[]) {g_strdup(g_environ_getenv(envp, "SHELL")),
+        command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")),
             "-c", termCommand , NULL };
     printLog("shell: %s\n", *command);
     g_strfreev(envp);
