@@ -51,12 +51,12 @@ static int opt;                                       /* Argument parsing option
 static char *termFont      = TERM_FONT;               /* Default terminal font */
 static char *termLocale    = TERM_LOCALE;             /* Terminal locale (numeric) */
 static char *termWordChars = TERM_WORD_CHARS;         /* Word characters exceptions */
+static char *termTitle;                               /* Title to set in terminal (-t) */
 static char *wordChars;                               /* Variables for parsing the config */
 static char *fontSize;
 static char *colorIndex;
 static char *configFileName;                          /* Configuration file name */
 static char *termCommand;                             /* Command to execute in terminal (-e) */
-static char *termTitle;				      /* Title to set in terminal (-t) */
 static char *tabLabelText;                            /* The label text for showing the tabs situation */
 static gchar **envp;                                  /* Variables for starting the terminal */
 static gchar **command;
@@ -266,9 +266,9 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
  */
 static gboolean termOnTitleChanged(GtkWidget *terminal, gpointer userData){
 	GtkWindow *window = userData;
-	if (termTitle == NULL) gtk_window_set_title(window, 
-        	vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
-    	else gtk_window_set_title(window, termTitle);
+	if (termTitle == NULL) gtk_window_set_title(window,
+            vte_terminal_get_window_title(VTE_TERMINAL(terminal))?:TERM_NAME);
+       else gtk_window_set_title(window, termTitle);
 	return TRUE;
 }
 
