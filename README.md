@@ -50,11 +50,12 @@ gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) k3
 ## Arguments
 
 ```
-k3rmit [-h] [-v] [-d] [-c config] [-e command]
+k3rmit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 -h, show help message and exit
 -v, show version
 -d, enable debug messages
 -c, configuration file to read
+-t, title to set in terminal
 -e, command to execute in terminal
 ```
 
