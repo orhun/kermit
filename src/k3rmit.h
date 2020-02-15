@@ -34,7 +34,7 @@
 #define TERM_ATTR_DEFAULT "\x1b[39m"
 
 static GtkWidget* getTerm();
-static int parseSettings();
+static void parseSettings();
 static int configureTerm(GtkWidget* term);
 static int setTermFont(GtkWidget *term, int fontSize);
 static gboolean termOnChildExit(VteTerminal *term,
