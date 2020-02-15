@@ -517,10 +517,8 @@ static int startTerm() {
 
 /*!
  * Read settings from configuration file and apply.
- *
- * \return 0 on success
  */
-static int parseSettings() {
+static void parseSettings() {
     char buf[TERM_CONFIG_LENGTH], 
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
@@ -530,97 +528,95 @@ static int parseSettings() {
     else
         defaultConfigFile = FALSE;
     configFile = fopen(configFileName, "r");
-    if(configFile != NULL) {
-        while(!feof(configFile)) {
-            fgets(buf, TERM_CONFIG_LENGTH, configFile);
-            /* Skip lines starting with '#' and invalid lines */
-            if (buf[0] == '#' || strlen(buf) < 4)
-                continue;
-            /* Get option and value from line */
-            sscanf(buf, "%s %s\n", option, value);
-            /* Locale */
-            if(!strncmp(option, "locale", strlen(option))) {
-                 termLocale = g_strdup(value);
-            /* Word chars */
-            } else if(!strncmp(option, "char", strlen(option))) {
-                /* Remove '"' from word chars */
-                wordChars = g_strdup(value);
-                wordChars[strlen(wordChars)-1] = 0;
-                termWordChars = wordChars+1;
-            /* Action key */
-            } else if(!strncmp(option, "key", strlen(option))) {
-                if(!strncmp(value, "alt", strlen(value)))
-                    actionKey = GDK_MOD1_MASK;
+    if(configFile == NULL) {
+        printLog("config file not found. (%s)\n", configFileName);
+        return;
+    }
+    while(fgets(buf, TERM_CONFIG_LENGTH, configFile)) {
+        /* Skip lines starting with '#' and invalid lines */
+        if (buf[0] == '#' || strlen(buf) < 4)
+            continue;
+        /* Get option and value from line */
+        sscanf(buf, "%s %s\n", option, value);
+        /* Locale */
+        if(!strncmp(option, "locale", strlen(option))) {
+             termLocale = g_strdup(value);
+        /* Word chars */
+        } else if(!strncmp(option, "char", strlen(option))) {
+            /* Remove '"' from word chars */
+            wordChars = g_strdup(value);
+            wordChars[strlen(wordChars)-1] = 0;
+            termWordChars = wordChars+1;
+        /* Action key */
+        } else if(!strncmp(option, "key", strlen(option))) {
+            if(!strncmp(value, "alt", strlen(value)))
+                actionKey = GDK_MOD1_MASK;
+            else
+                actionKey = GDK_SHIFT_MASK;
+        /* Key bindings */
+        } else if(!strncmp(option, "bind", strlen(option)-1)) {
+            /* Parse the line again for command */
+            sscanf(buf, "%s %[^\n]\n", option, value);
+            /* Split the line and get last element */
+            char *cmd = strrchr(value, '~');
+            if (cmd != NULL) {
+                /* Trim and add to the commands */
+                cmd[strlen(cmd)-1] = 0;
+                /* Execute option is provided */
+                if (!strcmp(option, "bindx"))
+                /* Append carriage return to command */
+                    keyBindings[keyCount].cmd = 
+                        g_strconcat(g_strdup(cmd+2), "\r", NULL);
                 else
-                    actionKey = GDK_SHIFT_MASK;
-            /* Key bindings */
-            } else if(!strncmp(option, "bind", strlen(option)-1)) {
-                /* Parse the line again for command */
-                sscanf(buf, "%s %[^\n]\n", option, value);
-                /* Split the line and get last element */
-                char *cmd = strrchr(value, '~');
-                if (cmd != NULL) {
-                    /* Trim and add to the commands */
-                    cmd[strlen(cmd)-1] = 0;
-                    /* Execute option is provided */
-                    if (!strcmp(option, "bindx"))
-                    /* Append carriage return to command */
-                        keyBindings[keyCount].cmd = 
-                            g_strconcat(g_strdup(cmd+2), "\r", NULL);
-                    else
-                        keyBindings[keyCount].cmd = g_strdup(cmd+2);
-                    /* Add key binding to the keys */
-                    *cmd = 0;
-                    keyBindings[keyCount].key = g_strdup(value);
-                    /* Increment the keys count */
-                    keyCount++;
-                }
-            /* Tab position */
-            } else if(!strncmp(option, "tab", strlen(option))) {
-                if(!strncmp(value, "bottom", strlen(value)))
-                    tabPosition = 0;
-                else
-                    tabPosition = 1;
-            /* Terminal font */
-            } else if(!strncmp(option, "font", strlen(option))) {
-                /* Parse the line again for font size */ 
-                sscanf(buf, "%s %[^\n]\n", option, value);
-                /* Split the line and get last element */
-                fontSize = strrchr(value, ' ');
-                if (fontSize != NULL) {
-                    /* Trim and set the font size */
-                    defaultFontSize = atoi(fontSize+1);
-                    /* Get the font information excluding font size */
-                    *fontSize = 0;
-                    termFont = g_strdup(value);
-                }
-            /* Opacity value */
-            } else if(!strncmp(option, "opacity", strlen(option))) {
-                termOpacity = atof(value);
-            /* Foreground color */
-            } else if(!strncmp(option, "foreground", strlen(option))) {
-                termForeground = (int)strtol(value, NULL, 16);
-            /* Background color */
-            } else if(!strncmp(option, "background", strlen(option))) {
-                termBackground = (int)strtol(value, NULL, 16);
-            /* Color palette */
-            } else if(!strncmp(option, "color", strlen(option)-2)) {
-                /* Get the color index */
-                colorIndex = strrchr(option, 'r');
-                if (colorIndex != NULL) {
-                    /* Set the color in palette */
-                    termPalette[atoi(colorIndex+1)] = 
-                        CLR_GDK((int)strtol(value, NULL, 16), 0);
-                }
+                    keyBindings[keyCount].cmd = g_strdup(cmd+2);
+                /* Add key binding to the keys */
+                *cmd = 0;
+                keyBindings[keyCount].key = g_strdup(value);
+                /* Increment the keys count */
+                keyCount++;
+            }
+        /* Tab position */
+        } else if(!strncmp(option, "tab", strlen(option))) {
+            if(!strncmp(value, "bottom", strlen(value)))
+                tabPosition = 0;
+            else
+                tabPosition = 1;
+        /* Terminal font */
+        } else if(!strncmp(option, "font", strlen(option))) {
+            /* Parse the line again for font size */ 
+            sscanf(buf, "%s %[^\n]\n", option, value);
+            /* Split the line and get last element */
+            fontSize = strrchr(value, ' ');
+            if (fontSize != NULL) {
+                /* Trim and set the font size */
+                defaultFontSize = atoi(fontSize+1);
+                /* Get the font information excluding font size */
+                *fontSize = 0;
+                termFont = g_strdup(value);
+            }
+        /* Opacity value */
+        } else if(!strncmp(option, "opacity", strlen(option))) {
+            termOpacity = atof(value);
+        /* Foreground color */
+        } else if(!strncmp(option, "foreground", strlen(option))) {
+            termForeground = (int)strtol(value, NULL, 16);
+        /* Background color */
+        } else if(!strncmp(option, "background", strlen(option))) {
+            termBackground = (int)strtol(value, NULL, 16);
+        /* Color palette */
+        } else if(!strncmp(option, "color", strlen(option)-2)) {
+            /* Get the color index */
+            colorIndex = strrchr(option, 'r');
+            if (colorIndex != NULL) {
+                /* Set the color in palette */
+                termPalette[atoi(colorIndex+1)] = 
+                    CLR_GDK((int)strtol(value, NULL, 16), 0);
             }
         }
-        fclose(configFile);
-    } else {
-        printLog("config file not found. (%s)\n", configFileName);
     }
+    fclose(configFile);
     if(defaultConfigFile)
         g_free(configFileName);
-    return 0;
 }
 
 /*!
