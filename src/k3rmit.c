@@ -69,7 +69,7 @@ typedef struct KeyBindings {                          /* Key bindings struct */
     char *cmd;
 } Bindings;
 static Bindings keyBindings[TERM_CONFIG_LENGTH];      /* Array for custom key bindings */
-static GdkRGBA termPalette[] = {             
+static GdkRGBA termPalette[TERM_PALETTE_SIZE] = {
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
         CLR_GDK(0x33ff00, 0), CLR_GDK(0xf3f828, 0),
         CLR_GDK(0x0300ff, 0), CLR_GDK(0xcc00ff, 0),
@@ -609,7 +609,7 @@ static void parseSettings() {
             colorIndex = strrchr(option, 'r');
             if (colorIndex != NULL) {
                 /* Set the color in palette */
-                termPalette[atoi(colorIndex+1)] = 
+                termPalette[atoi(colorIndex + 1) % TERM_PALETTE_SIZE] =
                     CLR_GDK((int)strtol(value, NULL, 16), 0);
             }
         }
