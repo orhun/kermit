@@ -42,6 +42,7 @@ static float termOpacity   = TERM_OPACITY;            /* Default opacity value *
 static int defaultFontSize = TERM_FONT_DEFAULT_SIZE;  /* Terminal font size */
 static int termBackground  = TERM_BACKGROUND;         /* Background color */
 static int termForeground  = TERM_FOREGROUND;         /* Foreground color */
+static int termBoldColor   = TERM_BOLD_COLOR;         /* Foreground bold color */
 static int currentFontSize;                           /* Necessary for changing font size */
 static int keyState;                                  /* State of key press events */
 static int actionKey   = GDK_MOD1_MASK;               /* Key to check on press */
@@ -409,7 +410,9 @@ static int configureTerm(GtkWidget* terminal) {
         &CLR_GDK(termForeground, 0),            /* Foreground */
         &CLR_GDK(termBackground, termOpacity),  /* Background */
         termPalette ,                           /* Palette */
-        sizeof(termPalette)/sizeof(GdkRGBA)); 
+        sizeof(termPalette)/sizeof(GdkRGBA));
+    vte_terminal_set_color_bold(VTE_TERMINAL(terminal),
+        &CLR_GDK(termBoldColor, 0));
     setTermFont(terminal, defaultFontSize);
     return 0;
 }
@@ -600,6 +603,9 @@ static void parseSettings() {
         /* Foreground color */
         } else if(!strncmp(option, "foreground", strlen(option))) {
             termForeground = (int)strtol(value, NULL, 16);
+        /* Bold color */
+        } else if(!strncmp(option, "foreground_bold", strlen(option))) {
+            termBoldColor = (int)strtol(value, NULL, 16);
         /* Background color */
         } else if(!strncmp(option, "background", strlen(option))) {
             termBackground = (int)strtol(value, NULL, 16);
