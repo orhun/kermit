@@ -43,6 +43,8 @@ static int defaultFontSize = TERM_FONT_DEFAULT_SIZE;  /* Terminal font size */
 static int termBackground  = TERM_BACKGROUND;         /* Background color */
 static int termForeground  = TERM_FOREGROUND;         /* Foreground color */
 static int termBoldColor   = TERM_BOLD_COLOR;         /* Foreground bold color */
+static int termCursorColor = TERM_CURSOR_COLOR;       /* Cursor color */
+static int termCursorFg    = TERM_CURSOR_FG;          /* Cursor foreground color */
 static int currentFontSize;                           /* Necessary for changing font size */
 static int keyState;                                  /* State of key press events */
 static int actionKey   = GDK_MOD1_MASK;               /* Key to check on press */
@@ -399,12 +401,17 @@ static int configureTerm(GtkWidget* terminal) {
     vte_terminal_set_allow_bold(VTE_TERMINAL(terminal), TRUE);
     /* Allow hyperlinks */
     vte_terminal_set_allow_hyperlink(VTE_TERMINAL(terminal), TRUE);
-    /* Zuckerberg feature */
-    vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(terminal), 
-        VTE_CURSOR_BLINK_OFF);
     /* Set char exceptions */
     vte_terminal_set_word_char_exceptions(VTE_TERMINAL(terminal),
 	    termWordChars);
+    /* Zuckerberg feature */
+    vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(terminal),
+        VTE_CURSOR_BLINK_OFF);
+    /* Set cursor colors */
+    vte_terminal_set_color_cursor(VTE_TERMINAL(terminal),
+        &CLR_GDK(termCursorColor, 0));
+    vte_terminal_set_color_cursor_foreground(VTE_TERMINAL(terminal),
+        &CLR_GDK(termCursorFg, 0));
     /* Set the terminal colors and font */
     vte_terminal_set_colors(VTE_TERMINAL(terminal),
         &CLR_GDK(termForeground, 0),            /* Foreground */
@@ -600,6 +607,11 @@ static void parseSettings() {
         /* Opacity value */
         } else if(!strncmp(option, "opacity", strlen(option))) {
             termOpacity = atof(value);
+        /* Cursor colors */
+        } else if(!strncmp(option, "cursor", strlen(option))) {
+            termCursorColor = (int)strtol(value, NULL, 16);
+        } else if(!strncmp(option, "cursor_foreground", strlen(option))) {
+            termCursorFg = (int)strtol(value, NULL, 16);
         /* Foreground color */
         } else if(!strncmp(option, "foreground", strlen(option))) {
             termForeground = (int)strtol(value, NULL, 16);
