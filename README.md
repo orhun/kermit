@@ -89,6 +89,10 @@ k3rmit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 The default configuration file is available [here](https://github.com/orhun/k3rmit/blob/master/.config/k3rmit.conf).  
 Most of the settings can be changed via the config file including font, opacity and colors.
 
+### Theme
+
+Terminal theme can be changed with either editing the config file manually or using the [base16](https://github.com/chriskempson/base16) color schemes in [orhun/base16-k3rmit](https://github.com/orhun/base16-k3rmit) repository.
+
 ### Font
 
 `k3rmit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `k3rmit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
