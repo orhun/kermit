@@ -18,7 +18,7 @@
 
 #include <vte/vte.h>
 #define TERM_NAME "k3rmit"
-#define TERM_VERSION "2.2"
+#define TERM_VERSION "2.3"
 #define TERM_FONT "Monospace"
 #define TERM_FONT_DEFAULT_SIZE 9
 #define TERM_LOCALE "en_US.UTF-8"
