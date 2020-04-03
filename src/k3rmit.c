@@ -74,13 +74,13 @@ typedef struct KeyBindings {                          /* Key bindings struct */
 static Bindings keyBindings[TERM_CONFIG_LENGTH];      /* Array for custom key bindings */
 static GdkRGBA termPalette[TERM_PALETTE_SIZE] = {
         CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
-        CLR_GDK(0x33ff00, 0), CLR_GDK(0xf3f828, 0),
-        CLR_GDK(0x0300ff, 0), CLR_GDK(0xcc00ff, 0),
-        CLR_GDK(0x0300ff, 0), CLR_GDK(0xdcdccc, 0),
+        CLR_GDK(0xa8ff60, 0), CLR_GDK(0xf3f828, 0),
+        CLR_GDK(0x3c70a4, 0), CLR_GDK(0xcc00ff, 0),
+        CLR_GDK(0x3c70a4, 0), CLR_GDK(0xdcdccc, 0),
         CLR_GDK(0x808080, 0), CLR_GDK(0xcf0000, 0),
-        CLR_GDK(0x33ff00, 0), CLR_GDK(0x6b6b6b, 0),
-        CLR_GDK(0x0066ff, 0), CLR_GDK(0xcc00ff, 0),
-        CLR_GDK(0x34e2e2, 0), CLR_GDK(0xdcdccc, 0)
+        CLR_GDK(0xa8ff60, 0), CLR_GDK(0x6b6b6b, 0),
+        CLR_GDK(0x3c70a4, 0), CLR_GDK(0xcc00ff, 0),
+        CLR_GDK(0x3c70a4, 0), CLR_GDK(0xdcdccc, 0)
     };
 
 /*!
