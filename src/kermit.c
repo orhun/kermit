@@ -1,5 +1,5 @@
 /*
- * k3rmit, a VTE-based terminal emulator that aims to be simple, fast and effective.
+ * kermit, a VTE-based terminal emulator that aims to be simple, fast and effective.
  * Copyright (C) 2019 by orhun <https://www.github.com/orhun>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "k3rmit.h"
+#include "kermit.h"
 #include <stdio.h>
 #include <stdarg.h>
 #include <locale.h>
@@ -665,12 +665,12 @@ static int parseArgs(int argc, char **argv) {
             case 'v':
                 /* Show version information */
                 fprintf(stderr, 
-                    "%s [ %sk3rmit%s ] ~ v%s \n"
+                    "%s [ %skermit%s ] ~ v%s \n"
                     "   (+)(+)   ~ VTE-based\r\n"
                     "  /      \\  ~ simple\r\n"
                     "  \\ -==- /  ~ fast\r\n"
                     "   \\    /   ~ effective\r\n"
-                    "  <\\/\\/\\/>  ~ github.com/orhun/k3rmit\r\n"
+                    "  <\\/\\/\\/>  ~ github.com/orhun/kermit\r\n"
                     "  /      \\  ~ gplv3%s\n",
                     TERM_ATTR_BOLD, TERM_ATTR_COLOR,
                     TERM_ATTR_DEFAULT, TERM_VERSION,

@@ -1,5 +1,5 @@
 /*
- * k3rmit, a VTE-based terminal emulator that aims to be simple, fast and effective.
+ * kermit, a VTE-based terminal emulator that aims to be simple, fast and effective.
  * Copyright (C) 2019 by orhun <https://www.github.com/orhun>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  */
 
 #include <vte/vte.h>
-#define TERM_NAME "k3rmit"
+#define TERM_NAME "kermit"
 #define TERM_VERSION "2.3"
 #define TERM_FONT "Monospace"
 #define TERM_FONT_DEFAULT_SIZE 9

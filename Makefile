@@ -1,5 +1,5 @@
 # Project & compiler information
-NAME=k3rmit
+NAME=kermit
 CFLAGS=-s -O3 -Wall -Wno-deprecated-declarations $(shell pkg-config --cflags vte-2.91)
 LIBS=$(shell pkg-config --libs vte-2.91)
 CC=gcc

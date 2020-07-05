@@ -1,19 +1,19 @@
-# k3rmit [![Release](https://img.shields.io/github/release/orhun/k3rmit.svg?color=5B7C33&style=flat-square)](https://github.com/orhun/k3rmit/releases) [![AUR](https://img.shields.io/aur/version/k3rmit.svg?color=5B7C33&style=flat-square)](https://aur.archlinux.org/packages/k3rmit/)
+# kermit [![Release](https://img.shields.io/github/release/orhun/kermit.svg?color=5B7C33&style=flat-square)](https://github.com/orhun/kermit/releases) [![AUR](https://img.shields.io/aur/version/kermit.svg?color=5B7C33&style=flat-square)](https://aur.archlinux.org/packages/kermit/)
 
 ### A VTE-based terminal emulator that aims to be simple, fast and effective.
 
 ![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
 
-[VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that allows creating a virtual terminal emulator which is used in many emulators such as [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/). Although there's a lot of (VTE-based and other) terminal emulator options for GNU/Linux users, `k3rmit` tries to differ from them with its simplicity.   
+[VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that allows creating a virtual terminal emulator which is used in many emulators such as [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/). Although there's a lot of (VTE-based and other) terminal emulator options for GNU/Linux users, `kermit` tries to differ from them with its simplicity.   
 The project inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [article](https://vincent.bernat.ch/en/blog/2017-write-own-terminal) and also his [implementation](https://github.com/vincentbernat/vbeterm) of a custom VTE-based terminal. Also, [Rxvt](https://wiki.archlinux.org/index.php/Rxvt-unicode) and [termite](https://github.com/thestinger/termite)'s appearance are taken as an example.
 
 ## Installation
 
-`k3rmit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
+`kermit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
 
 ### • AUR
-* [k3rmit](https://aur.archlinux.org/packages/k3rmit/)
-* [k3rmit-git](https://aur.archlinux.org/packages/k3rmit-git/)
+* [kermit](https://aur.archlinux.org/packages/kermit/)
+* [kermit-git](https://aur.archlinux.org/packages/kermit-git/)
 
 ### • CMake
 
@@ -36,8 +36,8 @@ sudo make install
 
 ```
 cd src/
-gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) k3rmit.c -o\
- k3rmit.o $(pkg-config --libs vte-2.91)
+gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) kermit.c -o\
+ kermit.o $(pkg-config --libs vte-2.91)
 ```
 
 ## Features
@@ -50,7 +50,7 @@ gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) k3
 ## Arguments
 
 ```
-k3rmit [-h] [-v] [-d] [-c config] [-t title] [-e command]
+kermit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 -h, show help message and exit
 -v, show version
 -d, enable debug messages
@@ -85,17 +85,17 @@ k3rmit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 
 ### Config File
 
-`k3rmit` looks for configuration file in `~/.config/k3rmit.conf`  
-The default configuration file is available [here](https://github.com/orhun/k3rmit/blob/master/.config/k3rmit.conf).  
+`kermit` looks for configuration file in `~/.config/kermit.conf`  
+The default configuration file is available [here](https://github.com/orhun/kermit/blob/master/.config/kermit.conf).  
 Most of the settings can be changed via the config file including font, opacity and colors.
 
 ### Theme
 
-Terminal theme can be changed with either editing the config file manually or using the [base16](https://github.com/chriskempson/base16) color schemes in [orhun/base16-k3rmit](https://github.com/orhun/base16-k3rmit) repository.
+Terminal theme can be changed with either editing the config file manually or using the [base16](https://github.com/chriskempson/base16) color schemes in [orhun/base16-kermit](https://github.com/orhun/base16-kermit) repository.
 
 ### Font
 
-`k3rmit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `k3rmit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
+`kermit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `kermit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
 
 ```
 font [FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
@@ -118,7 +118,7 @@ font monospace bold italic condensed 12
 
 ### Key Bindings
 
-Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/orhun/k3rmit/blob/master/.config/k3rmit.conf#L14) and entry format is shown below.
+Custom keys and associated commands can be specified with the configuration file. An example entry is available [here](https://github.com/orhun/kermit/blob/master/.config/kermit.conf#L14) and entry format is shown below.
 
 ```
 bind/bindx [KEY]~"[COMMAND]"
@@ -153,7 +153,7 @@ vte-terminal {
 The command below can be used to create both configuration files.
 
 ```
-curl https://raw.githubusercontent.com/orhun/k3rmit/master/.config/k3rmit.conf --output ~/.config/k3rmit.conf && \
+curl https://raw.githubusercontent.com/orhun/kermit/master/.config/kermit.conf --output ~/.config/kermit.conf && \
 printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
 ```
 

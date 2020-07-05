@@ -1,9 +1,9 @@
 # Min. CMake Version: 3.13
 cmake_minimum_required(VERSION 3.13)
 # Set project and language
-project(k3rmit-term C)
+project(kermit-term C)
 # Set target name
-set(TARGET "k3rmit")
+set(TARGET "kermit")
 # Add project source as executable
 add_executable(${TARGET} src/${TARGET}.c src/${TARGET}.h)
 # Check PkgConfig

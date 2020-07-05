@@ -7,13 +7,13 @@ Type=Application
 Version=2.3
 
 # The name of the application
-Name=k3rmit
+Name=kermit
 
 # Application comment
 Comment=Terminal emulator
 
 # The executable of the application
-Exec=/usr/bin/k3rmit
+Exec=/usr/bin/kermit
 
 # The name of the icon
 Icon=utilities-terminal
