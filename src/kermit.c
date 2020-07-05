@@ -50,6 +50,7 @@ static int keyState;                                  /* State of key press even
 static int actionKey   = GDK_MOD1_MASK;               /* Key to check on press */
 static int tabPosition = 0;                           /* Tab position (0/1 -> bottom/top) */
 static int keyCount    = 0;                           /* Count of custom binding keys */
+static int colorCount  = 0;                           /* Parsed color count */
 static int opt;                                       /* Argument parsing option */
 static char *termFont      = TERM_FONT;               /* Default terminal font */
 static char *termLocale    = TERM_LOCALE;             /* Terminal locale (numeric) */
@@ -57,7 +58,6 @@ static char *termWordChars = TERM_WORD_CHARS;         /* Word characters excepti
 static char *termTitle;                               /* Title to set in terminal (-t) */
 static char *wordChars;                               /* Variables for parsing the config */
 static char *fontSize;
-static char *colorIndex;
 static char *configFileName;                          /* Configuration file name */
 static char *termCommand;                             /* Command to execute in terminal (-e) */
 static char *tabLabelText;                            /* The label text for showing the tabs situation */
@@ -363,6 +363,7 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
 /*!
  * Set the terminal font with given size.
  *
+ * \param terminal
  * \param fontSize
  * \return 0 on success
  */
@@ -375,6 +376,43 @@ static int setTermFont(GtkWidget* terminal, int fontSize) {
 	    pango_font_description_free(fontDesc);
         g_free(fontStr);
     }
+    return 0;
+}
+
+/*!
+ * Update the palette and set terminal colors.
+ *
+ * \param terminal
+ * \return 0 on success
+ */
+static int setTermColors(GtkWidget* terminal) {
+    for (int i = colorCount; i < 256; i++) {
+        if (i < 16) {
+            termPalette[i].blue = (((i & 4) ? 0xc000 : 0) + (i > 7 ? 0x3fff: 0)) / 65535.0;
+            termPalette[i].green = (((i & 2) ? 0xc000 : 0) + (i > 7 ? 0x3fff : 0)) / 65535.0;
+            termPalette[i].red = (((i & 1) ? 0xc000 : 0) + (i > 7 ? 0x3fff : 0)) / 65535.0;
+            termPalette[i].alpha = 0;
+        } else if (i < 232) {
+            const unsigned j = i - 16;
+            const unsigned r = j / 36, g = (j / 6) % 6, b = j % 6;
+            termPalette[i].red = ((r == 0) ? 0 : r * 40 + 55) / 255.0;
+            termPalette[i].green = ((g == 0) ? 0 : g * 40 + 55) / 255.0;
+            termPalette[i].blue = ((b == 0) ? 0 : b * 40 + 55) / 255.0;
+            termPalette[i].alpha = 0;
+        } else if (i < 256) {
+            const unsigned shade = 8 + (i - 232) * 10;
+            termPalette[i].red = termPalette[i].green =
+                termPalette[i].blue = (shade | shade << 8) / 65535.0;
+            termPalette[i].alpha = 0;
+        }
+    }
+    vte_terminal_set_colors(VTE_TERMINAL(terminal),
+        &CLR_GDK(termForeground, 0),            /* Foreground */
+        &CLR_GDK(termBackground, termOpacity),  /* Background */
+        termPalette,                            /* Palette */
+        sizeof(termPalette)/sizeof(GdkRGBA));
+    vte_terminal_set_color_bold(VTE_TERMINAL(terminal),
+        &CLR_GDK(termBoldColor, 0));
     return 0;
 }
 
@@ -413,13 +451,7 @@ static int configureTerm(GtkWidget* terminal) {
     vte_terminal_set_color_cursor_foreground(VTE_TERMINAL(terminal),
         &CLR_GDK(termCursorFg, 0));
     /* Set the terminal colors and font */
-    vte_terminal_set_colors(VTE_TERMINAL(terminal),
-        &CLR_GDK(termForeground, 0),            /* Foreground */
-        &CLR_GDK(termBackground, termOpacity),  /* Background */
-        termPalette ,                           /* Palette */
-        sizeof(termPalette)/sizeof(GdkRGBA));
-    vte_terminal_set_color_bold(VTE_TERMINAL(terminal),
-        &CLR_GDK(termBoldColor, 0));
+    setTermColors(terminal);
     setTermFont(terminal, defaultFontSize);
     return 0;
 }
@@ -626,11 +658,12 @@ static void parseSettings() {
         /* Color palette */
         } else if (!strncmp(option, "color", strlen(option)-2)) {
             /* Get the color index */
-            colorIndex = strrchr(option, 'r');
+            char *colorIndex = strrchr(option, 'r');
             if (colorIndex != NULL) {
                 /* Set the color in palette */
-                termPalette[atoi(colorIndex + 1) % TERM_PALETTE_SIZE] =
+                termPalette[atoi(colorIndex + 1)] =
                     CLR_GDK((int)strtol(value, NULL, 16), 0);
+                colorCount++;
             }
         }
     }
