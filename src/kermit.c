@@ -458,10 +458,12 @@ static GtkWidget* getTerm() {
     /* Start a new shell */
     envp = g_get_environ();
     command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
-    if (termCommand != NULL)
+    printLog("shell: %s\n", *command);
+    if (termCommand != NULL) {
         command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")),
             "-c", termCommand , NULL };
-    printLog("shell: %s\n", *command);
+        printLog("command: %s %s %s\n", command[0], command[1], command[2]);
+    }
     g_strfreev(envp);
     /* Spawn terminal asynchronously */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal), 
