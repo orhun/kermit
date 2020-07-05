@@ -1,6 +1,6 @@
 /*
  * kermit, a VTE-based terminal emulator that aims to be simple, fast and effective.
- * Copyright (C) 2019 by orhun <https://www.github.com/orhun>
+ * Copyright (C) 2019-2020 by orhun <https://www.github.com/orhun>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
