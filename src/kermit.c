@@ -132,11 +132,11 @@ static gboolean termOnChildExit(VteTerminal *terminal, gint status,
         gpointer userData) {
     /* 'child-exited' signal is emitted on both terminal exit
      * and (notebook) page deletion. Use closeTab variable
-     * to solve this issue. Also closes the current tab on exit.
+     * to solve this issue. Also, it closes the current tab on exit.
      */
-    if(!closeTab) {
+    if (!closeTab) {
         /* Close the current tab */
-        if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) != 1) {
+        if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) != 1) {
             gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 
                 gtk_notebook_get_current_page(GTK_NOTEBOOK(notebook)));
             gtk_widget_queue_draw(GTK_WIDGET(notebook));
@@ -166,8 +166,8 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
     /* Check for CTRL, ALT and SHIFT keys */
     keyState = event->state & (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
     /* CTRL + binding + key */
-    if(keyState == (actionKey | GDK_CONTROL_MASK)) {
-        if(atoi(gdk_keyval_name(event->keyval)) != 0) {
+    if (keyState == (actionKey | GDK_CONTROL_MASK)) {
+        if (atoi(gdk_keyval_name(event->keyval)) != 0) {
            gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook),
                 atoi(gdk_keyval_name(event->keyval))-1);
            return TRUE;
@@ -187,7 +187,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
             case GDK_KEY_R: /* Fallthrough */
             case GDK_KEY_r:
                 printLog("Reloading configuration file...\n");
-                if(defaultConfigFile)
+                if (defaultConfigFile)
                     configFileName = NULL;
                 parseSettings();
                 configureTerm(terminal);
@@ -249,7 +249,7 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 return TRUE;
             default:
                 for(int i = 0; i < keyCount; i++) {
-                    if(!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)) {
+                    if (!strcmp(gdk_keyval_name(event->keyval), keyBindings[i].key)) {
                         vte_terminal_feed_child(VTE_TERMINAL(terminal),
                             keyBindings[i].cmd, -1);
                         return TRUE;
@@ -319,12 +319,12 @@ static gboolean termTabOnAdd(GtkNotebook *notebook, GtkWidget *child,
 static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page, 
         guint pageNum, gpointer userData) {
     /* Destroy tabs label if there's not more than one tabs */
-    if(gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1) {
-        if(tabLabel != NULL)
+    if (gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)) == 1) {
+        if (tabLabel != NULL)
             gtk_widget_destroy(tabLabel);
         return TRUE;
     /* Add tabs label to paned if it doesn't exist */
-    } else if(gtk_paned_get_child1(GTK_PANED(paned)) == NULL ||
+    } else if (gtk_paned_get_child1(GTK_PANED(paned)) == NULL ||
         gtk_paned_get_child2(GTK_PANED(paned)) == NULL) {
         tabLabel = gtk_label_new(NULL);
         gtk_label_set_xalign(GTK_LABEL(tabLabel), 0);
@@ -361,7 +361,7 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
 
 
 /*!
- * Set terminal font with given size.
+ * Set the terminal font with given size.
  *
  * \param fontSize
  * \return 0 on success
@@ -445,7 +445,7 @@ static void termStateCallback(VteTerminal *terminal, GPid pid,
 }
 
 /*!
- * Create a new terminal widget with shell.
+ * Create a new terminal widget with a shell.
  *
  * \return terminal
  */
@@ -458,7 +458,7 @@ static GtkWidget* getTerm() {
     /* Start a new shell */
     envp = g_get_environ();
     command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")), NULL };
-    if(termCommand != NULL)
+    if (termCommand != NULL)
         command = (gchar *[]) { g_strdup(g_environ_getenv(envp, "SHELL")),
             "-c", termCommand , NULL };
     printLog("shell: %s\n", *command);
@@ -532,13 +532,13 @@ static void parseSettings() {
     char buf[TERM_CONFIG_LENGTH], 
         option[TERM_CONFIG_LENGTH], 
         value[TERM_CONFIG_LENGTH];
-    if(configFileName == NULL)
+    if (configFileName == NULL)
         configFileName = g_strconcat(getenv("HOME"), 
                 TERM_CONFIG_DIR, TERM_NAME, ".conf", NULL);
     else
         defaultConfigFile = FALSE;
     configFile = fopen(configFileName, "r");
-    if(configFile == NULL) {
+    if (configFile == NULL) {
         printLog("config file not found. (%s)\n", configFileName);
         return;
     }
@@ -549,22 +549,22 @@ static void parseSettings() {
         /* Get option and value from line */
         sscanf(buf, "%s %s\n", option, value);
         /* Locale */
-        if(!strncmp(option, "locale", strlen(option))) {
+        if (!strncmp(option, "locale", strlen(option))) {
              termLocale = g_strdup(value);
         /* Word chars */
-        } else if(!strncmp(option, "char", strlen(option))) {
+        } else if (!strncmp(option, "char", strlen(option))) {
             /* Remove '"' from word chars */
             wordChars = g_strdup(value);
             wordChars[strlen(wordChars)-1] = 0;
             termWordChars = wordChars+1;
         /* Action key */
-        } else if(!strncmp(option, "key", strlen(option))) {
-            if(!strncmp(value, "alt", strlen(value)))
+        } else if (!strncmp(option, "key", strlen(option))) {
+            if (!strncmp(value, "alt", strlen(value)))
                 actionKey = GDK_MOD1_MASK;
             else
                 actionKey = GDK_SHIFT_MASK;
         /* Key bindings */
-        } else if(!strncmp(option, "bind", strlen(option)-1)) {
+        } else if (!strncmp(option, "bind", strlen(option)-1)) {
             /* Parse the line again for command */
             sscanf(buf, "%s %[^\n]\n", option, value);
             /* Split the line and get last element */
@@ -586,13 +586,13 @@ static void parseSettings() {
                 keyCount++;
             }
         /* Tab position */
-        } else if(!strncmp(option, "tab", strlen(option))) {
-            if(!strncmp(value, "bottom", strlen(value)))
+        } else if (!strncmp(option, "tab", strlen(option))) {
+            if (!strncmp(value, "bottom", strlen(value)))
                 tabPosition = 0;
             else
                 tabPosition = 1;
         /* Terminal font */
-        } else if(!strncmp(option, "font", strlen(option))) {
+        } else if (!strncmp(option, "font", strlen(option))) {
             /* Parse the line again for font size */ 
             sscanf(buf, "%s %[^\n]\n", option, value);
             /* Split the line and get last element */
@@ -605,24 +605,24 @@ static void parseSettings() {
                 termFont = g_strdup(value);
             }
         /* Opacity value */
-        } else if(!strncmp(option, "opacity", strlen(option))) {
+        } else if (!strncmp(option, "opacity", strlen(option))) {
             termOpacity = atof(value);
         /* Cursor colors */
-        } else if(!strncmp(option, "cursor", strlen(option))) {
+        } else if (!strncmp(option, "cursor", strlen(option))) {
             termCursorColor = (int)strtol(value, NULL, 16);
-        } else if(!strncmp(option, "cursor_foreground", strlen(option))) {
+        } else if (!strncmp(option, "cursor_foreground", strlen(option))) {
             termCursorFg = (int)strtol(value, NULL, 16);
         /* Foreground color */
-        } else if(!strncmp(option, "foreground", strlen(option))) {
+        } else if (!strncmp(option, "foreground", strlen(option))) {
             termForeground = (int)strtol(value, NULL, 16);
         /* Bold color */
-        } else if(!strncmp(option, "foreground_bold", strlen(option))) {
+        } else if (!strncmp(option, "foreground_bold", strlen(option))) {
             termBoldColor = (int)strtol(value, NULL, 16);
         /* Background color */
-        } else if(!strncmp(option, "background", strlen(option))) {
+        } else if (!strncmp(option, "background", strlen(option))) {
             termBackground = (int)strtol(value, NULL, 16);
         /* Color palette */
-        } else if(!strncmp(option, "color", strlen(option)-2)) {
+        } else if (!strncmp(option, "color", strlen(option)-2)) {
             /* Get the color index */
             colorIndex = strrchr(option, 'r');
             if (colorIndex != NULL) {
@@ -633,7 +633,7 @@ static void parseSettings() {
         }
     }
     fclose(configFile);
-    if(defaultConfigFile)
+    if (defaultConfigFile)
         g_free(configFileName);
 }
 
@@ -702,7 +702,7 @@ static int parseArgs(int argc, char **argv) {
  */
 int main(int argc, char *argv[]) {
     /* Parse command line arguments */
-    if(parseArgs(argc, argv))
+    if (parseArgs(argc, argv))
         return 0;
     /* Parse settings if configuration file exists */
     parseSettings();
