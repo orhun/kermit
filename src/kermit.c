@@ -340,9 +340,9 @@ static gboolean termTabOnSwitch(GtkNotebook *notebook, GtkWidget *page,
     tabLabelText = g_markup_printf_escaped(
         "<span font='\%s' foreground='#\%02X\%02X\%02X'>", 
         fontStr, 
-        (int)(termPalette[4].red*255), 
-        (int)(termPalette[4].green*255), 
-        (int)(termPalette[4].blue*255));
+        (int) (termPalette[4].red * 255),
+        (int) (termPalette[4].green * 255),
+        (int) (termPalette[4].blue * 255));
     for (int i = 0; i < gtk_notebook_get_n_pages(GTK_NOTEBOOK(notebook)); i++) {
         if (i == pageNum)
             tabLabelText = g_strconcat(tabLabelText, 
