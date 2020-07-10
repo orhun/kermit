@@ -1,7 +1,6 @@
 # kermit [![Release](https://img.shields.io/github/release/orhun/kermit.svg?color=5B7C33&style=flat-square)](https://github.com/orhun/kermit/releases) [![AUR](https://img.shields.io/aur/version/kermit.svg?color=5B7C33&style=flat-square)](https://aur.archlinux.org/packages/kermit/)
 
-### A VTE-based terminal emulator that aims to be simple, fast and effective.
-
+### A VTE-based, simple and froggy terminal emulator.
 ![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
 
 [VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that allows creating a virtual terminal emulator which is used in many emulators such as [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/). Although there's a lot of (VTE-based and other) terminal emulator options for GNU/Linux users, `kermit` tries to differ from them with its simplicity.   
