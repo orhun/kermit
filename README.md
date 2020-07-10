@@ -3,18 +3,17 @@
 ### A VTE-based, simple and froggy terminal emulator.
 ![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
 
-[VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that allows creating a virtual terminal emulator which is used in many emulators such as [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/). Although there's a lot of (VTE-based and other) terminal emulator options for GNU/Linux users, `kermit` tries to differ from them with its simplicity.   
-The project inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [article](https://vincent.bernat.ch/en/blog/2017-write-own-terminal) and also his [implementation](https://github.com/vincentbernat/vbeterm) of a custom VTE-based terminal. Also, [Rxvt](https://wiki.archlinux.org/index.php/Rxvt-unicode) and [termite](https://github.com/thestinger/termite)'s appearance are taken as an example.
+[VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that is designed to create virtual terminal emulators. [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/) are a few examples of terminal emulators that use the VTE widget. With the case of kermit, although it is a "yet another" VTE implementation, it aims to keep everything simple and customizable while providing some additional features.
+
+The project is inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [article](https://vincent.bernat.ch/en/blog/2017-write-own-terminal) and also his [implementation](https://github.com/vincentbernat/vbeterm) of a custom VTE-based terminal. Terminal features and appearance are mostly influenced by [Rxvt](https://wiki.archlinux.org/index.php/Rxvt-unicode), [termite](https://github.com/thestinger/termite) and [st](https://st.suckless.org/).
 
 ## Installation
 
-`kermit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
-
-### • AUR
+### AUR
 * [kermit](https://aur.archlinux.org/packages/kermit/)
 * [kermit-git](https://aur.archlinux.org/packages/kermit-git/)
 
-### • CMake
+### CMake
 
 ```
 mkdir -p build && cd build
@@ -24,14 +23,14 @@ sudo make install
 sudo ldconfig
 ```
 
-### • Make
+### Make
 
 ```
 make
 sudo make install
 ```
 
-### • GCC
+### GCC
 
 ```
 cd src/
@@ -39,23 +38,27 @@ gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) ke
  kermit.o $(pkg-config --libs vte-2.91)
 ```
 
+\* `kermit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
+
 ## Features
 
-* Use default shell (with `$SHELL` environment variable)
+* Uses the default shell (with `$SHELL` environment variable)
 * Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
-* Tab support
-* Customizable
+* Supports base16 color schemes (customizable theme)
+* Supports custom keys and associated commands
+* Supports tabs
 
 ## Arguments
 
 ```
 kermit [-h] [-v] [-d] [-c config] [-t title] [-e command]
--h, show help message and exit
--v, show version
--d, enable debug messages
--c, configuration file to read
--t, title to set in terminal
--e, command to execute in terminal
+
+[-h] shows help
+[-v] shows version
+[-d] enables the debug messages
+[-c config]  specifies the configuration file
+[-t title]   sets the terminal title
+[-e command] sets the command to execute in terminal
 ```
 
 ## Key Bindings
@@ -71,22 +74,22 @@ kermit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 | `ctrl-alt-[j][down]`        | decrease font size             |
 | `ctrl-alt-[=]`              | reset font size to default     |
 | `ctrl-alt-[return]`         | open a new tab                 |
-| `ctrl-alt-[num]`            | switch to the tab number [num] |
+| `ctrl-alt-[num]`            | switch to the tab number       |
 | `ctrl-alt-[l][right][pgup]` | switch to the next tab         |
 | `ctrl-alt-[h][left][pgdn]`  | switch to the previous tab     |
 | `ctrl-alt-[w][backspace]`   | close the selected tab         |
 
-• Key bindings (`ctrl-alt`) can be set to standard `ctrl-shift` with the config file.  
+• Key bindings (`ctrl-alt`) can be set to `ctrl-shift` with using the config file.
 
-• Default key bindings (`ctrl-alt`) can conflict with your desktop environments window shortcuts. (especially on Linux Mint) In order to solve this issue, key bindings can be changed to `ctrl-shift`.
+• Default key bindings (`ctrl-alt`) might conflict with your desktop environments window shortcuts. To solve this issue, key bindings should be changed to `ctrl-shift`.
 
 ## Customization
 
 ### Config File
 
-`kermit` looks for configuration file in `~/.config/kermit.conf`  
-The default configuration file is available [here](https://github.com/orhun/kermit/blob/master/.config/kermit.conf).  
-Most of the settings can be changed via the config file including font, opacity and colors.
+Most of the settings including font, opacity and colors can be changed via the config file. The default configuration file is available [here](https://github.com/orhun/kermit/blob/master/.config/kermit.conf).
+
+`kermit` looks for configuration file in `~/.config/kermit.conf`
 
 ### Theme
 
@@ -125,12 +128,9 @@ bind/bindx [KEY]~"[COMMAND]"
 
 • bind: `Send command to the terminal.`  
 • bindx: `Send command to the terminal and execute.`   
-• Key bindings must be uppercase if the action key is `ctrl-shift`.   
-• Commands that contain "`~`" might have cause error when parsing the configuration file.
 
 Examples:
 ```
-bindx l~"ls -l"
 bindx f~"df -h"
 bind r~"rm -i "
 bind p~"ps aux | grep "
@@ -139,7 +139,7 @@ bind k~"kill -9 "
 
 ### Padding
 
-In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if does not exist and specify the values there and restart the terminal.
+In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if it does not exist, specify the values there and restart the terminal.
 
 ```
 VteTerminal,
@@ -149,7 +149,7 @@ vte-terminal {
 }
 ```
 
-The command below can be used to create both configuration files.
+The command below can be used to create the both configuration files.
 
 ```
 curl https://raw.githubusercontent.com/orhun/kermit/master/.config/kermit.conf --output ~/.config/kermit.conf && \
@@ -158,15 +158,14 @@ printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1p
 
 ## Screenshots
 
-![Screenshot I](https://user-images.githubusercontent.com/24392180/66824998-10386980-ef52-11e9-92c0-7510338b71b7.gif)
+![Screenshot I](https://user-images.githubusercontent.com/24392180/87167894-5a2e6000-c2d6-11ea-9c99-fa05cf56f40b.gif)
 
-![Screenshot II](https://user-images.githubusercontent.com/24392180/66824530-242f9b80-ef51-11e9-8c07-76b5c691e97c.png)
-
-![Screenshot III](https://user-images.githubusercontent.com/24392180/59703686-1a946200-9203-11e9-8043-e58dcc9edc64.png)
+![Screenshot II](https://user-images.githubusercontent.com/24392180/87169357-8814a400-c2d8-11ea-8f31-9f0a17f3152e.png)
 
 ## TODO(s)
 
-• URL handling
+* URL handling
+
 
 ## License
 
