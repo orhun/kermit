@@ -602,8 +602,9 @@ static void parseSettings() {
         } else if (!strncmp(option, "bind", strlen(option)-1)) {
             /* Parse the line again for command */
             sscanf(buf, "%s %[^\n]\n", option, value);
-            /* Split the line and get last element */
-            char *cmd = strrchr(value, '~');
+            /* Split the line and the values */
+            char* key = strtok(value, "~");
+            char* cmd = strtok(NULL, "");
             if (cmd != NULL) {
                 /* Trim and add to the commands */
                 cmd[strlen(cmd)-1] = 0;
@@ -611,12 +612,14 @@ static void parseSettings() {
                 if (!strcmp(option, "bindx"))
                 /* Append carriage return to command */
                     keyBindings[keyCount].cmd = 
-                        g_strconcat(g_strdup(cmd+2), "\r", NULL);
+                        g_strconcat(g_strdup(cmd+1), "\r", NULL);
                 else
-                    keyBindings[keyCount].cmd = g_strdup(cmd+2);
+                    keyBindings[keyCount].cmd = g_strdup(cmd+1);
                 /* Add key binding to the keys */
-                *cmd = 0;
-                keyBindings[keyCount].key = g_strdup(value);
+                keyBindings[keyCount].key = g_strdup(key);
+                printLog("cmd %d = %s -> \"%s\"\n", keyCount + 1,
+                    keyBindings[keyCount].key,
+                    keyBindings[keyCount].cmd);
                 /* Increment the keys count */
                 keyCount++;
             }
