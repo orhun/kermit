@@ -7,6 +7,30 @@
 
 The project is inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [article](https://vincent.bernat.ch/en/blog/2017-write-own-terminal) and also his [implementation](https://github.com/vincentbernat/vbeterm) of a custom VTE-based terminal. Terminal features and appearance are mostly influenced by [Rxvt](https://wiki.archlinux.org/index.php/Rxvt-unicode), [termite](https://github.com/thestinger/termite) and [st](https://st.suckless.org/).
 
+<details>
+  <summary>Table of Contents</summary>
+
+  * [Installation](#installation)
+    + [AUR](#aur)
+    + [CMake](#cmake)
+    + [Make](#make)
+    + [GCC](#gcc)
+  * [Features](#features)
+  * [Arguments](#arguments)
+  * [Key Bindings](#key-bindings)
+  * [Customization](#customization)
+    + [Config File](#config-file)
+    + [Theme](#theme)
+    + [Font](#font)
+    + [Key Bindings](#key-bindings-1)
+    + [Padding](#padding)
+  * [Screenshots](#screenshots)
+  * [TODO(s)](#todos)
+  * [License](#license)
+  * [Copyright](#copyright)
+
+</details>
+
 ## Installation
 
 ### AUR
