@@ -561,6 +561,20 @@ static int startTerm() {
 }
 
 /*!
+ * Parse the color value.
+ *
+ * \param value
+ * \return color
+ */
+static int parseColor(char* value) {
+    if (value[0] == '#') {
+        memmove(value, value+1, strlen(value));
+        sprintf(value, "%s", g_strconcat("0x", value, NULL));
+    }
+    return (int)strtol(value, NULL, 16);
+}
+
+/*!
  * Read settings from configuration file and apply.
  */
 static void parseSettings() {
@@ -647,18 +661,18 @@ static void parseSettings() {
             termOpacity = atof(value);
         /* Cursor colors */
         } else if (!strncmp(option, "cursor", strlen(option))) {
-            termCursorColor = (int)strtol(value, NULL, 16);
+            termCursorColor = parseColor(value);
         } else if (!strncmp(option, "cursor_foreground", strlen(option))) {
-            termCursorFg = (int)strtol(value, NULL, 16);
+            termCursorFg = parseColor(value);
         /* Foreground color */
         } else if (!strncmp(option, "foreground", strlen(option))) {
-            termForeground = (int)strtol(value, NULL, 16);
+            termForeground = parseColor(value);
         /* Bold color */
         } else if (!strncmp(option, "foreground_bold", strlen(option))) {
-            termBoldColor = (int)strtol(value, NULL, 16);
+            termBoldColor = parseColor(value);
         /* Background color */
         } else if (!strncmp(option, "background", strlen(option))) {
-            termBackground = (int)strtol(value, NULL, 16);
+            termBackground = parseColor(value);
         /* Color palette */
         } else if (!strncmp(option, "color", strlen(option)-2)) {
             /* Get the color index */
@@ -666,7 +680,7 @@ static void parseSettings() {
             if (colorIndex != NULL) {
                 /* Set the color in palette */
                 termPalette[atoi(colorIndex + 1)] =
-                    CLR_GDK((int)strtol(value, NULL, 16), 0);
+                    CLR_GDK(parseColor(value), 0);
                 colorCount++;
             }
         }
