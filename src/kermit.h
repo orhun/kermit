@@ -37,16 +37,16 @@
 #define TERM_ATTR_COLOR "\x1b[34m"
 #define TERM_ATTR_DEFAULT "\x1b[39m"
 
-static GtkWidget* getTerm();
+static GtkWidget *getTerm();
 static void parseSettings();
-static int configureTerm(GtkWidget* term);
+static int configureTerm(GtkWidget *term);
 static int setTermFont(GtkWidget *term, int fontSize);
 static gboolean termOnChildExit(VteTerminal *term,
-    gint status, gpointer userData);
+                                gint status, gpointer userData);
 static gboolean termOnKeyPress(GtkWidget *widget,
-    GdkEventKey *key, gpointer gptr);
+                               GdkEventKey *key, gpointer gptr);
 static gboolean termOnTitleChanged(GtkWidget *term,
-    gpointer gptr);
+                                   gpointer gptr);
 static gboolean termOnResize(GtkWidget *widget,
-    GtkAllocation *allocation,
-    gpointer userData);
+                             GtkAllocation *allocation,
+                             gpointer userData);
