@@ -48,6 +48,7 @@ static int termForeground = TERM_FOREGROUND;         /* Foreground color */
 static int termBoldColor = TERM_BOLD_COLOR;          /* Foreground bold color */
 static int termCursorColor = TERM_CURSOR_COLOR;      /* Cursor color */
 static int termCursorFg = TERM_CURSOR_FG;            /* Cursor foreground color */
+static int termCursorShape = VTE_CURSOR_SHAPE_BLOCK; /* Cursor shape*/
 static int currentFontSize;                          /* Necessary for changing font size */
 static int keyState;                                 /* State of key press events */
 static int actionKey = GDK_MOD1_MASK;                /* Key to check on press */
@@ -449,11 +450,12 @@ static int configureTerm(GtkWidget *terminal) {
     /* Zuckerberg feature */
     vte_terminal_set_cursor_blink_mode(VTE_TERMINAL(terminal),
                                        VTE_CURSOR_BLINK_OFF);
-    /* Set cursor colors */
+    /* Set cursor options */
     vte_terminal_set_color_cursor(VTE_TERMINAL(terminal),
                                   &CLR_GDK(termCursorColor, 0));
     vte_terminal_set_color_cursor_foreground(VTE_TERMINAL(terminal),
                                              &CLR_GDK(termCursorFg, 0));
+    vte_terminal_set_cursor_shape(VTE_TERMINAL(terminal), termCursorShape);
     /* Set the terminal colors and font */
     setTermColors(terminal);
     setTermFont(terminal, defaultFontSize);
@@ -667,6 +669,14 @@ static void parseSettings() {
             termCursorColor = parseColor(value);
         } else if (!strncmp(option, "cursor_foreground", strlen(option))) {
             termCursorFg = parseColor(value);
+            /* Cursor shape */
+        } else if (!strncmp(option, "cursor_shape", strlen(option))) {
+            if (!strncmp(value, "underline", strlen(value)))
+                termCursorShape = VTE_CURSOR_SHAPE_UNDERLINE;
+            else if (!strncmp(value, "ibeam", strlen(value)))
+                termCursorShape = VTE_CURSOR_SHAPE_IBEAM;
+            else
+                termCursorShape = VTE_CURSOR_SHAPE_BLOCK;
             /* Foreground color */
         } else if (!strncmp(option, "foreground", strlen(option))) {
             termForeground = parseColor(value);
