@@ -58,8 +58,7 @@ sudo make install
 
 ```
 cd src/
-gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) kermit.c -o\
- kermit.o $(pkg-config --libs vte-2.91)
+gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) kermit.c -o kermit.o $(pkg-config --libs vte-2.91)
 ```
 
 \* `kermit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
@@ -136,6 +135,7 @@ font [FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
 • Available stretch styles: `Ultra-Condensed, Extra-Condensed, Condensed, Semi-Condensed, Normal, Semi-Expanded, Expanded, Extra-Expanded, Ultra-Expanded`.
 
 Examples:
+
 ```
 font sans bold 12
 font normal 10
@@ -154,6 +154,7 @@ bind/bindx [KEY]~"[COMMAND]"
 • bindx: `Send command to the terminal and execute.`   
 
 Examples:
+
 ```
 bindx f~"df -h"
 bind r~"rm -i "
@@ -165,7 +166,7 @@ bind k~"kill -9 "
 
 In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.css` if it does not exist, specify the values there and restart the terminal.
 
-```
+```css
 VteTerminal,
 TerminalScreen,
 vte-terminal {
@@ -175,21 +176,18 @@ vte-terminal {
 
 The command below can be used to create the both configuration files.
 
-```
+```bash
 curl https://raw.githubusercontent.com/orhun/kermit/master/.config/kermit.conf --output ~/.config/kermit.conf && \
-printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
+  printf "VteTerminal,\nTerminalScreen,\nvte-terminal {\n\tpadding: 3px 2px 2px 1px;\n}\n" > ~/.config/gtk-3.0/gtk.css
 ```
 
 ## Screenshots
 
-![Screenshot I](https://user-images.githubusercontent.com/24392180/87167894-5a2e6000-c2d6-11ea-9c99-fa05cf56f40b.gif)
-
-![Screenshot II](https://user-images.githubusercontent.com/24392180/87169357-8814a400-c2d8-11ea-8f31-9f0a17f3152e.png)
+![Screenshot](https://user-images.githubusercontent.com/24392180/87167894-5a2e6000-c2d6-11ea-9c99-fa05cf56f40b.gif)
 
 ## TODO(s)
 
 * URL handling
-
 
 ## License
 
@@ -197,4 +195,4 @@ GNU General Public License ([v3](https://www.gnu.org/licenses/gpl.txt))
 
 ## Copyright
 
-Copyright (c) 2019-2020, [orhun](https://www.github.com/orhun)
+Copyright (c) 2019-2021, [orhun](https://www.github.com/orhun)
