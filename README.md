@@ -191,8 +191,8 @@ curl https://raw.githubusercontent.com/orhun/kermit/master/.config/kermit.conf -
 
 ## License
 
-GNU General Public License ([v3](https://www.gnu.org/licenses/gpl.txt))
+GNU General Public License v3.0 only ([GPL-3.0-only](https://www.gnu.org/licenses/gpl.txt))
 
 ## Copyright
 
-Copyright (c) 2019-2021, [orhun](https://www.github.com/orhun)
+Copyright © 2019-2021, [Orhun Parmaksız](mailto:orhunparmaksiz@gmail.com)
