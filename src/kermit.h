@@ -17,7 +17,7 @@
 
 #include <vte/vte.h>
 #define TERM_NAME "kermit"
-#define TERM_VERSION "3.2"
+#define TERM_VERSION "3.3"
 #define TERM_FONT "Monospace"
 #define TERM_FONT_DEFAULT_SIZE 9
 #define TERM_LOCALE "en_US.UTF-8"
