@@ -75,15 +75,7 @@ typedef struct KeyBindings {              /* Key bindings struct */
     char *cmd;
 } Bindings;
 static Bindings keyBindings[TERM_CONFIG_LENGTH]; /* Array for custom key bindings */
-static GdkRGBA termPalette[TERM_PALETTE_SIZE] = {
-    CLR_GDK(0x3f3f3f, 0), CLR_GDK(0xcf0000, 0),
-    CLR_GDK(0xa8ff60, 0), CLR_GDK(0xf3f828, 0),
-    CLR_GDK(0x3c70a4, 0), CLR_GDK(0xcc00ff, 0),
-    CLR_GDK(0x3c70a4, 0), CLR_GDK(0xdcdccc, 0),
-    CLR_GDK(0x808080, 0), CLR_GDK(0xcf0000, 0),
-    CLR_GDK(0xa8ff60, 0), CLR_GDK(0x6b6b6b, 0),
-    CLR_GDK(0x3c70a4, 0), CLR_GDK(0xcc00ff, 0),
-    CLR_GDK(0x3c70a4, 0), CLR_GDK(0xdcdccc, 0)};
+static GdkRGBA termPalette[TERM_PALETTE_SIZE];   /* Terminal colors */
 
 /*!
  * Print log (debug) message with format specifiers.
@@ -192,6 +184,13 @@ static gboolean termOnKeyPress(GtkWidget *terminal, GdkEventKey *event,
                 if (defaultConfigFile)
                     configFileName = NULL;
                 parseSettings();
+                configureTerm(terminal);
+                return TRUE;
+            /* Load the default configuration */
+            case GDK_KEY_D:
+            case GDK_KEY_d:
+                printLog("Loading the default configuration...\n");
+                colorCount = 0;
                 configureTerm(terminal);
                 return TRUE;
             /* Open new tab */

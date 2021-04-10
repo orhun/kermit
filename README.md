@@ -92,6 +92,7 @@ kermit [-h] [-v] [-d] [-c config] [-t title] [-e command]
 | `ctrl-alt-[v]`              | paste from clipboard           |
 | `ctrl-alt-[t]`              | open a new tab                 |
 | `ctrl-alt-[r]`              | reload configuration file      |
+| `ctrl-alt-[d]`              | load the default configuration |
 | `ctrl-alt-[q]`              | exit the terminal              |
 | `ctrl-alt-[k][up]`          | increase font size             |
 | `ctrl-alt-[j][down]`        | decrease font size             |
