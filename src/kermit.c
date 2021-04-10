@@ -594,6 +594,7 @@ static void parseSettings() {
         printLog("config file not found. (%s)\n", configFileName);
         return;
     }
+    keyCount = 0;
     while (fgets(buf, TERM_CONFIG_LENGTH, configFile)) {
         /* Skip lines starting with '#' and invalid lines */
         if (buf[0] == '#' || strlen(buf) < 4)
