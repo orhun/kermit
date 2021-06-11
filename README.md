@@ -74,13 +74,14 @@ gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) ke
 ## Arguments
 
 ```
-kermit [-h] [-v] [-d] [-c config] [-t title] [-e command]
+kermit [-h] [-v] [-d] [-c config] [-t title] [-w workdir] [-e command]
 
 [-h] shows help
 [-v] shows version
 [-d] enables the debug messages
 [-c config]  specifies the configuration file
 [-t title]   sets the terminal title
+[-w workdir] sets the working directory
 [-e command] sets the command to execute in terminal
 ```
 

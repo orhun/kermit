@@ -62,6 +62,7 @@ static char *termTitle;                              /* Title to set in terminal
 static char *wordChars;                              /* Variables for parsing the config */
 static char *fontSize;
 static char *configFileName; /* Configuration file name */
+static char *workingDir;     /* Working directory */
 static char *termCommand;    /* Command to execute in terminal (-e) */
 static char *tabLabelText;   /* The label text for showing the tabs situation */
 static gchar **envp;         /* Variables for starting the terminal */
@@ -501,10 +502,14 @@ static GtkWidget *getTerm() {
         printLog("command: %s %s %s\n", command[0], command[1], command[2]);
     }
     g_strfreev(envp);
+    if (workingDir == NULL) {
+        workingDir = g_get_current_dir();
+    }
+    printLog("workdir: %s\n", g_get_current_dir());
     /* Spawn terminal asynchronously */
     vte_terminal_spawn_async(VTE_TERMINAL(terminal),
                              VTE_PTY_DEFAULT,   /* pty flag */
-                             NULL,              /* working directory */
+                             workingDir,        /* working directory */
                              command,           /* argv */
                              NULL,              /* environment variables */
                              G_SPAWN_DEFAULT,   /* spawn flag */
@@ -710,11 +715,15 @@ static void parseSettings() {
  * \return 1 on exit
  */
 static int parseArgs(int argc, char **argv) {
-    while ((opt = getopt(argc, argv, ":c:e:t:vdh")) != -1) {
+    while ((opt = getopt(argc, argv, ":c:w:e:t:vdh")) != -1) {
         switch (opt) {
             case 'c':
                 /* Configuration file name to read */
                 configFileName = optarg;
+                break;
+            case 'w':
+                /* Working directory */
+                workingDir = optarg;
                 break;
             case 'e':
                 /* Command to execute in terminal */
@@ -746,7 +755,7 @@ static int parseArgs(int argc, char **argv) {
                 /* Show help message */
                 fprintf(stderr,
                         "%s[ %susage%s ] %s [-h] "
-                        "[-v] [-d] [-c config] [-t title] [-e command]%s\n",
+                        "[-v] [-d] [-c config] [-t title] [-w workdir] [-e command]%s\n",
                         TERM_ATTR_BOLD,
                         TERM_ATTR_COLOR,
                         TERM_ATTR_DEFAULT,
