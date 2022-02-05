@@ -26,3 +26,5 @@ endif()
 target_compile_options(${TARGET} PRIVATE -Wall -Wno-deprecated-declarations)
 # Install target to bin directory
 install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
+# Install manpage
+install(FILES man/${TARGET}.1 TYPE MAN)
