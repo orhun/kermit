@@ -28,3 +28,7 @@ target_compile_options(${TARGET} PRIVATE -Wall -Wno-deprecated-declarations)
 install(TARGETS ${TARGET} RUNTIME DESTINATION bin)
 # Install manpage
 install(FILES man/${TARGET}.1 DESTINATION share/man/man1)
+# Install desktop entry
+install(FILES .config/kermit.desktop DESTINATION share/applications)
+# Install README.md
+install(FILES README.md DESTINATION share/doc)
