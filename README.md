@@ -61,11 +61,11 @@ cd src/
 gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) kermit.c -o kermit.o $(pkg-config --libs vte-2.91)
 ```
 
-\* `kermit` terminal depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
+\* `kermit` depends on [vte3](https://www.archlinux.org/packages/extra/x86_64/vte3/) and [gtk3](https://www.archlinux.org/packages/extra/x86_64/gtk3/) packages.
 
 ## Features
 
-* Uses the default shell (with `$SHELL` environment variable)
+* Uses the default shell (`$SHELL`)
 * Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
 * Supports base16 color schemes (customizable theme)
 * Supports custom keys and associated commands
@@ -118,17 +118,17 @@ Most of the settings including font, opacity and colors can be changed via the c
 
 ### Theme
 
-Terminal theme can be changed with either editing the config file manually or using the [base16](https://github.com/chriskempson/base16) color schemes in [orhun/base16-kermit](https://github.com/orhun/base16-kermit) repository.
+The terminal theme can be changed by either editing the config file manually or using the [base16](https://github.com/chriskempson/base16) color schemes in [orhun/base16-kermit](https://github.com/orhun/base16-kermit) repository.
 
 ### Font
 
-`kermit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which retrieved from the `kermit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
+`kermit` uses a [PangoFontDescription](https://developer.gnome.org/pygtk/stable/class-pangofontdescription.html) which is retrieved from the `kermit.conf` for changing the font family, style and size. The configuration entry format of the font and some examples are shown below and the default value is `monospace 9`.
 
 ```
 font [FAMILY-LIST] [STYLE-OPTIONS] [SIZE]
 ```
 
-`FAMILY-LIST` is a comma separated list of families optionally terminated by a comma, `STYLE_OPTIONS` is a whitespace separated list of words where each WORD describes one of style, variant, weight, or stretch, and `SIZE` is an decimal number (size in points).
+`FAMILY-LIST` is a comma-separated list of families optionally terminated by a comma, `STYLE_OPTIONS` is a whitespace-separated list of words where each WORD describes one of style, variant, weight, or stretch, and `SIZE` is a decimal number (size in points).
 
 • Available font families: `Normal, Sans, Serif and Monospace`.  
 • Available styles: `Normal, Oblique, Italic`.  
