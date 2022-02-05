@@ -25,7 +25,7 @@ install:
 	# Install desktop entry
 	install -Dm 644 build/$(NAME).desktop -t $(TARGET)/usr/share/applications
 	# Install README.md
-	install -Dm 644 README.md -t $(TARGET)/usr/share/doc
+	install -Dm 644 README.md -t $(TARGET)/usr/share/doc/$(TARGET)
 	# Install man page
 	install -Dm 644 build/$(NAME).1.gz -t $(TARGET)/usr/share/man/man1
 
