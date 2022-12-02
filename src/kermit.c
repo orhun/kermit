@@ -533,7 +533,10 @@ static GtkWidget *getTerm() {
 static int startTerm() {
     /* Create & configure the window widget */
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
+    if (termTitle == NULL)
+        gtk_window_set_title(GTK_WINDOW(window), TERM_NAME);
+    else
+        gtk_window_set_title(GTK_WINDOW(window), termTitle);
     gtk_widget_set_visual(window, /* Alpha channel for transparency */
                           gdk_screen_get_rgba_visual(gtk_widget_get_screen(window)));
     gtk_widget_override_background_color(window, GTK_STATE_FLAG_NORMAL,
