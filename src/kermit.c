@@ -732,6 +732,7 @@ static int parseArgs(int argc, char **argv) {
             case 't':
                 /* Title to set in terminal */
                 termTitle = optarg;
+                break;
             case 'd':
                 /* Activate debug messages */
                 debugMessages = TRUE;
