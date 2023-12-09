@@ -1,6 +1,7 @@
 # kermit [![Release](https://img.shields.io/github/release/orhun/kermit.svg?color=5B7C33&style=flat-square)](https://github.com/orhun/kermit/releases) [![AUR](https://img.shields.io/aur/version/kermit.svg?color=5B7C33&style=flat-square)](https://aur.archlinux.org/packages/kermit/)
 
 ### A VTE-based, simple and froggy terminal emulator.
+
 ![Kermit the Frog](https://user-images.githubusercontent.com/24392180/59636824-2af20180-915d-11e9-95dd-0a077ebc3cfa.gif)
 
 [VTE](https://developer.gnome.org/vte/) is a [GTK](https://developer.gnome.org/gtk3/3.0/) widget that is designed to create virtual terminal emulators. [GNOME Terminal](https://help.gnome.org/users/gnome-terminal/stable/), [ROXTerm](https://github.com/realh/roxterm) and [evilvte](http://www.calno.com/evilvte/) are a few examples of terminal emulators that use the VTE widget. With the case of kermit, although it is a "yet another" VTE implementation, it aims to keep everything simple and customizable while providing some additional features.
@@ -10,32 +11,37 @@ The project is inspired by [Vincent Bernat](https://vincent.bernat.ch/en)'s [art
 <details>
   <summary>Table of Contents</summary>
 
-  * [Installation](#installation)
-    + [AUR](#aur)
-    + [CMake](#cmake)
-    + [Make](#make)
-    + [GCC](#gcc)
-  * [Features](#features)
-  * [Arguments](#arguments)
-  * [Key Bindings](#key-bindings)
-  * [Customization](#customization)
-    + [Config File](#config-file)
-    + [Theme](#theme)
-    + [Font](#font)
-    + [Key Bindings](#key-bindings-1)
-    + [Padding](#padding)
-  * [Screenshots](#screenshots)
-  * [TODO(s)](#todos)
-  * [License](#license)
-  * [Copyright](#copyright)
+<!-- vim-markdown-toc GFM -->
+
+- [Installation](#installation)
+  - [AUR](#aur)
+  - [CMake](#cmake)
+  - [Make](#make)
+  - [GCC](#gcc)
+- [Features](#features)
+- [Arguments](#arguments)
+- [Key Bindings](#key-bindings)
+- [Customization](#customization)
+  - [Config File](#config-file)
+  - [Theme](#theme)
+  - [Font](#font)
+  - [Key Bindings](#key-bindings-1)
+  - [Padding](#padding)
+- [Screenshots](#screenshots)
+- [TODO(s)](#todos)
+- [License](#license)
+- [Copyright](#copyright)
+
+<!-- vim-markdown-toc -->
 
 </details>
 
 ## Installation
 
 ### AUR
-* [kermit](https://aur.archlinux.org/packages/kermit/)
-* [kermit-git](https://aur.archlinux.org/packages/kermit-git/)
+
+- [kermit](https://aur.archlinux.org/packages/kermit/)
+- [kermit-git](https://aur.archlinux.org/packages/kermit-git/)
 
 ### CMake
 
@@ -65,11 +71,11 @@ gcc -s -O3 -Wall -Wno-deprecated-declarations $(pkg-config --cflags vte-2.91) ke
 
 ## Features
 
-* Uses the default shell (`$SHELL`)
-* Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
-* Supports base16 color schemes (customizable theme)
-* Supports custom keys and associated commands
-* Supports tabs
+- Uses the default shell (`$SHELL`)
+- Supports transparency with a composite manager (such as [compton](https://github.com/chjj/compton))
+- Supports base16 color schemes (customizable theme)
+- Supports custom keys and associated commands
+- Supports tabs
 
 ## Arguments
 
@@ -88,7 +94,7 @@ kermit [-h] [-v] [-d] [-c config] [-t title] [-w workdir] [-e command]
 ## Key Bindings
 
 | Key                         | Action                         |
-|-----------------------------|--------------------------------|
+| --------------------------- | ------------------------------ |
 | `ctrl-alt-[c]`              | copy to clipboard              |
 | `ctrl-alt-[v]`              | paste from clipboard           |
 | `ctrl-alt-[t]`              | open a new tab                 |
@@ -152,8 +158,8 @@ Custom keys and associated commands can be specified with the configuration file
 bind/bindx [KEY]~"[COMMAND]"
 ```
 
-• bind: `Send command to the terminal.`  
-• bindx: `Send command to the terminal and execute.`   
+- bind: `Send command to the terminal.`
+- bindx: `Send command to the terminal and execute.`
 
 Examples:
 
@@ -172,7 +178,7 @@ In order to change the padding of the terminal, create `~/.config/gtk-3.0/gtk.cs
 VteTerminal,
 TerminalScreen,
 vte-terminal {
-    padding: 3px 2px 2px 1px;
+  padding: 3px 2px 2px 1px;
 }
 ```
 
@@ -189,7 +195,7 @@ curl https://raw.githubusercontent.com/orhun/kermit/master/.config/kermit.conf -
 
 ## TODO(s)
 
-* URL handling
+- URL handling
 
 ## License
 
